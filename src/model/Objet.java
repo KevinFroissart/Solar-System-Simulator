@@ -1,12 +1,14 @@
 package model;
 
-public class Planete {
+public class Objet {
 	private String name;
 	private double masse;
-	private Position pos;
+	private Vecteur pos;
+	private Vecteur acc;
+	private Vecteur vitesse;
 	
 	
-	public Planete(String name,double masse,Position pos) {
+	public Objet(String name,double masse,Position pos) {
 		this.masse=masse;
 		this.name=name;
 		this.pos=pos;

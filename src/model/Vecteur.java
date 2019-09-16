@@ -1,13 +1,13 @@
 package model;
 
-public class Position {
+public class Vecteur {
 	
 	private int posX;
 	private int posY;
 	
 	
-	public Position(int posX, int posY) {
-		super();
+	public Vecteur(int posX, int posY) {
+		
 		this.posX = posX;
 		this.posY = posY;
 	}
@@ -35,9 +35,10 @@ public class Position {
 
 	@Override
 	public String toString() {
-		return "Position [posX=" + posX + ", posY=" + posY + "]";
+		return "Vecteur [posX=" + posX + ", posY=" + posY + "]";
 	}
 	
 	
+
 
 }

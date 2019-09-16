@@ -26,7 +26,7 @@ public class Objet {
 	}
 
 
-	public int getMasse() {
+	public double getMasse() {
 		return masse;
 	}
 

@@ -1,4 +1,4 @@
-package Controleur;
+package controller;
 
 public class ChangerLeNoms {
 

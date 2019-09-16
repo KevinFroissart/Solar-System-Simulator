@@ -24,7 +24,7 @@ public class Planete {
 	}
 
 
-	public int getMasse() {
+	public double getMasse() {
 		return masse;
 	}
 

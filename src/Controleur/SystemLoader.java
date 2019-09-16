@@ -20,6 +20,7 @@ public class SystemLoader {
 			BufferedReader br = new BufferedReader(new FileReader(file));
 			String read = "";
 			while ((read = br.readLine()) != null) system += read + ";";
+			br.close();
 		}
 		catch(FileNotFoundException e) {
 			e.printStackTrace();
@@ -27,6 +28,7 @@ public class SystemLoader {
 		catch(IOException e) {
 			e.printStackTrace();
 		}
+		
 	}
 
 	public static void paramInit() {
@@ -38,7 +40,7 @@ public class SystemLoader {
 			if(system.charAt(cpt) == 'G') {
 				G = 0.0001;
 			}
-			if(system.substring(cpt,cpt+2) == "fa") {
+			if(system.substring(cpt,cpt+2).equals("fa")) {
 				System.out.println("oui2");
 
 			}

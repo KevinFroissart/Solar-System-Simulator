@@ -5,7 +5,13 @@ import javafx.scene.Scene;
 import javafx.scene.layout.VBox;
 import javafx.stage.Stage;
 
-public class Main extends Application{
+	/** Méthode principale de la vue 
+	 * @author Froissart 
+	*/
+
+public class Main extends Application {
+	
+	
 	
 	public void start(Stage stage) throws Exception {
 		

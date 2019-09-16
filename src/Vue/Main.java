@@ -1,4 +1,4 @@
-package Project;
+package Vue;
 
 import javafx.application.Application;
 import javafx.scene.Scene;

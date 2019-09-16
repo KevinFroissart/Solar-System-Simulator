@@ -2,7 +2,7 @@
 
 ## Equipe ##
 
-BOURDIN Maxence\n
+BOURDIN Maxence
 FROISSART Kévin
 BISSON Clément
 DEROUCK Lucas

@@ -15,7 +15,7 @@ public class Main extends Application{
 
 		stage.setResizable(false);
 		stage.setTitle("Solar System Simulator");
-		stage.setScene(scene);
+		stage.setScene(scene); 
 		
 		stage.centerOnScreen();
 		stage.show();

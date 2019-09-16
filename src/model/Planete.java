@@ -2,11 +2,11 @@ package model;
 
 public class Planete {
 	private String name;
-	private int masse;
+	private double masse;
 	private Position pos;
 	
 	
-	public Planete(String name,int masse,Position pos) {
+	public Planete(String name,double masse,Position pos) {
 		this.masse=masse;
 		this.name=name;
 		this.pos=pos;
@@ -29,7 +29,7 @@ public class Planete {
 	}
 
 
-	public void setMasse(int masse) {
+	public void setMasse(double masse) {
 		this.masse = masse;
 	}
 

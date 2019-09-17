@@ -1,6 +1,5 @@
 package view;
 
-import javafx.application.Application;
 import javafx.scene.Scene;
 import javafx.scene.layout.VBox;
 import javafx.stage.Stage;
@@ -9,9 +8,7 @@ import javafx.stage.Stage;
 	 * @author Froissart 
 	*/
 
-public class Main extends Application {
-	
-	
+public class Affichage {
 	
 	public void start(Stage stage) throws Exception {
 		
@@ -25,9 +22,5 @@ public class Main extends Application {
 		
 		stage.centerOnScreen();
 		stage.show();
-	}
-	
-	public static void main(String[] a){
-		Application.launch(a);
 	}
 }

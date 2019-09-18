@@ -8,7 +8,7 @@ public class Objet {
 	private Vecteur vitesse;
 	
 	
-	public Objet(String name,double masse,Position pos) {
+	public Objet(String name,double masse,Vecteur pos) {
 		this.masse=masse;
 		this.name=name;
 		this.pos=pos;
@@ -36,12 +36,12 @@ public class Objet {
 	}
 
 
-	public Position getPos() {
+	public Vecteur getPos() {
 		return pos;
 	}
 
 
-	public void setPos(Position pos) {
+	public void setPos(Vecteur pos) {
 		this.pos = pos;
 	}
 	

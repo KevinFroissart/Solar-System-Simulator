@@ -1,5 +1,9 @@
 package model;
 
+/** Classe définissant un objet dans le système, comme une planète.
+ * @author //compléter
+ */
+
 public class Objet {
 	private String name;
 	private double masse;
@@ -43,6 +47,10 @@ public class Objet {
 
 	public void setPos(Vecteur pos) {
 		this.pos = pos;
+	}
+
+	public void placerObjet() {
+		//TODO : méthode pour mettre un objet sur l'interface
 	}
 	
 }

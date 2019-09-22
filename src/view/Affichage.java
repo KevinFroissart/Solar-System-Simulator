@@ -4,7 +4,7 @@ import javafx.scene.Scene;
 import javafx.scene.layout.VBox;
 import javafx.stage.Stage;
 
-	/** Méthode principale de la vue 
+	/** Classe gérant l'affichage principal du système.
 	 * @author Froissart 
 	*/
 
@@ -23,4 +23,6 @@ public class Affichage {
 		stage.centerOnScreen();
 		stage.show();
 	}
+
+
 }

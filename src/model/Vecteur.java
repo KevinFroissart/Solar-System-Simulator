@@ -1,5 +1,8 @@
 package model;
 
+/** Classe définissant la position des objets dans l'espace du système
+ * @author Lucas
+ */
 public class Vecteur {
 	
 	private int posX;

@@ -1,5 +1,4 @@
 package controller;
-
 import java.io.BufferedReader;
 import java.io.File;
 import java.io.FileNotFoundException;
@@ -7,13 +6,18 @@ import java.io.FileReader;
 import java.io.IOException;
 import java.util.ArrayList;
 
+/**
+ * Cette classe permet de lire et charger le fichier texte qui contient la configuration pré-établie du système
+ * à afficher.
+ * @author Maxence, Kévin
+ */
 public class SystemLoader {
 
-	static ArrayList<String> lignes;
-	static double G;
-	static double dt;
-	static double fa;
-	static double rayon;
+	private static ArrayList<String> lignes;
+	private static double G;
+	private static double dt;
+	private static double fa;
+	private static double rayon;
 
 	public static void reader() {
 

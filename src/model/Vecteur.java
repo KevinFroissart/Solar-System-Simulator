@@ -1,7 +1,7 @@
 package model;
 
 /** Classe définissant la position des objets dans l'espace du système
- * @author Lucas
+ * @author Cl�ment
  */
 public class Vecteur {
 	

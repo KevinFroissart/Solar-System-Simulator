@@ -4,12 +4,12 @@ package model;
  * @author //compléter
  */
 
-public class Objet {
+public abstract class Objet {
 	private String name;
 	private double masse;
 	private Vecteur pos;
 	private Vecteur acc;
-	private Vecteur vitesse;
+	private double vitesse;
 	
 	
 	public Objet(String name,double masse,Vecteur pos) {
@@ -24,21 +24,9 @@ public class Objet {
 		return name;
 	}
 
-
-	public void setName(String name) {
-		this.name = name;
-	}
-
-
 	public double getMasse() {
 		return masse;
 	}
-
-
-	public void setMasse(double masse) {
-		this.masse = masse;
-	}
-
 
 	public Vecteur getPos() {
 		return pos;

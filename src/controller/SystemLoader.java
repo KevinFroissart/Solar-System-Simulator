@@ -6,6 +6,8 @@ import java.io.FileReader;
 import java.io.IOException;
 import java.util.ArrayList;
 
+import model.Params;
+
 /**
  * Cette classe permet de lire et charger le fichier texte qui contient la configuration pré-établie du système
  * à afficher.
@@ -14,12 +16,8 @@ import java.util.ArrayList;
 public class SystemLoader {
 
 	private static ArrayList<String> lignes;
-	private static double G;
-	private static double dt;
-	private static double fa;
-	private static double rayon;
 
-	public static void reader() {
+	public void reader() {
 
 		lignes = new ArrayList<String>();
 
@@ -42,28 +40,108 @@ public class SystemLoader {
 
 	}
 
-	public static void paramInit() {
-		
+	public void paramInit(int expected) {
+
 		for(int i = 0; i < lignes.size(); i++) {
-		
+
 			int cpt = 0;
+			int valid = 0;
 			int lim = lignes.get(i).length();
-			
-			while(cpt < lim) {
-				
+
+			while(cpt < lim && valid == expected) {
+
 				if(cpt+1 < lim && lignes.get(i).substring(cpt,cpt+1).equals("G")) {
-					G = Double.parseDouble(wordReader(cpt, lim, lignes.get(i),'=',' '));
+					Params.setG(Double.parseDouble(wordReader(cpt, lim, lignes.get(i),'=',' ')));
+					valid++;
 				}
 				if(cpt+2 < lim && lignes.get(i).substring(cpt,cpt+2).equals("dt")) {
-					dt = Double.parseDouble(wordReader(cpt, lim, lignes.get(i),'=',' '));
+					Params.setDt(Double.parseDouble(wordReader(cpt, lim, lignes.get(i),'=',' ')));
+					valid++;
 				}
 				if(cpt+2 < lim && lignes.get(i).substring(cpt,cpt+2).equals("fa")) {
-					fa = Double.parseDouble(wordReader(cpt, lim, lignes.get(i),'=',' '));
+					Params.setFa(Double.parseDouble(wordReader(cpt, lim, lignes.get(i),'=',' ')));
+					valid++;
 				}
 				if(cpt+5 < lim && lignes.get(i).substring(cpt,cpt+5).equals("rayon")) {
-					rayon = Double.parseDouble(wordReader(cpt, lim, lignes.get(i),'=',' '));
+					Params.setRayon(Double.parseDouble(wordReader(cpt, lim, lignes.get(i),'=',' ')));
+					valid++;
 				}
 				cpt++;
+			}
+			if(valid != expected) {
+				System.err.println("Arguments manquants ou incorrect");
+				i = lim;
+			}
+		}
+	}
+
+	public void FixedObjectInit(int expected) {
+
+		for(int i = 0; i < lignes.size(); i++) {
+
+			int cpt = 0;
+			int valid = 0;
+			int lim = lignes.get(i).length();
+
+			if(cpt+6 < lim && lignes.get(i).substring(cpt,cpt+6).equals("Soleil")) {
+				while(cpt < lim && valid == expected) {
+
+					if(cpt+4 < lim && lignes.get(i).substring(cpt,cpt+4).equals("masse")) {
+					//	Params.setG(Double.parseDouble(wordReader(cpt, lim, lignes.get(i),'=',' ')));
+						valid++;
+					}
+					if(cpt+4 < lim && lignes.get(i).substring(cpt,cpt+4).equals("posx")) {
+						//Params.setDt(Double.parseDouble(wordReader(cpt, lim, lignes.get(i),'=',' ')));
+						valid++;
+					}
+					if(cpt+4 < lim && lignes.get(i).substring(cpt,cpt+4).equals("posy")) {
+						//Params.setFa(Double.parseDouble(wordReader(cpt, lim, lignes.get(i),'=',' ')));
+						valid++;
+					}
+				}
+				if(valid != expected) System.err.println("Arguments manquants ou incorrect");
+				i = lim;
+			}
+		}
+	}
+
+	public void ObjectInit(int expected) {
+
+		for(int i = 0; i < lignes.size(); i++) {
+
+			int cpt = 0;
+			int valid = 0;
+			int lim = lignes.get(i).length();
+
+			if(cpt+7 < lim && lignes.get(i).substring(cpt,cpt+7).equals("Planète") || lignes.get(i).substring(cpt,cpt+7).equals("Planéte")) {
+				while(cpt < lim && valid == expected) {
+
+					if(cpt+4 < lim && lignes.get(i).substring(cpt,cpt+4).equals("masse")) {
+						//Params.setG(Double.parseDouble(wordReader(cpt, lim, lignes.get(i),'=',' ')));
+						valid++;
+					}
+					if(cpt+4 < lim && lignes.get(i).substring(cpt,cpt+4).equals("posx")) {
+						//Params.setDt(Double.parseDouble(wordReader(cpt, lim, lignes.get(i),'=',' ')));
+						valid++;
+					}
+					if(cpt+4 < lim && lignes.get(i).substring(cpt,cpt+4).equals("posy")) {
+						//Params.setFa(Double.parseDouble(wordReader(cpt, lim, lignes.get(i),'=',' ')));
+						valid++;
+					}
+					if(cpt+4 < lim && lignes.get(i).substring(cpt,cpt+4).equals("vity")) {
+						//Params.setFa(Double.parseDouble(wordReader(cpt, lim, lignes.get(i),'=',' ')));
+						valid++;
+					}
+					if(cpt+4 < lim && lignes.get(i).substring(cpt,cpt+4).equals("vity")) {
+						//Params.setFa(Double.parseDouble(wordReader(cpt, lim, lignes.get(i),'=',' ')));
+						valid++;
+					}
+					cpt++;
+				}
+			}
+			if(valid != expected) {
+				System.err.println("Arguments manquants ou incorrect");
+				i = lim;
 			}
 		}
 	}
@@ -79,14 +157,5 @@ public class SystemLoader {
 			}
 		}
 		return txt.substring(debut,fin);
-	}
-	
-	public static void main(String[] args) {
-		reader();
-		paramInit();
-		System.out.println(G);
-		System.out.println(dt);
-		System.out.println(fa);
-		System.out.println(rayon);
 	}
 }

@@ -8,7 +8,7 @@ import javafx.scene.layout.VBox;
 import javafx.stage.Stage;
 
 	/** Classe gérant l'affichage principal du système.
-	 * @author Froissart 
+	 * @author Froissart Kevin
 	*/
 
 public class Affichage{

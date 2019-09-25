@@ -1,17 +1,24 @@
 package model;
 
+import controller.SystemLoader;
+import controller.VaisseauControl;
 import javafx.application.Application;
 import javafx.stage.Stage;
 import view.Affichage;
 
 /** Modèle initialisant les différentes vues
- * @author Froissart 
+ * @author Froissart Kevin
 */
 
 public class Main extends Application{
 
 	@Override
 	public void start(Stage primaryStage) throws Exception {
+		
+		SystemLoader sl = new SystemLoader();
+		sl.reader();
+		sl.paramInit(4);
+		VaisseauControl vc = new VaisseauControl();
 
 		Affichage af = new Affichage();
 

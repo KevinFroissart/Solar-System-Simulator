@@ -164,7 +164,7 @@ public class SystemLoader {
 			}
 			if(valid == expected && type.equals("Cercle")) {
 			}
-			if(valid == expected && type.equals("Vesseau")) {
+			if(valid == expected && type.equals("Vaisseau")) {
 			}
 		}
 

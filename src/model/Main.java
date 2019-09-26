@@ -18,7 +18,7 @@ public class Main extends Application{
 		SystemLoader sl = new SystemLoader();
 		sl.reader();
 		VaisseauControl vc = new VaisseauControl();
-		Systeme = new Systeme(sl.paramInit(4));
+		Systeme sys = sl.paramInit(4);
 		Affichage af = new Affichage();
 
 		try {

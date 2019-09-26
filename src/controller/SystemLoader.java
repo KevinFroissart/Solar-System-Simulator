@@ -9,6 +9,7 @@ import java.util.ArrayList;
 import model.Objet;
 import model.ObjetFixe;
 import model.ObjetSimule;
+import model.Systeme;
 import model.Vecteur;
 
 /**
@@ -44,6 +45,8 @@ public class SystemLoader {
 
 	public Systeme paramInit(int expected) {
 
+		boolean error = true;
+		
 		for(int i = 0; i < lignes.size(); i++) {
 
 			int cpt = 0;
@@ -54,7 +57,7 @@ public class SystemLoader {
 			double fa = 0;
 			double rayon = 0;
 
-			while(cpt < lim && valid == expected) {
+			while(cpt < lim && valid != expected) {
 
 				if(cpt+1 < lim && lignes.get(i).substring(cpt,cpt+1).equals("G")) {
 					g = Double.parseDouble(wordReader(cpt, lim, lignes.get(i),'=',' '));
@@ -66,6 +69,7 @@ public class SystemLoader {
 				}
 				if(cpt+2 < lim && lignes.get(i).substring(cpt,cpt+2).equals("fa")) {
 					fa = Double.parseDouble(wordReader(cpt, lim, lignes.get(i),'=',' '));
+					valid++;
 				}
 				if(cpt+5 < lim && lignes.get(i).substring(cpt,cpt+5).equals("rayon")) {
 					rayon = Double.parseDouble(wordReader(cpt, lim, lignes.get(i),'=',' '));
@@ -74,8 +78,9 @@ public class SystemLoader {
 				cpt++;
 			}
 			if(valid == expected && expected == 4) {
-				return new System(g, dt, fa, rayon); 
-				i = lim;				
+				error = false;
+				System.out.println("Parameters correctly loaded");
+				return new Systeme(g, dt, fa, rayon); 	
 			}
 		}
 		System.err.println("Arguments manquants ou incorrect");
@@ -83,6 +88,8 @@ public class SystemLoader {
 	}			
 	
 	public Objet objectInit(int expected, String type) {
+		
+		boolean error = true;
 
 		for(int i = 0; i < lignes.size(); i++) {
 
@@ -120,43 +127,31 @@ public class SystemLoader {
 					vitx = Double.parseDouble(wordReader(cpt, lim, lignes.get(i),'=',' '));
 					valid++;
 				}
-				if(cpt+1 < lim && lignes.get(i).substring(cpt,cpt+1).equals("G")) {
-					G = Double.parseDouble(wordReader(cpt, lim, lignes.get(i),'=',' '));
-					valid++;
-				}
-				if(cpt+2 < lim && lignes.get(i).substring(cpt,cpt+2).equals("dt")) {
-					dt = Double.parseDouble(wordReader(cpt, lim, lignes.get(i),'=',' '));
-					valid++;
-				}
-				if(cpt+2 < lim && lignes.get(i).substring(cpt,cpt+2).equals("fa")) {
-					fa = Double.parseDouble(wordReader(cpt, lim, lignes.get(i),'=',' '));
-					valid++;
-				}
-				if(cpt+5 < lim && lignes.get(i).substring(cpt,cpt+5).equals("rayon")) {
-					rayon = Double.parseDouble(wordReader(cpt, lim, lignes.get(i),'=',' '));
-					valid++;
-				}
 				cpt++;
 			}
 			
 			if(valid == expected && expected == 4 && type.equals("Fixe")) {
 				Vecteur pos = new Vecteur(posx,posy);
+				error = false;
 				return new ObjetFixe(nom, masse, pos);
 			}
 			if(valid == expected && expected == 6 && type.equals("Simule")) {
 				Vecteur pos = new Vecteur(posx,posy);
 				Vecteur vit = new Vecteur(vitx,vity);
+				error = false;
 				return new ObjetSimule(nom, masse, pos, vit);
 			}
-			if(valid == expected && expected == 6 && type.equals("Ellipse")) {
+			if(valid == expected && expected == 7 && type.equals("Ellipse")) {
+				error = false;
 			}
 			if(valid == expected && expected == 6 && type.equals("Cercle")) {
+				error = false;
 			}
-			if(valid == expected && expected == 6 && type.equals("Vesseau")) {
+			if(valid == expected && expected == 7 && type.equals("Vesseau")) {
+				error = false;
 			}
-			i = lim;
 		}
-		System.err.println("Arguments manquants ou incorrect");
+		if(error) System.err.println("Arguments manquants ou incorrect");
 		return null;
 	}
 	

@@ -6,7 +6,7 @@ package model;
 public class ObjetFixe extends Objet {
 
     public ObjetFixe(String name, double masse, Vecteur pos) {
-        super(name, masse, pos);
+        super(name, masse, pos,new Vecteur(0,0),new Vecteur(0,0));
     }
 
 }

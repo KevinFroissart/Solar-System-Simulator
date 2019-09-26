@@ -6,7 +6,9 @@ import java.io.FileReader;
 import java.io.IOException;
 import java.util.ArrayList;
 
+import model.ObjetFixe;
 import model.Params;
+import model.Vecteur;
 
 /**
  * Cette classe permet de lire et charger le fichier texte qui contient la configuration pré-établie du système
@@ -75,34 +77,45 @@ public class SystemLoader {
 		}
 	}
 
-	public void FixedObjectInit(int expected) {
+	public ObjetFixe FixedObjectInit(int expected) {
 
 		for(int i = 0; i < lignes.size(); i++) {
 
 			int cpt = 0;
 			int valid = 0;
 			int lim = lignes.get(i).length();
+			double masse = 0;
+			double posx = 0;
+			double posy = 0;
+			String nom = "";
 
 			if(cpt+6 < lim && lignes.get(i).substring(cpt,cpt+6).equals("Soleil")) {
 				while(cpt < lim && valid == expected) {
+					
+					if(cpt+6 < lim) nom = wordReader(cpt, lim, lignes.get(i),' ',':');
 
 					if(cpt+4 < lim && lignes.get(i).substring(cpt,cpt+4).equals("masse")) {
-					//	Params.setG(Double.parseDouble(wordReader(cpt, lim, lignes.get(i),'=',' ')));
+						masse = Double.parseDouble(wordReader(cpt, lim, lignes.get(i),'=',' '));
 						valid++;
 					}
 					if(cpt+4 < lim && lignes.get(i).substring(cpt,cpt+4).equals("posx")) {
-						//Params.setDt(Double.parseDouble(wordReader(cpt, lim, lignes.get(i),'=',' ')));
+						posx = Double.parseDouble(wordReader(cpt, lim, lignes.get(i),'=',' '));
 						valid++;
 					}
 					if(cpt+4 < lim && lignes.get(i).substring(cpt,cpt+4).equals("posy")) {
-						//Params.setFa(Double.parseDouble(wordReader(cpt, lim, lignes.get(i),'=',' ')));
+						posy = Double.parseDouble(wordReader(cpt, lim, lignes.get(i),'=',' '));
 						valid++;
 					}
 				}
 				if(valid != expected) System.err.println("Arguments manquants ou incorrect");
+				else {
+					Vecteur pos = new Vecteur(posx,posy);
+					return new ObjetFixe(nom, masse, pos);
+				}
 				i = lim;
 			}
 		}
+		return null;
 	}
 
 	public void ObjectInit(int expected) {

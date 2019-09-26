@@ -19,7 +19,7 @@ public class Main extends Application{
 		sl.reader();
 		sl.paramInit(4);
 		VaisseauControl vc = new VaisseauControl();
-
+		
 		Affichage af = new Affichage();
 
 		try {

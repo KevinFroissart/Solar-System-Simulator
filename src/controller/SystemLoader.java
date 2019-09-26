@@ -77,7 +77,7 @@ public class SystemLoader {
 				cpt++;
 			}
 			if(valid == expected && expected == 4) {
-				System.out.println("Parameters correctly loaded");
+				System.out.println("Paramètres correctement initialisés");
 				return new Systeme(g, dt, fa, rayon); 	
 			}
 		}
@@ -88,6 +88,7 @@ public class SystemLoader {
 	public ArrayList<Objet> objectInit() {		
 
 		ArrayList<Objet> objectList = new ArrayList<Objet>();
+		int listSize = 0;
 
 		for(int i = 0; i < lignes.size(); i++) {
 
@@ -102,16 +103,16 @@ public class SystemLoader {
 			double vity = 0;
 			String nom = "";
 			String type = "";
-
+			
 			if(cpt+20 < lim) {
 				nom = nameReader(0, lim, lignes.get(i),':');
 				type = nameReader(nom.length()+2, lim, lignes.get(i),' ');
 				switch(type) {
-				case "Fixe" : expected = 3; break;
-				case "Simulé" : expected = 5; break;
-				case "Cercle" : expected = 5; break;
-				case "Ellipse" : expected = 6; break;
-				case "Vaisseau" : expected = 6; break;
+				case "Fixe" : expected = 3; listSize++; break;
+				case "Simulé" : expected = 5; listSize++; break;
+				case "Cercle" : expected = 5; listSize++; break;
+				case "Ellipse" : expected = 6; listSize++; break;
+				//case "Vaisseau" : expected = 6; listSize++; break;
 				}
 				
 				System.out.println(nom + ":" + type + ":" + expected);
@@ -119,7 +120,7 @@ public class SystemLoader {
 			cpt = 0;
 			while(cpt < lim && valid != expected) {
 
-				if(cpt+4 < lim && lignes.get(i).substring(cpt,cpt+4).equals("masse")) {
+				if(cpt+5 < lim && lignes.get(i).substring(cpt,cpt+5).equals("masse")) {
 					masse = Double.parseDouble(wordReader(cpt, lim, lignes.get(i),'=',' '));
 					valid++;
 					System.out.println("masse ok");
@@ -151,11 +152,13 @@ public class SystemLoader {
 			if(valid == expected && type.equals("Fixe")) {
 				Vecteur pos = new Vecteur(posx,posy);
 				objectList.add(new ObjetFixe(nom, masse, pos));
+				System.out.println("Objet " + nom +" correctement ajouté à la liste");
 			}
 			if(valid == expected && type.equals("Simulé")) {
 				Vecteur pos = new Vecteur(posx,posy);
 				Vecteur vit = new Vecteur(vitx,vity);
 				objectList.add(new ObjetSimule(nom, masse, pos, vit));
+				System.out.println("Objet " + nom +" correctement ajouté à la liste");
 			}
 			if(valid == expected && type.equals("Ellipse")) {
 			}
@@ -168,7 +171,10 @@ public class SystemLoader {
 		for(Objet o : objectList) {
 			System.out.println(o.getName());
 		}
-		//System.err.println("Arguments manquants ou incorrect");
+		System.out.println("taille de liste attendue : " + listSize);
+		System.out.println("taille de liste réelle : " + objectList.size());
+		if(objectList.size() !=  listSize) System.err.println("Arguments manquants ou incorrect");
+		else System.out.println("Liste correctement initialisée");
 		return objectList;
 	}
 

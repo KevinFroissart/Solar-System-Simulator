@@ -6,8 +6,9 @@ import java.io.FileReader;
 import java.io.IOException;
 import java.util.ArrayList;
 
+import model.Objet;
 import model.ObjetFixe;
-import model.Params;
+import model.ObjetSimule;
 import model.Vecteur;
 
 /**
@@ -39,45 +40,49 @@ public class SystemLoader {
 		catch(IOException e) {
 			e.printStackTrace();
 		}
-
 	}
 
-	public void paramInit(int expected) {
+	public Systeme paramInit(int expected) {
 
 		for(int i = 0; i < lignes.size(); i++) {
 
 			int cpt = 0;
 			int valid = 0;
 			int lim = lignes.get(i).length();
+			double g = 0;
+			double dt = 0;
+			double fa = 0;
+			double rayon = 0;
 
 			while(cpt < lim && valid == expected) {
 
 				if(cpt+1 < lim && lignes.get(i).substring(cpt,cpt+1).equals("G")) {
-					Params.setG(Double.parseDouble(wordReader(cpt, lim, lignes.get(i),'=',' ')));
+					g = Double.parseDouble(wordReader(cpt, lim, lignes.get(i),'=',' '));
 					valid++;
 				}
 				if(cpt+2 < lim && lignes.get(i).substring(cpt,cpt+2).equals("dt")) {
-					Params.setDt(Double.parseDouble(wordReader(cpt, lim, lignes.get(i),'=',' ')));
+					dt = Double.parseDouble(wordReader(cpt, lim, lignes.get(i),'=',' '));
 					valid++;
 				}
 				if(cpt+2 < lim && lignes.get(i).substring(cpt,cpt+2).equals("fa")) {
-					Params.setFa(Double.parseDouble(wordReader(cpt, lim, lignes.get(i),'=',' ')));
-					valid++;
+					fa = Double.parseDouble(wordReader(cpt, lim, lignes.get(i),'=',' '));
 				}
 				if(cpt+5 < lim && lignes.get(i).substring(cpt,cpt+5).equals("rayon")) {
-					Params.setRayon(Double.parseDouble(wordReader(cpt, lim, lignes.get(i),'=',' ')));
+					rayon = Double.parseDouble(wordReader(cpt, lim, lignes.get(i),'=',' '));
 					valid++;
 				}
 				cpt++;
 			}
-			if(valid != expected) {
-				System.err.println("Arguments manquants ou incorrect");
-				i = lim;
+			if(valid == expected && expected == 4) {
+				return new System(g, dt, fa, rayon); 
+				i = lim;				
 			}
 		}
-	}
-
-	public ObjetFixe FixedObjectInit(int expected, String type) {
+		System.err.println("Arguments manquants ou incorrect");
+		return null;
+	}			
+	
+	public Objet objectInit(int expected, String type) {
 
 		for(int i = 0; i < lignes.size(); i++) {
 
@@ -89,15 +94,10 @@ public class SystemLoader {
 			double posy = 0;
 			double vitx = 0;
 			double vity = 0;
-			double G = 0;
-			double dt = 0;
-			double fa = 0;
-			double rayon = 0;
-			
 			String nom = "";
 
 			if(cpt+10 < lim) nom = nameReader(cpt, lim, lignes.get(i),':');
-			
+
 			while(cpt < lim && valid != expected) {
 
 				if(cpt+4 < lim && lignes.get(i).substring(cpt,cpt+4).equals("masse")) {
@@ -137,24 +137,42 @@ public class SystemLoader {
 					valid++;
 				}
 				cpt++;
-				 
-				if(valid == expected && expected == 4 && type.equals("Fixe")) {
-					Vecteur pos = new Vecteur(posx,posy);
-					return new ObjetFixe(nom, masse, pos);
-				}
-				if(valid == expected && expected == 4 && type.equals("Param")) {
-				//	return new -----(G, dt, fa, rayon);
-				}
-				else if(valid == expected && expected == 6 && type.equals("simule")) {
-					Vecteur pos = new Vecteur(posx,posy);
-					Vecteur vit = new Vecteur(vitx,vity);
-					return new ObjetSimule(nom, masse, pos, vit);
-				}
-				i = lim;
 			}
+			
+			if(valid == expected && expected == 4 && type.equals("Fixe")) {
+				Vecteur pos = new Vecteur(posx,posy);
+				return new ObjetFixe(nom, masse, pos);
+			}
+			if(valid == expected && expected == 6 && type.equals("Simule")) {
+				Vecteur pos = new Vecteur(posx,posy);
+				Vecteur vit = new Vecteur(vitx,vity);
+				return new ObjetSimule(nom, masse, pos, vit);
+			}
+			if(valid == expected && expected == 6 && type.equals("Ellipse")) {
+			}
+			if(valid == expected && expected == 6 && type.equals("Cercle")) {
+			}
+			if(valid == expected && expected == 6 && type.equals("Vesseau")) {
+			}
+			i = lim;
 		}
 		System.err.println("Arguments manquants ou incorrect");
 		return null;
+	}
+	
+	public static int occurenceReader(String nom) {
+		int len = nom.length();
+		int occ = 0;
+		for(int i = 0; i < lignes.size(); i++) {
+			int lim = lignes.get(i).length();
+			int cpt = 0;
+			while(cpt+len < lim) {
+				if(lignes.get(i).substring(cpt,cpt+len).equals(nom)) {
+					occ++;
+				}
+			}
+		}		
+		return occ;
 	}
 
 	public static String nameReader(int idx, int lim, String txt, char end) {

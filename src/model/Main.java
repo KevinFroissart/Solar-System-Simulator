@@ -1,7 +1,6 @@
 package model;
 
 import controller.SystemLoader;
-import controller.VaisseauControl;
 import javafx.application.Application;
 import javafx.stage.Stage;
 import view.Affichage;
@@ -17,7 +16,7 @@ public class Main extends Application{
 		
 		SystemLoader sl = new SystemLoader();
 		sl.reader();
-		VaisseauControl vc = new VaisseauControl();
+		sl.objectInit();
 		Systeme sys = sl.paramInit(4);
 		Affichage af = new Affichage();
 

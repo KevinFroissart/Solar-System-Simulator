@@ -4,6 +4,7 @@ import java.io.File;
 import java.io.FileNotFoundException;
 import java.io.FileReader;
 import java.io.IOException;
+import java.text.Normalizer;
 import java.util.ArrayList;
 
 import model.Objet;
@@ -45,8 +46,6 @@ public class SystemLoader {
 
 	public Systeme paramInit(int expected) {
 
-		boolean error = true;
-		
 		for(int i = 0; i < lignes.size(); i++) {
 
 			int cpt = 0;
@@ -78,7 +77,6 @@ public class SystemLoader {
 				cpt++;
 			}
 			if(valid == expected && expected == 4) {
-				error = false;
 				System.out.println("Parameters correctly loaded");
 				return new Systeme(g, dt, fa, rayon); 	
 			}
@@ -86,13 +84,14 @@ public class SystemLoader {
 		System.err.println("Arguments manquants ou incorrect");
 		return null;
 	}			
-	
-	public Objet objectInit(int expected, String type) {
-		
-		boolean error = true;
+
+	public ArrayList<Objet> objectInit() {		
+
+		ArrayList<Objet> objectList = new ArrayList<Objet>();
 
 		for(int i = 0; i < lignes.size(); i++) {
 
+			int expected = 1;
 			int cpt = 0;
 			int valid = 0;
 			int lim = lignes.get(i).length();
@@ -102,59 +101,77 @@ public class SystemLoader {
 			double vitx = 0;
 			double vity = 0;
 			String nom = "";
+			String type = "";
 
-			if(cpt+10 < lim) nom = nameReader(cpt, lim, lignes.get(i),':');
-
+			if(cpt+20 < lim) {
+				nom = nameReader(0, lim, lignes.get(i),':');
+				type = nameReader(nom.length()+2, lim, lignes.get(i),' ');
+				switch(type) {
+				case "Fixe" : expected = 3; break;
+				case "Simulé" : expected = 5; break;
+				case "Cercle" : expected = 5; break;
+				case "Ellipse" : expected = 6; break;
+				case "Vesseau" : expected = 6; break;
+				}
+				
+				System.out.println(nom + ":" + type + ":" + expected);
+			}
+			cpt = 0;
 			while(cpt < lim && valid != expected) {
 
 				if(cpt+4 < lim && lignes.get(i).substring(cpt,cpt+4).equals("masse")) {
 					masse = Double.parseDouble(wordReader(cpt, lim, lignes.get(i),'=',' '));
 					valid++;
+					System.out.println("masse ok");
 				}
 				if(cpt+4 < lim && lignes.get(i).substring(cpt,cpt+4).equals("posx")) {
 					posx = Double.parseDouble(wordReader(cpt, lim, lignes.get(i),'=',' '));
 					valid++;
+					System.out.println("posx ok");
 				}
 				if(cpt+4 < lim && lignes.get(i).substring(cpt,cpt+4).equals("posy")) {
 					posy = Double.parseDouble(wordReader(cpt, lim, lignes.get(i),'=',' '));
 					valid++;
+					System.out.println("posy ok");
+
 				}
 				if(cpt+4 < lim && lignes.get(i).substring(cpt,cpt+4).equals("vity")) {
 					vity = Double.parseDouble(wordReader(cpt, lim, lignes.get(i),'=',' '));
 					valid++;
+					System.out.println("vity ok");
 				}
 				if(cpt+4 < lim && lignes.get(i).substring(cpt,cpt+4).equals("vitx")) {
 					vitx = Double.parseDouble(wordReader(cpt, lim, lignes.get(i),'=',' '));
 					valid++;
+					System.out.println("vitx ok");
 				}
 				cpt++;
 			}
-			
-			if(valid == expected && expected == 4 && type.equals("Fixe")) {
+
+			if(valid == expected && type.equals("Fixe")) {
 				Vecteur pos = new Vecteur(posx,posy);
-				error = false;
-				return new ObjetFixe(nom, masse, pos);
+				objectList.add(new ObjetFixe(nom, masse, pos));
 			}
-			if(valid == expected && expected == 6 && type.equals("Simule")) {
+			if(valid == expected && type.equals("Simulé")) {
 				Vecteur pos = new Vecteur(posx,posy);
 				Vecteur vit = new Vecteur(vitx,vity);
-				error = false;
-				return new ObjetSimule(nom, masse, pos, vit);
+				objectList.add(new ObjetSimule(nom, masse, pos, vit));
 			}
-			if(valid == expected && expected == 7 && type.equals("Ellipse")) {
-				error = false;
+			if(valid == expected && type.equals("Ellipse")) {
 			}
-			if(valid == expected && expected == 6 && type.equals("Cercle")) {
-				error = false;
+			if(valid == expected && type.equals("Cercle")) {
 			}
-			if(valid == expected && expected == 7 && type.equals("Vesseau")) {
-				error = false;
+			if(valid == expected && type.equals("Vesseau")) {
 			}
 		}
-		if(error) System.err.println("Arguments manquants ou incorrect");
-		return null;
+
+		for(Objet o : objectList) {
+			System.out.println(o.getName());
+		}
+		//System.err.println("Arguments manquants ou incorrect");
+		return objectList;
 	}
-	
+
 	public static int occurenceReader(String nom) {
 		int len = nom.length();
 		int occ = 0;
@@ -162,16 +179,19 @@ public class SystemLoader {
 			int lim = lignes.get(i).length();
 			int cpt = 0;
 			while(cpt+len < lim) {
-				if(lignes.get(i).substring(cpt,cpt+len).equals(nom)) {
-					occ++;
-				}
+				if(removeAccent(lignes.get(i).substring(cpt,cpt+len)).equals(removeAccent(nom))) occ++;
+				cpt++;
 			}
 		}		
 		return occ;
 	}
 
+	public static String removeAccent(String str) {
+		return Normalizer.normalize(str, Normalizer.Form.NFD).replaceAll("[\u0300-\u036F]", "");
+	}
+
 	public static String nameReader(int idx, int lim, String txt, char end) {
-		int debut = 0;
+		int debut = idx;
 		int fin = 0;
 		for(int i = idx; i < lim; i++) {
 			if(txt.charAt(i) == end || txt.charAt(i) == ':') {

@@ -9,7 +9,7 @@ public abstract class Objet {
 	protected double masse;
 	protected Vecteur pos;
 	protected Vecteur acc;
-	protected double vitesse;
+	protected Vecteur vitesse;
 	
 	
 	public Objet(String name,double masse,Vecteur pos) {

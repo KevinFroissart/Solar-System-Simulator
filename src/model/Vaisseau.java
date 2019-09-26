@@ -1,11 +1,13 @@
 package model;
 
 public class Vaisseau extends Objet{
-
-	public Vaisseau(String name, double masse, Vecteur pos) {
+	private static double masse=0.001;
+	public Vaisseau(String name, Vecteur pos) {
 		super(name, masse, pos);
 		// TODO Auto-generated constructor stub
 	}
+	
+	
 	
 
 }

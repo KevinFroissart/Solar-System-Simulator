@@ -111,7 +111,7 @@ public class SystemLoader {
 				case "Simulé" : expected = 5; break;
 				case "Cercle" : expected = 5; break;
 				case "Ellipse" : expected = 6; break;
-				case "Vesseau" : expected = 6; break;
+				case "Vaisseau" : expected = 6; break;
 				}
 				
 				System.out.println(nom + ":" + type + ":" + expected);

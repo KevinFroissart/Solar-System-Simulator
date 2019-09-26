@@ -1,22 +1,22 @@
 package model;
 
 /** Classe définissant la position des objets dans l'espace du système
- * @author Cl�ment
+ * @author Cl�ment
  */
 public class Vecteur {
 	
-	private int posX;
-	private int posY;
+	private double posX;
+	private double posY;
 	
 	
-	public Vecteur(int posX, int posY) {
+	public Vecteur(double posX, double posY) {
 		
 		this.posX = posX;
 		this.posY = posY;
 	}
 
 
-	public int getPosX() {
+	public double getPosX() {
 		return posX;
 	}
 
@@ -26,7 +26,7 @@ public class Vecteur {
 	}
 
 
-	public int getPosY() {
+	public double getPosY() {
 		return posY;
 	}
 

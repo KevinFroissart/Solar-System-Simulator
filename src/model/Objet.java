@@ -1,15 +1,15 @@
 package model;
 
 /** Classe définissant un objet dans le système, comme une planète.
- * @author //compléter
+ * @author //compléter Lucas
  */
 
 public abstract class Objet {
-	private String name;
-	private double masse;
-	private Vecteur pos;
-	private Vecteur acc;
-	private double vitesse;
+	protected String name;
+	protected double masse;
+	protected Vecteur pos;
+	protected Vecteur acc;
+	protected double vitesse;
 	
 	
 	public Objet(String name,double masse,Vecteur pos) {
@@ -31,7 +31,10 @@ public abstract class Objet {
 	public Vecteur getPos() {
 		return pos;
 	}
-
+	
+	public Vecteur getacc() {
+		return acc;
+	}
 
 	public void setPos(Vecteur pos) {
 		this.pos = pos;

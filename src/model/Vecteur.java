@@ -21,7 +21,7 @@ public class Vecteur {
 	}
 
 
-	public void setPosX(int posX) {
+	public void setPosX(double posX) {
 		this.posX = posX;
 	}
 
@@ -31,7 +31,7 @@ public class Vecteur {
 	}
 
 
-	public void setPosY(int posY) {
+	public void setPosY(double posY) {
 		this.posY = posY;
 	}
 

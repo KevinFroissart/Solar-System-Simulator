@@ -1,27 +1,20 @@
 package controller;
-import java.io.BufferedReader;
-import java.io.File;
-import java.io.FileNotFoundException;
-import java.io.FileReader;
-import java.io.IOException;
+import model.*;
+
+import java.io.*;
 import java.text.Normalizer;
 import java.util.ArrayList;
 
-import model.Objet;
-import model.ObjetFixe;
-import model.ObjetSimule;
-import model.Systeme;
-import model.Vecteur;
-
 /**
  * Cette classe permet de lire et charger le fichier texte qui contient la configuration pré-établie du système
- * à afficher.
+ * à simuler.
  * @author Maxence, Kévin
  */
 public class SystemLoader {
 
 	private static ArrayList<String> lignes;
 
+	/** Méthode qui s'occupe de charger le fichier passé en paramètre de ligne de commande */
 	public void reader() {
 
 		lignes = new ArrayList<String>();
@@ -42,12 +35,13 @@ public class SystemLoader {
 		catch(IOException e) {
 			e.printStackTrace();
 		}
+		//TODO : ne pas oublier que par la suite le fichier (son chemin) sera passé en paramètre de ligne de commande
 	}
 
+	/** Méthode qui charge les paramètres du sytème lus dans la classe Système {@link model.Systeme#Systeme(double, double, double, double)}  */
 	public Systeme paramInit(int expected) {
 
 		for(int i = 0; i < lignes.size(); i++) {
-
 			int cpt = 0;
 			int valid = 0;
 			int lim = lignes.get(i).length();
@@ -85,6 +79,7 @@ public class SystemLoader {
 		return null;
 	}			
 
+	/** Méthode qui ajoute les objets lus dans le fichier system.txt dans une ArrayList et la retourne */
 	public ArrayList<Objet> objectInit() {		
 
 		ArrayList<Objet> objectList = new ArrayList<Objet>();
@@ -178,6 +173,7 @@ public class SystemLoader {
 		return objectList;
 	}
 
+	//TODO : description javadoc
 	public static int occurenceReader(String nom) {
 		int len = nom.length();
 		int occ = 0;
@@ -192,10 +188,12 @@ public class SystemLoader {
 		return occ;
 	}
 
+	/** Méthode qui retire les accents des mots lus dans le fichier system.txt pour rendre générique la lecture */
 	public static String removeAccent(String str) {
 		return Normalizer.normalize(str, Normalizer.Form.NFD).replaceAll("[\u0300-\u036F]", "");
 	}
 
+	//TODO : description javadoc
 	public static String nameReader(int idx, int lim, String txt, char end) {
 		int debut = idx;
 		int fin = 0;
@@ -208,6 +206,7 @@ public class SystemLoader {
 		return txt.substring(debut,fin);
 	}
 
+	//TODO : description javadoc
 	public static String wordReader(int idx, int lim, String txt, char beg, char end) {
 		int debut = 0;
 		int fin = 0;

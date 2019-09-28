@@ -7,7 +7,7 @@ import javafx.scene.shape.Rectangle;
 import javafx.stage.Stage;
 import javafx.scene.Group;
 
-/** Classe gÃ©rant l'affichage principal du systÃ¨me.
+/** Classe gérant l'affichage principal du système.
  * @author Froissart Kevin
  */
 

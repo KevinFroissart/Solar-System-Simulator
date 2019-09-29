@@ -35,7 +35,7 @@ public class SystemLoader {
 		catch(IOException e) {
 			e.printStackTrace();
 		}
-		//TODO : ne pas oublier que par la suite le fichier (son chemin) sera passé en paramètre de ligne de commande
+		//TODO : ne pas oublier que par la suite le fichier (son chemin) sera passé en paramètre de ligne de commande -> faire un scanner
 	}
 
 	/** Méthode qui charge les paramètres du sytème lus dans la classe Système {@link model.Systeme#Systeme(double, double, double, double)}  */
@@ -173,7 +173,7 @@ public class SystemLoader {
 		return objectList;
 	}
 
-	//TODO : description javadoc
+	/** Méthode qui retourne le nombre d'occurence du mot passer en paramètre */
 	public static int occurenceReader(String nom) {
 		int len = nom.length();
 		int occ = 0;
@@ -193,7 +193,7 @@ public class SystemLoader {
 		return Normalizer.normalize(str, Normalizer.Form.NFD).replaceAll("[\u0300-\u036F]", "");
 	}
 
-	//TODO : description javadoc
+	/** Méthode qui retourne le nom des objets du fichier system.txt */
 	public static String nameReader(int idx, int lim, String txt, char end) {
 		int debut = idx;
 		int fin = 0;
@@ -206,7 +206,7 @@ public class SystemLoader {
 		return txt.substring(debut,fin);
 	}
 
-	//TODO : description javadoc
+	/** Méthode qui retourne les informations comprise entre les deux caractères passé en paramètre */
 	public static String wordReader(int idx, int lim, String txt, char beg, char end) {
 		int debut = 0;
 		int fin = 0;

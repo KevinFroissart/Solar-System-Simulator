@@ -1,69 +1,76 @@
 package view;
 
 import javafx.scene.Scene;
+import javafx.scene.canvas.Canvas;
+import javafx.scene.canvas.GraphicsContext;
 import javafx.scene.paint.Color;
-import javafx.scene.shape.Circle;
-import javafx.scene.shape.Rectangle;
 import javafx.stage.Stage;
+import model.Objet;
+import model.Systeme;
+
+import java.util.ArrayList;
+
+import controller.SystemLoader;
 import javafx.scene.Group;
 
-/** Classe gérant l'affichage principal du système.
+/** Classe gï¿½rant l'affichage principal du systï¿½me.
  * @author Froissart Kevin
  */
 
 public class Affichage{
+	
+	SystemLoader sl;
+	ArrayList<Objet> listeObjet;
+	Systeme sys;
+	
+	public Affichage(SystemLoader sl, Systeme sys) {
+		this.sl = sl;
+		this.sys = sys;
+		listeObjet = sl.objectInit();
+	}
+
 	/**
 	 * Constructeur de la vue du vaisseau. 
-	 * Cette fonction instancie le vaisseau aux coordonnées indiqué en paramètre
-	 * @param x indique la position x initiale du vaisseau à son instanciation
-	 * @param y indique la position y initiale du vaisseau à son instanciation 
+	 * Cette fonction instancie le vaisseau aux coordonnï¿½es indiquï¿½ en paramï¿½tre
+	 * @param x indique la position x initiale du vaisseau ï¿½ son instanciation
+	 * @param y indique la position y initiale du vaisseau ï¿½ son instanciation 
 	 * @param root layer racine de l'IHM
 	 */
-	public void createSpaceShip(int x, int y , Group root){
-
-		Rectangle vaisseau = new Rectangle(x, y,7,3);
-		vaisseau.setFill(Color.RED);
-		root.getChildren().add(vaisseau);
+	public void createSpaceShip(double x, double y , GraphicsContext gc){
+		gc.setFill(Color.ORANGE);
+		gc.fillRect(x, y, 7, 3);
 	}
 
-	public void createSun(int x, int y ,Group root){
-
-		Circle sun = new Circle(x,y,15);
-		//sun.setFill(null);
-		root.getChildren().addAll(sun);
+	public void createSun(double x, double y , GraphicsContext gc){
+		gc.setFill(Color.RED);
+		gc.fillOval(x, y, 15, 15);
 	}
 
-	public void createPlanete(int x, int y, Group root ){
-
-		Circle planete = new Circle(x,y,5);
-		//planete.setFill(null);
-		root.getChildren().addAll(planete);
+	public void createPlanete(double x, double y, GraphicsContext gc){
+		gc.setFill(Color.BLACK);
+		gc.fillOval(x, y, 5, 5);
 	}
 
 	public void start(Stage stage) throws Exception {
+		
+		final Canvas canvas = new Canvas(sys.getRayon(),sys.getRayon());
+		GraphicsContext gc = canvas.getGraphicsContext2D();
+		
 		Group root = new Group();
-		Scene scene = new Scene(root, 480, 580);
+		Scene scene = new Scene(root, 500, 580);
+		
+		for(Objet o : listeObjet) {
+			if(o.getName().matches("Soleil")) createSun(o.getPos().getPosX()/2 + sys.getRayon()/2, o.getPos().getPosY()/2 + sys.getRayon()/2, gc);
+			if(o.getName().length() > 6 && SystemLoader.removeAccent(o.getName().substring(0,7)).matches("Planete")) createPlanete(o.getPos().getPosX()/2 + sys.getRayon()/2, o.getPos().getPosY()/2 + sys.getRayon()/2, gc);
+		}
 
-
-
-
-		stage.setResizable(false);
+		root.getChildren().add(canvas);
+		
+		stage.setResizable(true);
 		stage.setTitle("Solar System Simulator");
 		stage.setScene(scene); 
-
-
-		// forme exemple :
-		Circle p1 = new Circle(240,300,15);
-		p1.setFill(Color.LIGHTSEAGREEN);
-		Circle p2 = new Circle(240,250,5);
-		Circle p3 = new Circle(190,330,5);
-		Circle p4 = new Circle(350,300,5);
 		
-		createSun(300, 200, root);
-		createPlanete(100, 400, root);
-		createSpaceShip(80, 80, root);
-
-		root.getChildren().addAll(p1,p2,p3,p4);
+		createSpaceShip(80, 80, gc);
 
 		stage.centerOnScreen();
 		stage.show();

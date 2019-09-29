@@ -15,10 +15,10 @@ public class Main extends Application{
 	public void start(Stage primaryStage) throws Exception {
 		
 		SystemLoader sl = new SystemLoader();
-		sl.reader();
-		sl.objectInit();
+		sl.reader();	
 		Systeme sys = sl.paramInit(4);
-		Affichage af = new Affichage();
+		
+		Affichage af = new Affichage(sl,sys);
 
 		try {
 			af.start(primaryStage);

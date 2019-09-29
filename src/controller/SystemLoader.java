@@ -96,6 +96,8 @@ public class SystemLoader {
 			double posy = 0;
 			double vitx = 0;
 			double vity = 0;
+			double pprincipal = 0;
+			double pretro = 0;
 			String nom = "";
 			String type = "";
 			
@@ -107,7 +109,7 @@ public class SystemLoader {
 				case "Simulé" : expected = 5; listSize++; break;
 				case "Cercle" : expected = 5; listSize++; break;
 				case "Ellipse" : expected = 6; listSize++; break;
-				//case "Vaisseau" : expected = 6; listSize++; break;
+				case "Vaisseau" : expected = 7; listSize++; break;
 				}
 				
 				System.out.println(nom + ":" + type + ":" + expected);
@@ -141,6 +143,16 @@ public class SystemLoader {
 					valid++;
 					System.out.println("vitx ok");
 				}
+				if(cpt+10 < lim && lignes.get(i).substring(cpt,cpt+10).equals("pprincipal")) {
+					vitx = Double.parseDouble(wordReader(cpt, lim, lignes.get(i),'=',' '));
+					valid++;
+					System.out.println("pprincipal ok");
+				}
+				if(cpt+6 < lim && lignes.get(i).substring(cpt,cpt+6).equals("pretro")) {
+					vitx = Double.parseDouble(wordReader(cpt, lim, lignes.get(i),'=',' '));
+					valid++;
+					System.out.println("pretro ok");
+				}
 				cpt++;
 			}
 
@@ -160,6 +172,10 @@ public class SystemLoader {
 			if(valid == expected && type.equals("Cercle")) {
 			}
 			if(valid == expected && type.equals("Vaisseau")) {
+				Vecteur pos = new Vecteur(posx,posy);
+				Vecteur vit = new Vecteur(vitx,vity);
+				Vecteur acc = new Vecteur(0,0);
+				objectList.add(new Vaisseau(nom, masse, pos, vit, acc));
 			}
 		}
 

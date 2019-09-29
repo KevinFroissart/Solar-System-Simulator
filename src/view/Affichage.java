@@ -62,6 +62,7 @@ public class Affichage{
 		for(Objet o : listeObjet) {
 			if(o.getName().matches("Soleil")) createSun(o.getPos().getPosX()/2 + sys.getRayon()/2, o.getPos().getPosY()/2 + sys.getRayon()/2, gc);
 			if(o.getName().length() > 6 && SystemLoader.removeAccent(o.getName().substring(0,7)).matches("Planete")) createPlanete(o.getPos().getPosX()/2 + sys.getRayon()/2, o.getPos().getPosY()/2 + sys.getRayon()/2, gc);
+			if(o.getName().matches("X")) createSpaceShip(o.getPos().getPosX()/2 + sys.getRayon()/2, o.getPos().getPosY()/2 + sys.getRayon()/2, gc);
 		}
 
 		root.getChildren().add(canvas);
@@ -70,7 +71,6 @@ public class Affichage{
 		stage.setTitle("Solar System Simulator");
 		stage.setScene(scene); 
 		
-		createSpaceShip(80, 80, gc);
 
 		stage.centerOnScreen();
 		stage.show();

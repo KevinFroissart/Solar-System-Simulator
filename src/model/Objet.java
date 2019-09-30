@@ -43,5 +43,8 @@ public abstract class Objet {
 	public void setPos(Vecteur pos) {
 		this.pos = pos;
 	}
-	
+
+	public String getType() {
+		return type;
+	}	
 }

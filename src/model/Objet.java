@@ -1,10 +1,12 @@
 package model;
 
+import java.util.Observable;
+
 /** Classe définissant un objet dans le système, comme une planète.
  * @author Lucas, Kévin
  */
 
-public abstract class Objet {
+public abstract class Objet extends Observable{
 	protected String name;
 	protected double masse;
 	protected Vecteur pos;
@@ -16,7 +18,7 @@ public abstract class Objet {
 	public Objet(String name, String type, double masse,Vecteur pos, Vecteur vitesse, Vecteur acc) {
 		this.name = name;
 		this.type = type;
-		this.masse=masse;
+		this.masse = masse;
 		this.name=name;
 		this.pos=pos;
 		this.vitesse=vitesse;
@@ -42,6 +44,14 @@ public abstract class Objet {
 
 	public void setPos(Vecteur pos) {
 		this.pos = pos;
+		setChanged();
+		notifyObservers(pos);
+	}
+	
+	public void setVit(Vecteur vit) {
+		this.vitesse = vit;
+		setChanged();
+		notifyObservers(pos);
 	}
 
 	public String getType() {

@@ -10,9 +10,12 @@ public abstract class Objet {
 	protected Vecteur pos;
 	protected Vecteur acc;
 	protected Vecteur vitesse;
+	protected String type;
 	
 	
-	public Objet(String name,double masse,Vecteur pos, Vecteur vitesse, Vecteur acc) {
+	public Objet(String name, String type, double masse,Vecteur pos, Vecteur vitesse, Vecteur acc) {
+		this.name = name;
+		this.type = type;
 		this.masse=masse;
 		this.name=name;
 		this.pos=pos;

@@ -5,8 +5,8 @@ package model;
  */
 public class ObjetSimule extends Objet {
 
-	public ObjetSimule(String name, double masse, Vecteur pos, Vecteur vit) {
-		super(name, masse, pos,vit,new Vecteur(0,0));
+	public ObjetSimule(String name, String type, double masse, Vecteur pos, Vecteur vit) {
+		super(name, type, masse, pos,vit,new Vecteur(0,0));
 	}
 
 }

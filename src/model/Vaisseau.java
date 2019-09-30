@@ -5,7 +5,7 @@ package model;
  */
 public class Vaisseau extends Objet{
 	
-	public Vaisseau(String name, double masse, Vecteur pos,Vecteur vitesse,Vecteur acc) {
-		super(name, masse, pos, vitesse, acc);
+	public Vaisseau(String name, String type, double masse, Vecteur pos,Vecteur vitesse,Vecteur acc) {
+		super(name, type, masse, pos, vitesse, acc);
 	}
 }

@@ -25,8 +25,8 @@ public class Information{
 		listeObjet = sl.objectInit();
 	}
 	
-public void start(Stage stage) throws Exception {
-		
+public void start() throws Exception {
+		Stage stage =new Stage();
 		VBox root = new VBox();
 		Label info=new Label();
 		String phra ="";

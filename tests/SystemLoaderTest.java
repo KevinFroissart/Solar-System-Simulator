@@ -5,12 +5,7 @@ import org.junit.Test;
 
 import model.SystemLoader;
 
-
-
-
 public class SystemLoaderTest extends SystemLoader{
-
-	
 
 	@Before
 	public void setUp() {

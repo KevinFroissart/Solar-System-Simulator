@@ -11,7 +11,6 @@ import model.SystemLoader;
 public class SystemLoaderTest extends SystemLoader{
 
 	
-
 	@Before
 	public void setUp() {
 		ArrayList<String> lignes = new ArrayList<String>();

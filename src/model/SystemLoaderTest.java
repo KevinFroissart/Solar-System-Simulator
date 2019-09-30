@@ -1,3 +1,5 @@
+package model;
+
 import static org.junit.Assert.*;
 import java.util.ArrayList;
 import org.junit.Before;
@@ -27,8 +29,8 @@ public class SystemLoaderTest extends SystemLoader{
 	
 	@Test
 	public void testoccurenceReader() {
-		String str ="phrase accent possédant un accent ";
-		assertTrue(2 == occurenceReader("accent"));
+		System.out.println(" "+occurenceReader("soleil"));
+		assertTrue(0 == occurenceReader("soleil"));
 	}
 	
 //	@Test

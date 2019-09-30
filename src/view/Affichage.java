@@ -3,14 +3,22 @@ package view;
 import javafx.scene.Scene;
 import javafx.scene.canvas.Canvas;
 import javafx.scene.canvas.GraphicsContext;
+import javafx.scene.control.Button;
+import javafx.scene.layout.VBox;
 import javafx.scene.paint.Color;
 import javafx.stage.Stage;
+import javafx.beans.value.ChangeListener;
+import javafx.beans.value.ObservableValue;
+import javafx.scene.input.KeyCode;
+import javafx.scene.input.KeyCodeCombination;
+import javafx.scene.input.KeyCombination;
 import model.Objet;
 import model.SystemLoader;
 import model.Systeme;
 
 import java.util.ArrayList;
 
+import controller.VaisseauControl;
 import javafx.scene.Group;
 
 /** Classe g�rant l'affichage principal du syst�me.
@@ -19,14 +27,16 @@ import javafx.scene.Group;
 
 public class Affichage{
 	
+	VaisseauControl vc;
 	SystemLoader sl;
 	ArrayList<Objet> listeObjet;
 	Systeme sys;
 	
-	public Affichage(SystemLoader sl, Systeme sys) {
-		this.sl = sl;
-		this.sys = sys;
+	public Affichage(VaisseauControl vc) {
+		this.vc = vc;
+		sl = vc.getModel();
 		listeObjet = sl.objectInit();
+		sys = vc.getSysteme();
 	}
 
 	/**
@@ -53,7 +63,7 @@ public class Affichage{
 
 	
 	public void start(Stage stage) throws Exception {
-		
+				
 		final Canvas canvas = new Canvas(sys.getRayon(),sys.getRayon());
 		GraphicsContext gc = canvas.getGraphicsContext2D();
 		
@@ -65,7 +75,15 @@ public class Affichage{
 			if(o.getName().length() > 6 && SystemLoader.removeAccent(o.getName().substring(0,7)).matches("Planete")) createPlanete(o.getPos().getPosX()/2 + sys.getRayon()/2, o.getPos().getPosY()/2 + sys.getRayon()/2, gc);
 			if(o.getName().matches("X")) createSpaceShip(o.getPos().getPosX()/2 + sys.getRayon()/2, o.getPos().getPosY()/2 + sys.getRayon()/2, gc);
 		}
-
+		
+		scene.setOnKeyPressed( e-> {
+			if(e.getCode().equals(KeyCode.DOWN)) System.out.println("Down Key Pressed");
+			if(e.getCode().equals(KeyCode.UP)) System.out.println("UP Key Pressed");
+			if(e.getCode().equals(KeyCode.RIGHT)) System.out.println("Right Key Pressed");
+			if(e.getCode().equals(KeyCode.LEFT)) System.out.println("Left Key Pressed");
+		});
+		
+		
 		root.getChildren().add(canvas);
 		
 		stage.setResizable(true);

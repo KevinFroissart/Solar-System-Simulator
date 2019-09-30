@@ -14,7 +14,7 @@ public class VaisseauControl {
 	SystemLoader sl;
 	Systeme sys;
 	
-	VaisseauControl(SystemLoader s, Systeme sys) {
+	public VaisseauControl(SystemLoader s, Systeme sys) {
 		sl = s;
 		this.sys = sys;
 	}

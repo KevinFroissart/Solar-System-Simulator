@@ -8,17 +8,17 @@ import view.Information;
 
 /** Modèle initialisant les différentes vues
  * @author Froissart Kevin
-*/
+ */
 
 public class Main extends Application{
 
 	@Override
 	public void start(Stage primaryStage) throws Exception {
-		
+
 		SystemLoader sl = new SystemLoader();
 		sl.reader();	
 		Systeme sys = sl.paramInit(4);
-				
+
 		Affichage af = new Affichage(new VaisseauControl(sl,sys));
 
 		try {
@@ -27,17 +27,17 @@ public class Main extends Application{
 			e1.printStackTrace();
 
 		}
-	
-	Information info = new Information(sl,sys);
-	
-	try {
-		info.start();
-	} catch (Exception e2) {
-		e2.printStackTrace();
 
+		Information info = new Information(sl,sys);
+
+		try {
+			info.start();
+		} catch (Exception e2) {
+			e2.printStackTrace();
+
+		}
 	}
-	}
-	
+
 	public static void main(String[] a){
 		Application.launch(a);
 	}

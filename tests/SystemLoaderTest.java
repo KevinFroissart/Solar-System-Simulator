@@ -7,6 +7,9 @@ import model.SystemLoader;
 
 public class SystemLoaderTest extends SystemLoader{
 
+
+	
+
 	@Before
 	public void setUp() {
 		ArrayList<String> lignes = new ArrayList<String>();
@@ -28,10 +31,10 @@ public class SystemLoaderTest extends SystemLoader{
 		assertTrue(2 == occurenceReader("accent"));
 	}
 	
-	@Test
-	public void testnameReader() {
-		
-	}
+//	@Test
+//	public void testnameReader() {
+//		
+//	}
 	
 	
 	

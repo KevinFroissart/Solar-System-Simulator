@@ -15,6 +15,7 @@ import javafx.scene.input.KeyCombination;
 import model.Objet;
 import model.SystemLoader;
 import model.Systeme;
+import model.Vaisseau;
 
 import java.util.ArrayList;
 
@@ -31,6 +32,7 @@ public class Affichage{
 	SystemLoader sl;
 	ArrayList<Objet> listeObjet;
 	Systeme sys;
+	Vaisseau vs;
 	
 	public Affichage(VaisseauControl vc) {
 		this.vc = vc;
@@ -73,16 +75,18 @@ public class Affichage{
 		for(Objet o : listeObjet) {
 			if(o.getName().matches("Soleil")) createSun(o.getPos().getPosX()/2 + sys.getRayon()/2, o.getPos().getPosY()/2 + sys.getRayon()/2, gc);
 			if(o.getName().length() > 6 && SystemLoader.removeAccent(o.getName().substring(0,7)).matches("Planete")) createPlanete(o.getPos().getPosX()/2 + sys.getRayon()/2, o.getPos().getPosY()/2 + sys.getRayon()/2, gc);
-			if(o.getName().matches("X")) createSpaceShip(o.getPos().getPosX()/2 + sys.getRayon()/2, o.getPos().getPosY()/2 + sys.getRayon()/2, gc);
+			if(o.getName().matches("X")) {
+				createSpaceShip(o.getPos().getPosX()/2 + sys.getRayon()/2, o.getPos().getPosY()/2 + sys.getRayon()/2, gc);
+				vs = (Vaisseau) o;
+			}
 		}
 		
 		scene.setOnKeyPressed( e-> {
-			if(e.getCode().equals(KeyCode.DOWN)) System.out.println("Down Key Pressed");
-			if(e.getCode().equals(KeyCode.UP)) System.out.println("UP Key Pressed");
-			if(e.getCode().equals(KeyCode.RIGHT)) System.out.println("Right Key Pressed");
-			if(e.getCode().equals(KeyCode.LEFT)) System.out.println("Left Key Pressed");
+			if(e.getCode().equals(KeyCode.DOWN)) vc.down(vs, 20);;
+			if(e.getCode().equals(KeyCode.UP)) vc.up(vs, 20);
+			if(e.getCode().equals(KeyCode.RIGHT)) vc.right(vs, 20);
+			if(e.getCode().equals(KeyCode.LEFT)) vc.left(vs, 20);
 		});
-		
 		
 		root.getChildren().add(canvas);
 		

@@ -40,9 +40,5 @@ public abstract class Objet {
 	public void setPos(Vecteur pos) {
 		this.pos = pos;
 	}
-
-	public void placerObjet() {
-		//TODO : méthode pour mettre un objet sur l'interface
-	}
 	
 }

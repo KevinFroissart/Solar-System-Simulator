@@ -73,9 +73,9 @@ public class Affichage{
 		Scene scene = new Scene(root, 500, 580);
 		
 		for(Objet o : listeObjet) {
-			if(o.getName().matches("Soleil")) createSun(o.getPos().getPosX()/2 + sys.getRayon()/2, o.getPos().getPosY()/2 + sys.getRayon()/2, gc);
-			if(o.getName().length() > 6 && SystemLoader.removeAccent(o.getName().substring(0,7)).matches("Planete")) createPlanete(o.getPos().getPosX()/2 + sys.getRayon()/2, o.getPos().getPosY()/2 + sys.getRayon()/2, gc);
-			if(o.getName().matches("X")) {
+			if(o.getType().matches("Fixe")) createSun(o.getPos().getPosX()/2 + sys.getRayon()/2, o.getPos().getPosY()/2 + sys.getRayon()/2, gc);
+			if(o.getType().matches("Simulé")) createPlanete(o.getPos().getPosX()/2 + sys.getRayon()/2, o.getPos().getPosY()/2 + sys.getRayon()/2, gc);
+			if(o.getType().matches("Vaisseau")) {
 				createSpaceShip(o.getPos().getPosX()/2 + sys.getRayon()/2, o.getPos().getPosY()/2 + sys.getRayon()/2, gc);
 				vs = (Vaisseau) o;
 			}

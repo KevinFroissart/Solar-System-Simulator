@@ -16,7 +16,7 @@ public class SystemLoaderTest extends SystemLoader{
 	public void setUp() {
 		ArrayList<String> lignes = new ArrayList<String>();
 		lignes.add("phrase test");
-		lignes.add("phrase test 2");
+		lignes.add("phrase test 2") ;
 	}
 	
 	@Test

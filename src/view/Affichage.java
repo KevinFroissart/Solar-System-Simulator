@@ -6,11 +6,11 @@ import javafx.scene.canvas.GraphicsContext;
 import javafx.scene.paint.Color;
 import javafx.stage.Stage;
 import model.Objet;
+import model.SystemLoader;
 import model.Systeme;
 
 import java.util.ArrayList;
 
-import controller.SystemLoader;
 import javafx.scene.Group;
 
 /** Classe g�rant l'affichage principal du syst�me.
@@ -43,12 +43,12 @@ public class Affichage{
 
 	public void createSun(double x, double y , GraphicsContext gc){
 		gc.setFill(Color.RED);
-		gc.fillOval(x, y, 15, 15);
+		gc.fillOval(x, y, 40, 40);
 	}
 
 	public void createPlanete(double x, double y, GraphicsContext gc){
 		gc.setFill(Color.BLACK);
-		gc.fillOval(x, y, 5, 5);
+		gc.fillOval(x, y, 15, 15);
 	}
 
 	public void start(Stage stage) throws Exception {

@@ -33,10 +33,10 @@ public class SystemLoaderTest extends SystemLoader{
 		assertTrue(2 == occurenceReader("accent"));
 	}
 	
-	@Test
-	public void testnameReader() {
-		
-	}
+//	@Test
+//	public void testnameReader() {
+//		
+//	}
 	
 	
 	

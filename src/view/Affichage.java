@@ -30,11 +30,11 @@ public class Affichage{
 	}
 
 	/**
-	 * Constructeur de la vue du vaisseau. 
+	 * Constructeur de la vue du vaisseau, des planêtes, et de l'étoile. 
 	 * Cette fonction instancie le vaisseau aux coordonn�es indiqu� en param�tre
 	 * @param x indique la position x initiale du vaisseau � son instanciation
 	 * @param y indique la position y initiale du vaisseau � son instanciation 
-	 * @param root layer racine de l'IHM
+	 * @param gc GraphicsContext du canvas de la fenêtre
 	 */
 	public void createSpaceShip(double x, double y , GraphicsContext gc){
 		gc.setFill(Color.ORANGE);
@@ -51,6 +51,7 @@ public class Affichage{
 		gc.fillOval(x, y, 5, 5);
 	}
 
+	
 	public void start(Stage stage) throws Exception {
 		
 		final Canvas canvas = new Canvas(sys.getRayon(),sys.getRayon());

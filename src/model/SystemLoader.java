@@ -170,6 +170,7 @@ public class SystemLoader {
 			}
 			if(valid == expected && type.equals("Cercle")) {
 			}
+
 			if(valid == expected && type.equals("Vaisseau")) {
 				Vecteur pos = new Vecteur(posx,posy);
 				Vecteur vit = new Vecteur(vitx,vity);

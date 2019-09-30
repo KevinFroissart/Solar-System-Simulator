@@ -27,13 +27,13 @@ import javafx.scene.Group;
  */
 
 public class Affichage{
-	
+
 	VaisseauControl vc;
 	SystemLoader sl;
 	ArrayList<Objet> listeObjet;
 	Systeme sys;
 	Vaisseau vs;
-	
+
 	public Affichage(VaisseauControl vc) {
 		this.vc = vc;
 		sl = vc.getModel();
@@ -63,15 +63,16 @@ public class Affichage{
 		gc.fillOval(x, y, 15, 15);
 	}
 
-	
 	public void start(Stage stage) throws Exception {
-				
+
+		Thread.sleep(25);
+
 		final Canvas canvas = new Canvas(sys.getRayon(),sys.getRayon());
 		GraphicsContext gc = canvas.getGraphicsContext2D();
-		
+
 		Group root = new Group();
 		Scene scene = new Scene(root, 500, 580);
-		
+
 		for(Objet o : listeObjet) {
 			if(o.getType().matches("Fixe")) createSun(o.getPos().getPosX()/2 + sys.getRayon()/2, o.getPos().getPosY()/2 + sys.getRayon()/2, gc);
 			if(o.getType().matches("Simulé")) createPlanete(o.getPos().getPosX()/2 + sys.getRayon()/2, o.getPos().getPosY()/2 + sys.getRayon()/2, gc);
@@ -80,25 +81,22 @@ public class Affichage{
 				vs = (Vaisseau) o;
 			}
 		}
-		
+
 		scene.setOnKeyPressed( e-> {
 			if(e.getCode().equals(KeyCode.DOWN)) vc.down(vs, 20);;
 			if(e.getCode().equals(KeyCode.UP)) vc.up(vs, 20);
 			if(e.getCode().equals(KeyCode.RIGHT)) vc.right(vs, 20);
 			if(e.getCode().equals(KeyCode.LEFT)) vc.left(vs, 20);
 		});
-		
+
 		root.getChildren().add(canvas);
-		
+
 		stage.setResizable(true);
 		stage.setTitle("Solar System Simulator");
 		stage.setScene(scene); 
-		
+
 
 		stage.centerOnScreen();
 		stage.show();
 	}
-
-
-
 }

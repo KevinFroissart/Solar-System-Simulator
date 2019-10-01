@@ -66,8 +66,9 @@ public class Affichage{
 
 	public void start(Stage stage) throws Exception {
 
-		Thread.sleep(25);
-
+		vc.setVaisseau();
+		//vc.maj();
+		
 		final Canvas canvas = new Canvas(sys.getRayon(),sys.getRayon());
 		GraphicsContext gc = canvas.getGraphicsContext2D();
 

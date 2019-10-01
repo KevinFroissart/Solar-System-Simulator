@@ -20,20 +20,13 @@ public class Main extends Application{
 		Systeme sys = sl.paramInit(4);
 
 		Affichage af = new Affichage(new VaisseauControl(sl,sys));
-
-		try {
-			af.start(primaryStage);
-		} catch (Exception e1) {
-			e1.printStackTrace();
-
-		}
-
 		Information info = new Information(sl,sys);
 
 		try {
+			af.start(primaryStage);
 			info.start();
-		} catch (Exception e2) {
-			e2.printStackTrace();
+		} catch (Exception e1) {
+			e1.printStackTrace();
 
 		}
 	}

@@ -55,7 +55,7 @@ public abstract class Objet extends Observable{
 	public void setVit(Vecteur vit) {
 		this.vitesse = vit;
 		setChanged();
-		notifyObservers(pos);
+		notifyObservers(vit);
 	}
 
 	public String getType() {

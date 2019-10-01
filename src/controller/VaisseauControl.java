@@ -20,25 +20,36 @@ public class VaisseauControl {
 	public VaisseauControl(SystemLoader s, Systeme sys) {
 		sl = s;
 		this.sys = sys;
+	}
+	
+	public void setVaisseau() {
 		vs = sl.getVaisseau();
 		vit = vs.getVitesse();
 	}
 	
+	public void maj() throws InterruptedException {
+		int timer = (int) sys.getDt()*1000;
+		boolean running = true;
+		while(running) {
+			Thread.sleep(timer);
+			vs.setPos(new Vecteur(vs.getPos().getPosX().doubleValue() + vs.getVitesse().getPosX().doubleValue(), vs.getPos().getPosY().doubleValue() + vs.getVitesse().getPosY().doubleValue()));
+		}
+	}
 	
 	public void up(Objet obj, double value) {
-		obj.setPos(new Vecteur(0, -value));
+		obj.setVit(new Vecteur(vs.getVitesse().getPosX().doubleValue(), vs.getVitesse().getPosY().doubleValue() + value));
 	}
 	
 	public void down(Objet obj, double value) {
-		obj.setPos(new Vecteur(0, value));
+		obj.setVit(new Vecteur(vs.getVitesse().getPosX().doubleValue(), vs.getVitesse().getPosY().doubleValue() - value));
 	}
 	
 	public void left(Objet obj, double value) {
-		obj.setPos(new Vecteur(-value, 0));
+		obj.setVit(new Vecteur(vs.getVitesse().getPosX().doubleValue() - value, vs.getVitesse().getPosY().doubleValue()));
 	}
 	
 	public void right(Objet obj, double value) {
-		obj.setPos(new Vecteur(value, 0));
+		obj.setVit(new Vecteur(vs.getVitesse().getPosX().doubleValue() + value, vs.getVitesse().getPosY().doubleValue()));
 	}
 
 	public SystemLoader getModel() {

@@ -12,6 +12,7 @@ import java.util.ArrayList;
 public class SystemLoader {
 
 	private static ArrayList<String> lignes;
+	private static Vaisseau vs;
 
 	/** Méthode qui s'occupe de charger le fichier passé en paramètre de ligne de commande */
 	public void reader() {
@@ -175,7 +176,8 @@ public class SystemLoader {
 				Vecteur pos = new Vecteur(posx,posy);
 				Vecteur vit = new Vecteur(vitx,vity);
 				Vecteur acc = new Vecteur(0,0);
-				objectList.add(new Vaisseau(nom, type, masse, pos, vit, acc));
+				vs = new Vaisseau(nom, type, masse, pos, vit, acc);
+				objectList.add(vs);
 			}
 		}
 
@@ -234,5 +236,9 @@ public class SystemLoader {
 			}
 		}
 		return txt.substring(debut,fin);
+	}
+	
+	public Vaisseau getVaisseau() {
+		return vs;
 	}
 }

@@ -41,6 +41,10 @@ public abstract class Objet extends Observable{
 	public Vecteur getacc() {
 		return acc;
 	}
+	
+	public Vecteur getVitesse() {
+		return vitesse;
+	}
 
 	public void setPos(Vecteur pos) {
 		this.pos = pos;

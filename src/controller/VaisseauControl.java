@@ -3,6 +3,7 @@ package controller;
 import model.Objet;
 import model.SystemLoader;
 import model.Systeme;
+import model.Vaisseau;
 import model.Vecteur;
 
 /** Cette classe contient les méthodes permettant le contrôle de la fusée dans l'interface.
@@ -13,11 +14,16 @@ public class VaisseauControl {
 	
 	SystemLoader sl;
 	Systeme sys;
+	Vaisseau vs;
+	Vecteur vit;
 	
 	public VaisseauControl(SystemLoader s, Systeme sys) {
 		sl = s;
 		this.sys = sys;
+		vs = sl.getVaisseau();
+		vit = vs.getVitesse();
 	}
+	
 	
 	public void up(Objet obj, double value) {
 		obj.setPos(new Vecteur(0, -value));

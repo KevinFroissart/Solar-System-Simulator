@@ -1,36 +1,33 @@
 package model;
 
-import javafx.beans.property.SimpleDoubleProperty;
-
 /** Classe définissant la position des objets dans l'espace du système
  * @author Cl�ment
  */
 public class Vecteur {
 	
-	private SimpleDoubleProperty posX = new SimpleDoubleProperty();
-	private SimpleDoubleProperty posY = new SimpleDoubleProperty();
+	private double posX;
+	private double posY;
 	
 	public Vecteur(double posX, double posY) {
-		
-		this.posX.setValue(posX);
-		this.posY.setValue(posY);
+		this.posX = posX;
+		this.posY = posY;
 	}
 
-	public SimpleDoubleProperty getPosX() {
+	public double getPosX() {
 		return posX;
 	}
 
 	public void setPosX(double posX) {
-		this.posX.setValue(posX);
+		this.posX = posX;
 	}
 
 
-	public SimpleDoubleProperty getPosY() {
+	public double getPosY() {
 		return posY;
 	}
 
 	public void setPosY(double posY) {
-		this.posY.setValue(posY);;
+		this.posY = posY;
 	}
 
 	@Override

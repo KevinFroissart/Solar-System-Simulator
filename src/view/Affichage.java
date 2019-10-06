@@ -3,22 +3,19 @@ package view;
 import javafx.scene.Scene;
 import javafx.scene.canvas.Canvas;
 import javafx.scene.canvas.GraphicsContext;
-import javafx.scene.control.Button;
-import javafx.scene.layout.VBox;
 import javafx.scene.paint.Color;
 import javafx.stage.Stage;
-import javafx.beans.value.ChangeListener;
-import javafx.beans.value.ObservableValue;
+import javafx.util.Duration;
+import javafx.animation.KeyFrame;
+import javafx.animation.Timeline;
 import javafx.scene.input.KeyCode;
-import javafx.scene.input.KeyCodeCombination;
-import javafx.scene.input.KeyCombination;
 import model.Objet;
 import model.SystemLoader;
 import model.Systeme;
-import model.Vaisseau;
-import model.Vecteur;
 
 import java.util.ArrayList;
+import java.util.Observable;
+import java.util.Observer;
 
 import controller.VaisseauControl;
 import javafx.scene.Group;
@@ -27,13 +24,14 @@ import javafx.scene.Group;
  * @author Froissart Kevin
  */
 
-public class Affichage{
+public class Affichage implements Observer{
 
 	VaisseauControl vc;
 	SystemLoader sl;
 	ArrayList<Objet> listeObjet;
 	Systeme sys;
-	Vaisseau vs;
+	Canvas canvas;
+	GraphicsContext gc;
 
 	public Affichage(VaisseauControl vc) {
 		this.vc = vc;
@@ -65,56 +63,46 @@ public class Affichage{
 	}
 
 	public void start(Stage stage) throws Exception {
-
-		vc.setVaisseau();
-		//vc.maj();
 		
-		final Canvas canvas = new Canvas(sys.getRayon(),sys.getRayon());
-		GraphicsContext gc = canvas.getGraphicsContext2D();
+		canvas = new Canvas(sys.getRayon(),sys.getRayon());
+		gc = canvas.getGraphicsContext2D();		
+		Timeline tl = new Timeline(new KeyFrame(Duration.seconds(sys.getDt()), e -> run(gc)));
+		tl.setCycleCount(Timeline.INDEFINITE);
 
+		
 		Group root = new Group();
 		Scene scene = new Scene(root, 500, 580);
-
-		for(Objet o : listeObjet) {
-			if(o.getType().matches("Fixe")) createSun(o.getPos().getPosX().getValue()/2 + sys.getRayon()/2, o.getPos().getPosY().getValue() + sys.getRayon()/2, gc);
-			if(o.getType().matches("Simulé")) createPlanete(o.getPos().getPosX().getValue()/2 + sys.getRayon()/2, o.getPos().getPosY().getValue()/2 + sys.getRayon()/2, gc);
-			if(o.getType().matches("Vaisseau")) {
-				createSpaceShip(o.getPos().getPosX().getValue()/2 + sys.getRayon()/2, o.getPos().getPosY().getValue()/2 + sys.getRayon()/2, gc);
-				vs = (Vaisseau) o;
-			}
-		}
 		
-		vs.getPos().getPosX().addListener(new ChangeListener<Number>() {
-
-			@Override
-			public void changed(ObservableValue<? extends Number> observable, Number oldValue, Number newValue) {
-				vs.setPos(new Vecteur(newValue.doubleValue(),vs.getPos().getPosY().doubleValue()));
-			}
-		});
-
-		vs.getPos().getPosY().addListener(new ChangeListener<Number>() {
-
-			@Override
-			public void changed(ObservableValue<? extends Number> observable, Number oldValue, Number newValue) {
-				vs.setPos(new Vecteur(vs.getPos().getPosY().doubleValue(), newValue.doubleValue()));
-			}
-		});
-
 		scene.setOnKeyPressed( e-> {
-			if(e.getCode().equals(KeyCode.DOWN)) vc.down(vs, 20);;
-			if(e.getCode().equals(KeyCode.UP)) vc.up(vs, 20);
-			if(e.getCode().equals(KeyCode.RIGHT)) vc.right(vs, 20);
-			if(e.getCode().equals(KeyCode.LEFT)) vc.left(vs, 20);
+			if(e.getCode().equals(KeyCode.DOWN)) vc.down(sl.getVaisseau(), 4);
+			if(e.getCode().equals(KeyCode.UP)) vc.up(sl.getVaisseau(), 4);
+			if(e.getCode().equals(KeyCode.RIGHT)) vc.right(sl.getVaisseau(), 4);
+			if(e.getCode().equals(KeyCode.LEFT)) vc.left(sl.getVaisseau(), 4);
 		});
-
+		
 		root.getChildren().add(canvas);
-
 		stage.setResizable(true);
 		stage.setTitle("Solar System Simulator");
 		stage.setScene(scene); 
-
-
 		stage.centerOnScreen();
 		stage.show();
+		tl.play();
+	}
+	
+	private void run(GraphicsContext gc) {
+		gc.clearRect(0, 0, sys.getRayon(), sys.getRayon());
+		for(Objet o : listeObjet) {
+			if(o.getType().matches("Fixe")) createSun(o.getPos().getPosX()/2 + sys.getRayon()/2, o.getPos().getPosY() + sys.getRayon()/2, gc);
+			if(o.getType().matches("Simulé")) createPlanete(o.getPos().getPosX()/2 + sys.getRayon()/2, o.getPos().getPosY()/2 + sys.getRayon()/2, gc);
+		}
+		
+		vc.pos();
+		createSpaceShip(sl.getVaisseau().getPos().getPosX()/2 + sys.getRayon()/2, sl.getVaisseau().getPos().getPosY()/2 + sys.getRayon()/2, gc);
+		vc.bordure();
+
+	}
+
+	@Override
+	public void update(Observable arg0, Object arg1) {
 	}
 }

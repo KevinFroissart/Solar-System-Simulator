@@ -17,6 +17,7 @@ import java.util.Observer;
  * @author Lucas,Kevin
  */
 
+
 public class Information implements Observer{
 	SystemLoader sl;
 	ArrayList<Objet> listeObjet;

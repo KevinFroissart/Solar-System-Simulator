@@ -19,9 +19,15 @@ public class Main extends Application{
 		sl.reader();	
 		Systeme sys = sl.paramInit(4);
 
+	
 		Affichage af = new Affichage(new VaisseauControl(sl,sys));
 		Information info = new Information(sl,sys);
 
+		for(Objet o : sl.objectInit()) {
+			o.addObserver(af);
+			o.addObserver(info);
+		}
+		
 		try {
 			af.start(primaryStage);
 			info.start();

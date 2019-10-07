@@ -1,6 +1,6 @@
 package model;
 
-import controller.VaisseauControl;
+import controller.AffichageControl;
 import javafx.application.Application;
 import javafx.stage.Stage;
 import view.Affichage;
@@ -20,7 +20,7 @@ public class Main extends Application{
 		Systeme sys = sl.paramInit(4);
 
 	
-		Affichage af = new Affichage(new VaisseauControl(sl,sys));
+		Affichage af = new Affichage(new AffichageControl(sl, sys));
 		Information info = new Information(sl,sys);
 
 		for(Objet o : sl.objectInit()) {

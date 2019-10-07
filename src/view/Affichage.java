@@ -17,7 +17,7 @@ import java.util.ArrayList;
 import java.util.Observable;
 import java.util.Observer;
 
-import controller.VaisseauControl;
+import controller.AffichageControl;
 import javafx.scene.Group;
 
 /** Classe g�rant l'affichage principal du syst�me.
@@ -26,18 +26,18 @@ import javafx.scene.Group;
 
 public class Affichage implements Observer{
 
-	VaisseauControl vc;
+	AffichageControl ac;
 	SystemLoader sl;
 	ArrayList<Objet> listeObjet;
 	Systeme sys;
 	Canvas canvas;
 	GraphicsContext gc;
 
-	public Affichage(VaisseauControl vc) {
-		this.vc = vc;
-		sl = vc.getModel();
+	public Affichage(AffichageControl ac) {
+		this.ac = ac;
+		sl = ac.getModel();
 		listeObjet = sl.objectInit();
-		sys = vc.getSysteme();
+		sys = ac.getSysteme();
 	}
 
 	/**
@@ -66,7 +66,7 @@ public class Affichage implements Observer{
 		
 		canvas = new Canvas(sys.getRayon(),sys.getRayon());
 		gc = canvas.getGraphicsContext2D();		
-		Timeline tl = new Timeline(new KeyFrame(Duration.seconds(sys.getDt()), e -> run(gc)));
+		Timeline tl = new Timeline(new KeyFrame(Duration.seconds(sys.getDt()/sys.getFa()), e -> run(gc)));
 		tl.setCycleCount(Timeline.INDEFINITE);
 
 		
@@ -74,10 +74,10 @@ public class Affichage implements Observer{
 		Scene scene = new Scene(root, 500, 580);
 		
 		scene.setOnKeyPressed( e-> {
-			if(e.getCode().equals(KeyCode.DOWN)) vc.down(sl.getVaisseau(), 4);
-			if(e.getCode().equals(KeyCode.UP)) vc.up(sl.getVaisseau(), 4);
-			if(e.getCode().equals(KeyCode.RIGHT)) vc.right(sl.getVaisseau(), 4);
-			if(e.getCode().equals(KeyCode.LEFT)) vc.left(sl.getVaisseau(), 4);
+			if(e.getCode().equals(KeyCode.DOWN)) ac.down(sl.getVaisseau(), 1);
+			if(e.getCode().equals(KeyCode.UP)) ac.up(sl.getVaisseau(), 1);
+			if(e.getCode().equals(KeyCode.RIGHT)) ac.right(sl.getVaisseau(), 1);
+			if(e.getCode().equals(KeyCode.LEFT)) ac.left(sl.getVaisseau(), 1);
 		});
 		
 		root.getChildren().add(canvas);
@@ -93,12 +93,14 @@ public class Affichage implements Observer{
 		gc.clearRect(0, 0, sys.getRayon(), sys.getRayon());
 		for(Objet o : listeObjet) {
 			if(o.getType().matches("Fixe")) createSun(o.getPos().getPosX()/2 + sys.getRayon()/2, o.getPos().getPosY() + sys.getRayon()/2, gc);
-			if(o.getType().matches("Simulé")) createPlanete(o.getPos().getPosX()/2 + sys.getRayon()/2, o.getPos().getPosY()/2 + sys.getRayon()/2, gc);
+			//if(o.getType().matches("Simulé")) createPlanete(o.getPos().getPosX()/2 + sys.getRayon()/2, o.getPos().getPosY()/2 + sys.getRayon()/2, gc);
 		}
 		
-		vc.pos();
+		ac.posPlanete();
+		ac.posVaisseau();
+		createPlanete(sl.getPlanete().getPos().getPosX()/2 + sys.getRayon()/2, sl.getPlanete().getPos().getPosY()/2 + sys.getRayon()/2, gc);
 		createSpaceShip(sl.getVaisseau().getPos().getPosX()/2 + sys.getRayon()/2, sl.getVaisseau().getPos().getPosY()/2 + sys.getRayon()/2, gc);
-		vc.bordure();
+		ac.bordure();
 
 	}
 

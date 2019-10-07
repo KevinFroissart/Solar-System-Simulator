@@ -63,23 +63,27 @@ public class Affichage implements Observer{
 	}
 
 	public void start(Stage stage) throws Exception {
-		
+
 		canvas = new Canvas(sys.getRayon(),sys.getRayon());
 		gc = canvas.getGraphicsContext2D();		
-		Timeline tl = new Timeline(new KeyFrame(Duration.seconds(sys.getDt()/sys.getFa()), e -> run(gc)));
+		Timeline tl = new Timeline(new KeyFrame(Duration.seconds(sys.getDt()/sys.getFa()/10), e -> run(gc))); //enlevez le /10
 		tl.setCycleCount(Timeline.INDEFINITE);
 
-		
+
 		Group root = new Group();
 		Scene scene = new Scene(root, 500, 580);
-		
+
 		scene.setOnKeyPressed( e-> {
-			if(e.getCode().equals(KeyCode.DOWN)) ac.down(sl.getVaisseau(), 1);
-			if(e.getCode().equals(KeyCode.UP)) ac.up(sl.getVaisseau(), 1);
-			if(e.getCode().equals(KeyCode.RIGHT)) ac.right(sl.getVaisseau(), 1);
-			if(e.getCode().equals(KeyCode.LEFT)) ac.left(sl.getVaisseau(), 1);
+			for(Objet o : listeObjet) {
+				if(o.getType().equals("Vaisseau")) {
+					if(e.getCode().equals(KeyCode.DOWN)) ac.down(o, 0.025);
+					if(e.getCode().equals(KeyCode.UP)) ac.up(o, 0.025);
+					if(e.getCode().equals(KeyCode.RIGHT)) ac.right(o, 0.025);
+					if(e.getCode().equals(KeyCode.LEFT)) ac.left(o, 0.025);
+				}
+			}
 		});
-		
+
 		root.getChildren().add(canvas);
 		stage.setResizable(true);
 		stage.setTitle("Solar System Simulator");
@@ -88,19 +92,31 @@ public class Affichage implements Observer{
 		stage.show();
 		tl.play();
 	}
-	
+
 	private void run(GraphicsContext gc) {
 		gc.clearRect(0, 0, sys.getRayon(), sys.getRayon());
 		for(Objet o : listeObjet) {
 			if(o.getType().matches("Fixe")) createSun(o.getPos().getPosX()/2 + sys.getRayon()/2, o.getPos().getPosY() + sys.getRayon()/2, gc);
-			//if(o.getType().matches("Simulé")) createPlanete(o.getPos().getPosX()/2 + sys.getRayon()/2, o.getPos().getPosY()/2 + sys.getRayon()/2, gc);
+			if(o.getType().matches("Simulé")) {
+				createPlanete(o.getPos().getPosX()/2 + sys.getRayon()/2, o.getPos().getPosY()/2 + sys.getRayon()/2, gc);
+				for(Objet o2 : listeObjet) {
+					if(o2.getType().equals("Fixe")) {
+						ac.Force(o, o2);
+					}
+				}
+				ac.pos(o);
+			}
+			if(o.getType().equals("Vaisseau")) {
+				createSpaceShip(o.getPos().getPosX()/2 + sys.getRayon()/2, o.getPos().getPosY()/2 + sys.getRayon()/2, gc);
+				for(Objet o2 : listeObjet) {
+					if(!o2.getType().equals("Vaisseau")) {
+						ac.Force(o, o2);
+					}
+				}
+				ac.pos(o);
+				ac.bordure(o);
+			}
 		}
-		
-		ac.posPlanete();
-		ac.posVaisseau();
-		createPlanete(sl.getPlanete().getPos().getPosX()/2 + sys.getRayon()/2, sl.getPlanete().getPos().getPosY()/2 + sys.getRayon()/2, gc);
-		createSpaceShip(sl.getVaisseau().getPos().getPosX()/2 + sys.getRayon()/2, sl.getVaisseau().getPos().getPosY()/2 + sys.getRayon()/2, gc);
-		ac.bordure();
 
 	}
 

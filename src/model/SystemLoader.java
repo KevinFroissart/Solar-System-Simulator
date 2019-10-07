@@ -12,9 +12,6 @@ import java.util.ArrayList;
 public class SystemLoader {
 
 	private static ArrayList<String> lignes;
-	private static Vaisseau vs;
-	private static ObjetSimule p1;
-	private static ObjetFixe s1;
 
 	/** Méthode qui s'occupe de charger le fichier passé en paramètre de ligne de commande */
 	public void reader() {
@@ -160,15 +157,13 @@ public class SystemLoader {
 
 			if(valid == expected && type.equals("Fixe")) {
 				Vecteur pos = new Vecteur(posx,posy);
-				s1 = new ObjetFixe(nom, type, masse, pos);
-				objectList.add(s1);
+				objectList.add(new ObjetFixe(nom, type, masse, pos));
 				System.out.println("Objet " + nom +" correctement ajouté à la liste");
 			}
 			if(valid == expected && type.equals("Simulé")) {
 				Vecteur pos = new Vecteur(posx,posy);
 				Vecteur vit = new Vecteur(vitx,vity);
-				p1 = new ObjetSimule(nom, type, masse, pos, vit);
-				objectList.add(p1);
+				objectList.add(new ObjetSimule(nom, type, masse, pos, vit));
 				System.out.println("Objet " + nom +" correctement ajouté à la liste");
 			}
 			if(valid == expected && type.equals("Ellipse")) {
@@ -180,8 +175,7 @@ public class SystemLoader {
 				Vecteur pos = new Vecteur(posx,posy);
 				Vecteur vit = new Vecteur(vitx,vity);
 				Vecteur acc = new Vecteur(0,0);
-				vs = new Vaisseau(nom, type, masse, pos, vit, acc);
-				objectList.add(vs);
+				objectList.add(new Vaisseau(nom, type, masse, pos, vit, acc));
 			}
 		}
 
@@ -240,17 +234,5 @@ public class SystemLoader {
 			}
 		}
 		return txt.substring(debut,fin);
-	}
-	
-	public Vaisseau getVaisseau() {
-		return vs;
-	}
-	
-	//test
-	public ObjetSimule getPlanete() {
-		return p1;
-	}
-	public ObjetFixe getSoleil() {
-		return s1;
 	}
 }

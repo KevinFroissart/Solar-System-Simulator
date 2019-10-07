@@ -41,7 +41,7 @@ public class Information implements Observer{
 		for(Objet o : listeObjet) {
 			str += o.getName()+"         Masse : "+o.getMasse()+"        X: "+o.getPos().getPosX()+"; Y: "+o.getPos().getPosY()+"    \n";
 		}
-		str += sl.getVaisseau().getName() + "         Masse : "+sl.getVaisseau().getMasse()+"        X: "+sl.getVaisseau().getPos().getPosX()+"; Y: "+sl.getVaisseau().getPos().getPosY()+"    \n";
+		//str += sl.getVaisseau().getName() + "         Masse : "+sl.getVaisseau().getMasse()+"        X: "+sl.getVaisseau().getPos().getPosX()+"; Y: "+sl.getVaisseau().getPos().getPosY()+"    \n";
 
 		
 		info.setText(str);
@@ -58,8 +58,8 @@ public class Information implements Observer{
 		for(Objet o2 : listeObjet) {
 			str += o2.getName()+"         Masse : "+o2.getMasse()+"        X: "+o2.getPos().getPosX()+"; Y: "+o2.getPos().getPosY()+"    \n";
 		}
-		str += sl.getPlanete().getName() + "         Masse : "+sl.getPlanete().getMasse()+"        X: "+sl.getPlanete().getPos().getPosX()+"; Y: "+sl.getPlanete().getPos().getPosY()+"    \n";
-		str += sl.getVaisseau().getName() + "         Masse : "+sl.getVaisseau().getMasse()+"        X: "+sl.getVaisseau().getPos().getPosX()+"; Y: "+sl.getVaisseau().getPos().getPosY()+"    \n";
+		//str += sl.getPlanete().getName() + "         Masse : "+sl.getPlanete().getMasse()+"        X: "+sl.getPlanete().getPos().getPosX()+"; Y: "+sl.getPlanete().getPos().getPosY()+"    \n";
+		//str += sl.getVaisseau().getName() + "         Masse : "+sl.getVaisseau().getMasse()+"        X: "+sl.getVaisseau().getPos().getPosX()+"; Y: "+sl.getVaisseau().getPos().getPosY()+"    \n";
 		info.setText(str);
 	}
 

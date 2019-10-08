@@ -32,12 +32,14 @@ public class Affichage implements Observer{
 	Systeme sys;
 	Canvas canvas;
 	GraphicsContext gc;
+	Information info;
 
-	public Affichage(AffichageControl ac) {
+	public Affichage(AffichageControl ac, Information info, ArrayList<Objet> listeObjet) {
 		this.ac = ac;
 		sl = ac.getModel();
-		listeObjet = sl.objectInit();
+		this.listeObjet = listeObjet;
 		sys = ac.getSysteme();
+		this.info = info;
 	}
 
 	/**
@@ -74,6 +76,13 @@ public class Affichage implements Observer{
 		Scene scene = new Scene(root, 500, 580);
 
 		scene.setOnKeyPressed( e-> {
+			if(e.getCode().equals(KeyCode.I)) {
+				try {
+					info.start();
+				} catch (Exception e1) {
+					e1.printStackTrace();
+				}
+			}
 			for(Objet o : listeObjet) {
 				if(o.getType().equals("Vaisseau")) {
 					if(e.getCode().equals(KeyCode.DOWN)) ac.down(o, 0.025);

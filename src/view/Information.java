@@ -19,17 +19,12 @@ import java.util.Observer;
 
 
 public class Information implements Observer{
-	SystemLoader sl;
 	ArrayList<Objet> listeObjet;
-	Systeme sys;
-	Vaisseau vs;
 	String str ="";
 	Label info=new Label();
 
-	public Information(SystemLoader sl, Systeme sys) {
-		this.sl = sl;
-		this.sys = sys;
-		listeObjet = sl.objectInit();
+	public Information(ArrayList<Objet> listeObjet) {
+		this.listeObjet = listeObjet;
 	}
 
 	public void start() throws Exception {
@@ -38,12 +33,6 @@ public class Information implements Observer{
 		Scene scene = new Scene(root);
 
 		root.getChildren().add(info);
-		for(Objet o : listeObjet) {
-			str += o.getName()+"         Masse : "+o.getMasse()+"        X: "+o.getPos().getPosX()+"; Y: "+o.getPos().getPosY()+"    \n";
-		}
-		//str += sl.getVaisseau().getName() + "         Masse : "+sl.getVaisseau().getMasse()+"        X: "+sl.getVaisseau().getPos().getPosX()+"; Y: "+sl.getVaisseau().getPos().getPosY()+"    \n";
-
-		
 		info.setText(str);
 		stage.setResizable(true);
 		stage.setTitle("Informations détaillées");
@@ -56,10 +45,8 @@ public class Information implements Observer{
 	public void update(Observable o, Object arg) {
 		str = "";
 		for(Objet o2 : listeObjet) {
-			str += o2.getName()+"         Masse : "+o2.getMasse()+"        X: "+o2.getPos().getPosX()+"; Y: "+o2.getPos().getPosY()+"    \n";
+			str += o2.getName()+"Masse : "+o2.getMasse()+"X: "+o2.getPos().getPosX()+"; Y: "+o2.getPos().getPosY()+"    \n";
 		}
-		//str += sl.getPlanete().getName() + "         Masse : "+sl.getPlanete().getMasse()+"        X: "+sl.getPlanete().getPos().getPosX()+"; Y: "+sl.getPlanete().getPos().getPosY()+"    \n";
-		//str += sl.getVaisseau().getName() + "         Masse : "+sl.getVaisseau().getMasse()+"        X: "+sl.getVaisseau().getPos().getPosX()+"; Y: "+sl.getVaisseau().getPos().getPosY()+"    \n";
 		info.setText(str);
 	}
 

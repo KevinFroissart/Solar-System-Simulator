@@ -81,12 +81,13 @@ public class Affichage implements Observer{
 		Button open = new Button("Ouvrir");
 		Button reset = new Button("Reset");
 		Separator separator = new Separator();
+		Separator separator2 = new Separator();
 		Button bvs = new Button("Vaisseau");
 		Button bp = new Button("Planètes");
 		Button bs = new Button("Soleil");
 		Button binfo = new Button("Infos");
 		
-		toolBar.getItems().addAll(open,reset,separator,bvs,bp,bs,binfo);
+		toolBar.getItems().addAll(open,reset,separator,bvs,bp,bs,separator2,binfo);
 		
 		Timeline tl = new Timeline(new KeyFrame(Duration.seconds(sys.getDt()/sys.getFa()/10), e -> run(gc))); //enlevez le /10
 		tl.setCycleCount(Timeline.INDEFINITE);
@@ -95,7 +96,7 @@ public class Affichage implements Observer{
 		Scene scene = new Scene(root, 500, 580);
 
 		open.setOnAction( e-> {
-			//TODO: ouverture de fichier
+			ac.getFileExplorer(stage);
 		});
 		
 		reset.setOnAction( e-> {

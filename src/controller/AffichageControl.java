@@ -1,5 +1,7 @@
 package controller;
 
+import java.util.ArrayList;
+
 import model.Objet;
 import model.SystemLoader;
 import model.Systeme;
@@ -20,22 +22,22 @@ public class AffichageControl {
 
 	/** Active le propulseur droit du vaisseau pour se déplacer à gauche */
 	public void left(Objet obj, double value) {
-		obj.setVit(new Vecteur(-value, 0));
+		obj.setVit(new Vecteur(obj.getVitesse().getPosX()+value, obj.getVitesse().getPosY()));
 	}
 
 	/** Active le propulseur gauche du vaisseau pour se déplacer à droite */
 	public void right(Objet obj, double value) {
-		obj.setVit(new Vecteur(+value, 0));
+		obj.setVit(new Vecteur(obj.getVitesse().getPosX()-value, obj.getVitesse().getPosY()));
 	}
 	
 	/** Active le propulseur bas du vaisseau pour accélérer */
 	public void down(Objet obj, double value) {
-		obj.setVit(new Vecteur(0, +value));
+		obj.setVit(new Vecteur(obj.getVitesse().getPosX(), obj.getVitesse().getPosY()-value));
 	}
 
 	/** Active le propulseur haut du vaisseau pour ralentir/freiner/reculer */
 	public void up(Objet obj, double value) {
-		obj.setVit(new Vecteur(0, -value));
+		obj.setVit(new Vecteur(obj.getVitesse().getPosX(), obj.getVitesse().getPosY()+value));
 	}
 
 	/** Méthode qui définit la vitesse de l'objet en fonction de son accélération et de l'attraction des autres objets (planètes) */
@@ -75,5 +77,9 @@ public class AffichageControl {
 	 */
 	public Systeme getSysteme() {
 		return sys;
+	}
+	
+	public ArrayList<Objet> reset() {
+		return sl.objectInit();
 	}
 }

@@ -61,7 +61,7 @@ public class Information implements Observer{
 		}
 		str+=sim+vais;
 		
-		info.setText(str);
+		info.setText(str); 
 	}
 
 }

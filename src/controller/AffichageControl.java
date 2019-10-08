@@ -1,7 +1,11 @@
 package controller;
 
+import java.io.File;
 import java.util.ArrayList;
 
+import javafx.stage.FileChooser;
+import javafx.stage.Stage;
+import javafx.stage.FileChooser.ExtensionFilter;
 import model.Objet;
 import model.SystemLoader;
 import model.Systeme;
@@ -82,4 +86,14 @@ public class AffichageControl {
 	public ArrayList<Objet> reset() {
 		return sl.objectInit();
 	}
+	
+	public File getFileExplorer (Stage stage) {
+		final FileChooser fileChooser = new FileChooser();
+		fileChooser.setTitle("Open Resource File");
+		fileChooser.getExtensionFilters().addAll(
+				new ExtensionFilter("Text Files", "*.txt"));
+		File selectedFile = fileChooser.showOpenDialog(stage);
+		return selectedFile;
+	}
+
 }

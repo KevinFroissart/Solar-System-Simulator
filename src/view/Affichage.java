@@ -3,12 +3,16 @@ package view;
 import javafx.scene.Scene;
 import javafx.scene.canvas.Canvas;
 import javafx.scene.canvas.GraphicsContext;
+import javafx.scene.control.Button;
+import javafx.scene.control.Separator;
+import javafx.scene.control.ToolBar;
 import javafx.scene.paint.Color;
 import javafx.stage.Stage;
 import javafx.util.Duration;
 import javafx.animation.KeyFrame;
 import javafx.animation.Timeline;
 import javafx.scene.input.KeyCode;
+import javafx.scene.layout.VBox;
 import model.Objet;
 import model.SystemLoader;
 import model.Systeme;
@@ -33,6 +37,9 @@ public class Affichage implements Observer{
 	Canvas canvas;
 	GraphicsContext gc;
 	Information info;
+	boolean afficherVaisseau = true;
+	boolean afficherPlanete = true;
+	boolean afficherSoleil = true;
 
 	public Affichage(AffichageControl ac, Information info, ArrayList<Objet> listeObjet) {
 		this.ac = ac;
@@ -67,14 +74,58 @@ public class Affichage implements Observer{
 	public void start(Stage stage) throws Exception {
 
 		canvas = new Canvas(sys.getRayon(),sys.getRayon());
-		gc = canvas.getGraphicsContext2D();		
+		gc = canvas.getGraphicsContext2D();
+
+		VBox vb = new VBox();
+		ToolBar toolBar = new ToolBar();
+		Button open = new Button("Ouvrir");
+		Button reset = new Button("Reset");
+		Separator separator = new Separator();
+		Button bvs = new Button("Vaisseau");
+		Button bp = new Button("Planètes");
+		Button bs = new Button("Soleil");
+		Button binfo = new Button("Infos");
+		
+		toolBar.getItems().addAll(open,reset,separator,bvs,bp,bs,binfo);
+		
 		Timeline tl = new Timeline(new KeyFrame(Duration.seconds(sys.getDt()/sys.getFa()/10), e -> run(gc))); //enlevez le /10
 		tl.setCycleCount(Timeline.INDEFINITE);
-
 
 		Group root = new Group();
 		Scene scene = new Scene(root, 500, 580);
 
+		open.setOnAction( e-> {
+			//TODO: ouverture de fichier
+		});
+		
+		reset.setOnAction( e-> {
+			listeObjet = ac.reset();
+		});	
+		
+		bvs.setOnAction( e-> {
+			if(afficherVaisseau) afficherVaisseau = false;
+			else afficherVaisseau = true;
+		});
+		
+		bp.setOnAction( e-> {
+			if(afficherPlanete) afficherPlanete = false;
+			else afficherPlanete = true;
+		});
+		
+		bs.setOnAction( e-> {
+			if(afficherSoleil) afficherSoleil = false;
+			else afficherSoleil = true;		
+		});
+		
+		binfo.setOnAction( e-> {
+			try {
+				info.start();
+			} catch (Exception e1) {
+				e1.printStackTrace();
+			}
+		});
+		
+		
 		scene.setOnKeyPressed( e-> {
 			if(e.getCode().equals(KeyCode.I)) {
 				try {
@@ -85,15 +136,26 @@ public class Affichage implements Observer{
 			}
 			for(Objet o : listeObjet) {
 				if(o.getType().equals("Vaisseau")) {
-					if(e.getCode().equals(KeyCode.DOWN)) ac.down(o, 0.025);
-					if(e.getCode().equals(KeyCode.UP)) ac.up(o, 0.025);
-					if(e.getCode().equals(KeyCode.RIGHT)) ac.right(o, 0.025);
-					if(e.getCode().equals(KeyCode.LEFT)) ac.left(o, 0.025);
+					if(e.getCode().equals(KeyCode.DOWN)) ac.down(o, 0.005);
+					if(e.getCode().equals(KeyCode.UP)) ac.up(o, 0.005);
+					if(e.getCode().equals(KeyCode.RIGHT)) ac.right(o, 0.005);
+					if(e.getCode().equals(KeyCode.LEFT)) ac.left(o, 0.005);
 				}
 			}
 		});
 
-		root.getChildren().add(canvas);
+		scene.setOnKeyReleased( e-> {
+			for(Objet o : listeObjet) {
+				if(o.getType().equals("Vaisseau")) {
+					if(e.getCode().equals(KeyCode.DOWN)) ac.down(o, 0);
+					if(e.getCode().equals(KeyCode.UP)) ac.up(o, 0);
+					if(e.getCode().equals(KeyCode.RIGHT)) ac.right(o, 0);
+					if(e.getCode().equals(KeyCode.LEFT)) ac.left(o, 0);
+				}
+			}
+		});
+		vb.getChildren().addAll(toolBar,canvas);
+		root.getChildren().add(vb);
 		stage.setResizable(true);
 		stage.setTitle("Solar System Simulator");
 		stage.setScene(scene); 
@@ -105,8 +167,8 @@ public class Affichage implements Observer{
 	private void run(GraphicsContext gc) {
 		gc.clearRect(0, 0, sys.getRayon(), sys.getRayon());
 		for(Objet o : listeObjet) {
-			if(o.getType().matches("Fixe")) createSun(o.getPos().getPosX()/2 + sys.getRayon()/2, o.getPos().getPosY() + sys.getRayon()/2, gc);
-			if(o.getType().matches("Simulé")) {
+			if(o.getType().matches("Fixe") && afficherSoleil) createSun(o.getPos().getPosX()/2 + sys.getRayon()/2, o.getPos().getPosY() + sys.getRayon()/2, gc);
+			if(o.getType().matches("Simulé") && afficherPlanete) {
 				createPlanete(o.getPos().getPosX()/2 + sys.getRayon()/2, o.getPos().getPosY()/2 + sys.getRayon()/2, gc);
 				for(Objet o2 : listeObjet) {
 					if(o2.getType().equals("Fixe")) {
@@ -115,7 +177,7 @@ public class Affichage implements Observer{
 				}
 				ac.pos(o);
 			}
-			if(o.getType().equals("Vaisseau")) {
+			if(o.getType().equals("Vaisseau") && afficherVaisseau) {
 				createSpaceShip(o.getPos().getPosX()/2 + sys.getRayon()/2, o.getPos().getPosY()/2 + sys.getRayon()/2, gc);
 				for(Objet o2 : listeObjet) {
 					if(!o2.getType().equals("Vaisseau")) {

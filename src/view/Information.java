@@ -9,6 +9,7 @@ import model.SystemLoader;
 import model.Systeme;
 import model.Vaisseau;
 
+import java.text.DecimalFormat;
 import java.util.ArrayList;
 import java.util.Observable;
 import java.util.Observer;
@@ -22,15 +23,16 @@ public class Information implements Observer{
 	ArrayList<Objet> listeObjet;
 	String str ="";
 	Label info=new Label();
+	DecimalFormat df = new DecimalFormat("0.00");
 
 	public Information(ArrayList<Objet> listeObjet) {
 		this.listeObjet = listeObjet;
 	}
-
 	public void start() throws Exception {
 		Stage stage =new Stage();
 		VBox root = new VBox();
-		Scene scene = new Scene(root);
+		Scene scene = new Scene(root,450,300);
+
 
 		root.getChildren().add(info);
 		info.setText(str);
@@ -43,10 +45,22 @@ public class Information implements Observer{
 
 	@Override
 	public void update(Observable o, Object arg) {
-		str = "";
+		str = "						FIXE \n \n \n \n";
+		String sim="\n						SIMULE \n \n \n \n";
+		String vais="\n						VAISSEAU \n \n \n \n";
 		for(Objet o2 : listeObjet) {
-			str += o2.getName()+"Masse : "+o2.getMasse()+"X: "+o2.getPos().getPosX()+"; Y: "+o2.getPos().getPosY()+"    \n";
+			if(o2.getType().equals("Fixe")){
+				str +="     "+ o2.getName()+"     Masse : "+o2.getMasse()+"\n";
+			}
+			if(o2.getType().equals("Simulé")) {
+				sim += "     "+o2.getName()+"     Masse : "+o2.getMasse()+" Position : X: "+df.format((o2.getPos().getPosX()))+"; Y: "+df.format(o2.getPos().getPosY())+"\n";
+			}
+			if(o2.getType().equals("Vaisseau")) {
+				vais += "     "+o2.getName()+"     Masse : "+o2.getMasse()+" Position : X: "+df.format((o2.getPos().getPosX()))+"; Y: "+df.format(o2.getPos().getPosY())+"\n";
+			}
 		}
+		str+=sim+vais;
+		
 		info.setText(str);
 	}
 

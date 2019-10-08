@@ -40,7 +40,7 @@ public class AffichageControl {
 		double f = (sys.getG()*objA.getMasse()*objB.getMasse()) / Math.pow(distance, 2);
 		double a = f / objA.getMasse() * sys.getFa();
 		double dirX = (objB.getPos().getPosX() - objA.getPos().getPosX()) / distance;
-		double dirY = (objB.getPos().getPosY() - objB.getPos().getPosY()) / distance;
+		double dirY = (objB.getPos().getPosY() - objA.getPos().getPosY()) / distance;
 		
 		objA.setVit(new Vecteur(objA.getVitesse().getPosX() + dirX * a, objA.getVitesse().getPosY() + dirY * a));
 	}

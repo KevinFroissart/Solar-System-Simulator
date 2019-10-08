@@ -26,18 +26,15 @@ public class SystemLoaderTest extends SystemLoader{
 		assertTrue(res.equals("phrase possedant un accent"));
 	}
 	
-	
+	/*
 	@Test
 	public void testoccurenceReader() {
-		System.out.println(" "+occurenceReader("soleil"));
-		assertTrue(0 == occurenceReader("soleil"));
+		System.out.println(" "+occurenceReader("azerty"));
+		assertTrue(0 != occurenceReader("soleil"));
 	}
-	
-//	@Test
-//	public void testnameReader() {
-//		
-//	}
+	*/
 	
 	
+
 	
 }

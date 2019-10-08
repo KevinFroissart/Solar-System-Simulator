@@ -6,7 +6,17 @@ import java.util.Observable;
  * @author Lucas, Kévin
  */
 
+
 public abstract class Objet extends Observable{
+	
+	/**
+	 * @param name nom de l'Objet
+	 * @param masse la masse de l'objet
+	 * @param pos Vecteur position initiale de l'Objet
+	 * @param acc Vecteur accélération de l'Objet
+	 * @param vitesse Vecteur vitesse de l'Objet
+	 * @param type nom du type de l'Objet
+	 */
 	protected String name;
 	protected double masse;
 	protected Vecteur pos;
@@ -14,7 +24,15 @@ public abstract class Objet extends Observable{
 	protected Vecteur vitesse;
 	protected String type;
 	
-	
+	/**
+	 * Constructeur qui instancie un objet à l'aide des valeurs de chacun des attributs mis en paramètre
+	 * @param name
+	 * @param type
+	 * @param masse
+	 * @param pos
+	 * @param vitesse
+	 * @param acc
+	 */
 	public Objet(String name, String type, double masse,Vecteur pos, Vecteur vitesse, Vecteur acc) {
 		this.name = name;
 		this.type = type;
@@ -25,39 +43,70 @@ public abstract class Objet extends Observable{
 		this.acc=acc;
 	}
 
-
+	/**
+	 * Retourne nom de l'Objet
+	 * @return nom de l'Objet
+	 */
 	public String getName() {
 		return name;
 	}
-
+	
+	/**
+	 * Retourne masse de l'Objet
+	 * @return masse de l'Objet
+	 */
 	public double getMasse() {
 		return masse;
 	}
-
+	
+	/**
+	 * Retourne Vecteur position de l'Objet
+	 * @return Vecteur position de l'Objet
+	 */
 	public Vecteur getPos() {
 		return pos;
 	}
 	
+	/**
+	 * Retourne Vecteur accélération de l'Objet
+	 * @return Vecteur accélération de l'Objet
+	 */
 	public Vecteur getacc() {
 		return acc;
 	}
 	
+	/**
+	 * Retourne Vecteur vitesse de l'Objet
+	 * @return Vecteur vitesse de l'Objet
+	 */
 	public Vecteur getVitesse() {
 		return vitesse;
 	}
 
+	/**
+	 * Modifie valeur du Vecteur position de l'Objet
+	 * @param pos
+	 */
 	public void setPos(Vecteur pos) {
 		this.pos = pos;
 		setChanged();
 		notifyObservers(pos);
 	}
 	
+	/**
+	 * Modifie valeur du Vecteur vitesse de l'Objet
+	 * @param vit
+	 */
 	public void setVit(Vecteur vit) {
 		this.vitesse = vit;
 		setChanged();
 		notifyObservers(vit);
 	}
 
+	/**
+	 * Retourne le type de l'Objet
+	 * @return String du type d'Objet
+	 */
 	public String getType() {
 		return type;
 	}	

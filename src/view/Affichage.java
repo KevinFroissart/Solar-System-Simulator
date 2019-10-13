@@ -16,6 +16,7 @@ import javafx.scene.layout.VBox;
 import model.Objet;
 import model.SystemLoader;
 import model.Systeme;
+import model.Vaisseau;
 
 import java.io.File;
 import java.util.ArrayList;
@@ -147,10 +148,10 @@ public class Affichage implements Observer{
 			}
 			for(Objet o : listeObjet) {
 				if(o.getType().equals("Vaisseau")) {
-					if(e.getCode().equals(KeyCode.DOWN)) ac.down(o, 0.005);
-					if(e.getCode().equals(KeyCode.UP)) ac.up(o, 0.005);
-					if(e.getCode().equals(KeyCode.RIGHT)) ac.right(o, 0.005);
-					if(e.getCode().equals(KeyCode.LEFT)) ac.left(o, 0.005);
+					if(e.getCode().equals(KeyCode.DOWN)) ac.down((Vaisseau)o, 0.005);
+					if(e.getCode().equals(KeyCode.UP)) ac.up((Vaisseau)o, 0.005);
+					if(e.getCode().equals(KeyCode.RIGHT)) ac.right((Vaisseau)o, 0.005);
+					if(e.getCode().equals(KeyCode.LEFT)) ac.left((Vaisseau)o, 0.005);
 				}
 			}
 		});
@@ -158,10 +159,10 @@ public class Affichage implements Observer{
 		scene.setOnKeyReleased( e-> {
 			for(Objet o : listeObjet) {
 				if(o.getType().equals("Vaisseau")) {
-					if(e.getCode().equals(KeyCode.DOWN)) ac.down(o, 0);
-					if(e.getCode().equals(KeyCode.UP)) ac.up(o, 0);
-					if(e.getCode().equals(KeyCode.RIGHT)) ac.right(o, 0);
-					if(e.getCode().equals(KeyCode.LEFT)) ac.left(o, 0);
+					if(e.getCode().equals(KeyCode.DOWN)) ac.down((Vaisseau)o, 0);
+					if(e.getCode().equals(KeyCode.UP)) ac.up((Vaisseau)o, 0);
+					if(e.getCode().equals(KeyCode.RIGHT)) ac.right((Vaisseau)o, 0);
+					if(e.getCode().equals(KeyCode.LEFT)) ac.left((Vaisseau)o, 0);
 				}
 			}
 		});

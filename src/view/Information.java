@@ -5,10 +5,6 @@ import javafx.scene.control.Label;
 import javafx.scene.layout.VBox;
 import javafx.stage.Stage;
 import model.Objet;
-import model.SystemLoader;
-import model.Systeme;
-import model.Vaisseau;
-
 import java.text.DecimalFormat;
 import java.util.ArrayList;
 import java.util.Observable;
@@ -28,6 +24,11 @@ public class Information implements Observer{
 	public Information(ArrayList<Objet> listeObjet) {
 		this.listeObjet = listeObjet;
 	}
+	
+	public void setListe(ArrayList<Objet> listeObjet) {
+		this.listeObjet = listeObjet;
+	}
+	
 	public void start() throws Exception {
 		Stage stage =new Stage();
 		VBox root = new VBox();
@@ -60,8 +61,6 @@ public class Information implements Observer{
 			}
 		}
 		str+=sim+vais;
-		
 		info.setText(str);
 	}
-
 }

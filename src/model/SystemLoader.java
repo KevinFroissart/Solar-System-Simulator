@@ -20,7 +20,12 @@ public class SystemLoader {
 
 		try {
 			File file = new File("ressources/system.txt");
-			if(!toRead.equals(null)) file = toRead;
+			try {
+				if(!toRead.equals(null)) file = toRead;
+			}
+			catch(NullPointerException e) {
+				e.printStackTrace();
+			}
 			BufferedReader br = new BufferedReader(new FileReader(file));
 			String read = "";
 			while ((read = br.readLine()) != null) {
@@ -96,7 +101,9 @@ public class SystemLoader {
 			double posy = 0;
 			double vitx = 0;
 			double vity = 0;
+			@SuppressWarnings("unused")
 			double pprincipal = 0;
+			@SuppressWarnings("unused")
 			double pretro = 0;
 			String nom = "";
 			String type = "";

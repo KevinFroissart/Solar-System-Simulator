@@ -43,10 +43,10 @@ public class Affichage implements Observer{
 	boolean afficherPlanete = true;
 	boolean afficherSoleil = true;
 
-	public Affichage(AffichageControl ac, ArrayList<Objet> listeObjet) {
+	public Affichage(AffichageControl ac) {
 		this.ac = ac;
 		sl = ac.getModel();
-		this.listeObjet = listeObjet;
+		this.listeObjet = sl.objectInit();
 		sys = ac.getSysteme();
 	}
 
@@ -107,10 +107,18 @@ public class Affichage implements Observer{
 			File file = ac.getFileExplorer(stage);
 			sl.reader(file);
 			listeObjet = ac.reset();
+			for(Objet o : listeObjet) {
+				o.addObserver(info);
+			}
+			info.setListe(listeObjet);
 		});
 		
 		reset.setOnAction( e-> {
 			listeObjet = ac.reset();
+			for(Objet o : listeObjet) {
+				o.addObserver(info);
+			}
+			info.setListe(listeObjet);
 		});	
 		
 		bvs.setOnAction( e-> {

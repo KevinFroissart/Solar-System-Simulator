@@ -169,17 +169,16 @@ public class Affichage implements Observer{
 		gc.clearRect(0, 0, sys.getRayon(), sys.getRayon());
 		for(Objet o : listeObjet) {
 			if(o.getType().matches("Fixe") && afficherSoleil) createSun(o.getPos().getPosX()/2 + sys.getRayon()/2, o.getPos().getPosY() + sys.getRayon()/2, gc);
-			if(o.getType().matches("Simulé") && afficherPlanete) {
-				createPlanete(o.getPos().getPosX()/2 + sys.getRayon()/2, o.getPos().getPosY()/2 + sys.getRayon()/2, gc);
+			if(o.getType().matches("Simulé")) {
 				for(Objet o2 : listeObjet) {
 					if(o2.getType().equals("Fixe")) {
 						ac.Force(o, o2);
 					}
 				}
 				ac.pos(o);
+				if(afficherPlanete) createPlanete(o.getPos().getPosX()/2 + sys.getRayon()/2, o.getPos().getPosY()/2 + sys.getRayon()/2, gc);
 			}
-			if(o.getType().equals("Vaisseau") && afficherVaisseau) {
-				createSpaceShip(o.getPos().getPosX()/2 + sys.getRayon()/2, o.getPos().getPosY()/2 + sys.getRayon()/2, gc);
+			if(o.getType().equals("Vaisseau")) {
 				for(Objet o2 : listeObjet) {
 					if(!o2.getType().equals("Vaisseau")) {
 						ac.Force(o, o2);
@@ -187,6 +186,7 @@ public class Affichage implements Observer{
 				}
 				ac.pos(o);
 				ac.bordure(o);
+				if(afficherVaisseau) createSpaceShip(o.getPos().getPosX()/2 + sys.getRayon()/2, o.getPos().getPosY()/2 + sys.getRayon()/2, gc);
 			}
 		}
 

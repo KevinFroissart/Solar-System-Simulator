@@ -1,5 +1,6 @@
 package model;
 
+import java.io.File;
 import java.util.ArrayList;
 
 import controller.AffichageControl;
@@ -20,16 +21,14 @@ public class Main extends Application{
 		ArrayList<Objet> listeObjet;
 		
 		SystemLoader sl = new SystemLoader();
-		sl.reader();
+		sl.reader(new File("ressources/system.txt"));
 		listeObjet = sl.objectInit();
 		Systeme sys = sl.paramInit(4);
 	
-		Information info = new Information(listeObjet);
-		Affichage af = new Affichage(new AffichageControl(sl, sys),info,listeObjet);
+		Affichage af = new Affichage(new AffichageControl(sl, sys),listeObjet);
 
 		for(Objet o : listeObjet) {
 			o.addObserver(af);
-			o.addObserver(info);
 		}
 		
 		try {

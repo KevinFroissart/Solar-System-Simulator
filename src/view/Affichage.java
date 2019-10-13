@@ -17,6 +17,7 @@ import model.Objet;
 import model.SystemLoader;
 import model.Systeme;
 
+import java.io.File;
 import java.util.ArrayList;
 import java.util.Observable;
 import java.util.Observer;
@@ -41,12 +42,11 @@ public class Affichage implements Observer{
 	boolean afficherPlanete = true;
 	boolean afficherSoleil = true;
 
-	public Affichage(AffichageControl ac, Information info, ArrayList<Objet> listeObjet) {
+	public Affichage(AffichageControl ac, ArrayList<Objet> listeObjet) {
 		this.ac = ac;
 		sl = ac.getModel();
 		this.listeObjet = listeObjet;
 		sys = ac.getSysteme();
-		this.info = info;
 	}
 
 	/**
@@ -69,6 +69,13 @@ public class Affichage implements Observer{
 	public void createPlanete(double x, double y, GraphicsContext gc){
 		gc.setFill(Color.BLACK);
 		gc.fillOval(x, y, 15, 15);
+	}
+	
+	public void creerInfo() {
+		info = new Information(listeObjet);
+		for(Objet o : listeObjet) {
+			o.addObserver(info);
+		}
 	}
 
 	public void start(Stage stage) throws Exception {
@@ -96,7 +103,9 @@ public class Affichage implements Observer{
 		Scene scene = new Scene(root, 500, 580);
 
 		open.setOnAction( e-> {
-			ac.getFileExplorer(stage);
+			File file = ac.getFileExplorer(stage);
+			sl.reader(file);
+			listeObjet = ac.reset();
 		});
 		
 		reset.setOnAction( e-> {
@@ -120,16 +129,17 @@ public class Affichage implements Observer{
 		
 		binfo.setOnAction( e-> {
 			try {
+				creerInfo();
 				info.start();
 			} catch (Exception e1) {
 				e1.printStackTrace();
 			}
 		});
 		
-		
 		scene.setOnKeyPressed( e-> {
 			if(e.getCode().equals(KeyCode.I)) {
 				try {
+					creerInfo();
 					info.start();
 				} catch (Exception e1) {
 					e1.printStackTrace();

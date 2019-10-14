@@ -13,8 +13,8 @@ public class Vaisseau extends Objet{
 	 * @param vitesse
 	 * @param acc
 	 */
-	public Vaisseau(String name, String type, double masse, Vecteur pos,Vecteur vitesse,Vecteur acc) {
-		super(name, type, masse, pos, vitesse, acc);
+	public Vaisseau(String name, String type, double masse, Vecteur pos,Vecteur vitesse,Vecteur acc,double attraction) {
+		super(name, type, masse, pos, vitesse, acc, attraction);
 	}
 	
 	public void up(double value) {

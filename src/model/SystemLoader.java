@@ -172,7 +172,7 @@ public class SystemLoader {
 			if(valid == expected && type.equals("Simulé")) {
 				Vecteur pos = new Vecteur(posx,posy);
 				Vecteur vit = new Vecteur(vitx,vity);
-				objectList.add(new ObjetSimule(nom, type, masse, pos, vit));
+				objectList.add(new ObjetSimule(nom, type, masse, pos, vit, 0));
 				System.out.println("Objet " + nom +" correctement ajouté à la liste");
 			}
 			if(valid == expected && type.equals("Ellipse")) {
@@ -184,7 +184,7 @@ public class SystemLoader {
 				Vecteur pos = new Vecteur(posx,posy);
 				Vecteur vit = new Vecteur(vitx,vity);
 				Vecteur acc = new Vecteur(0,0);
-				objectList.add(new Vaisseau(nom, type, masse, pos, vit, acc));
+				objectList.add(new Vaisseau(nom, type, masse, pos, vit, acc, 0));
 			}
 		}
 

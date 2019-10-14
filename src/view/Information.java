@@ -33,7 +33,7 @@ public class Information implements Observer{
 	public void start() throws Exception {
 		Stage stage =new Stage();
 		VBox root = new VBox();
-		Scene scene = new Scene(root,450,300);
+		Scene scene = new Scene(root,350,450);
 
 
 		root.getChildren().add(info);
@@ -47,18 +47,22 @@ public class Information implements Observer{
 
 	@Override
 	public void update(Observable o, Object arg) {
-		str = "						FIXE \n \n \n \n";
-		String sim="\n						SIMULE \n \n \n \n";
-		String vais="\n						VAISSEAU \n \n \n \n";
+		str = "			FIXE \n \n";
+		String sim="\n			SIMULE \n \n";
+		String vais="\n			VAISSEAU \n \n";
 		for(Objet o2 : listeObjet) {
 			if(o2.getType().equals("Fixe")){
 				str +="     "+ o2.getName()+"     Masse : "+o2.getMasse()+"\n";
 			}
 			if(o2.getType().equals("Simulé")) {
-				sim += "     "+o2.getName()+"     Masse : "+o2.getMasse()+" Position : X: "+df.format((o2.getPos().getPosX()))+"; Y: "+df.format(o2.getPos().getPosY())+"  Vitesse  X:"+o2.getVitesse().getPosX() +"  Y :"+o2.getVitesse().getPosY()+"\n";
+				sim += "     "+o2.getName()+"\n Masse : "+o2.getMasse()+" \n Position : X: "+df.format((o2.getPos().getPosX()))+
+					   "; Y: "+df.format(o2.getPos().getPosY())+"\n Vitesse  X:"+df.format(o2.getVitesse().getPosX()) +"  Y :"+df.format(o2.getVitesse().getPosY())+"\n"
+					  +" Force Attraction : "+df.format(o2.getAttraction()) +"\n \n";
 			}
 			if(o2.getType().equals("Vaisseau")) {
-				vais += "     "+o2.getName()+"     Masse : "+o2.getMasse()+" Position : X: "+df.format((o2.getPos().getPosX()))+"; Y: "+df.format(o2.getPos().getPosY())+"\n";
+				vais += "     "+o2.getName()+"\n Masse : "+o2.getMasse()+" \n Position : X: "+df.format((o2.getPos().getPosX()))+
+						   "; Y: "+df.format(o2.getPos().getPosY())+"\n Vitesse  X:"+df.format(o2.getVitesse().getPosX()) +"  Y :"+df.format(o2.getVitesse().getPosY())+"\n"
+							  +" Force Attraction : "+df.format(o2.getAttraction()) +"\n \n";
 			}
 		}
 		str+=sim+vais;

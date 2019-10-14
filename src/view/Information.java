@@ -55,7 +55,7 @@ public class Information implements Observer{
 				str +="     "+ o2.getName()+"     Masse : "+o2.getMasse()+"\n";
 			}
 			if(o2.getType().equals("Simulé")) {
-				sim += "     "+o2.getName()+"     Masse : "+o2.getMasse()+" Position : X: "+df.format((o2.getPos().getPosX()))+"; Y: "+df.format(o2.getPos().getPosY())+"\n";
+				sim += "     "+o2.getName()+"     Masse : "+o2.getMasse()+" Position : X: "+df.format((o2.getPos().getPosX()))+"; Y: "+df.format(o2.getPos().getPosY())+"  Vitesse  X:"+o2.getVitesse().getPosX() +"  Y :"+o2.getVitesse().getPosY()+"\n";
 			}
 			if(o2.getType().equals("Vaisseau")) {
 				vais += "     "+o2.getName()+"     Masse : "+o2.getMasse()+" Position : X: "+df.format((o2.getPos().getPosX()))+"; Y: "+df.format(o2.getPos().getPosY())+"\n";

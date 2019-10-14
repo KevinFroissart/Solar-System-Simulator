@@ -16,7 +16,9 @@ import javafx.scene.layout.VBox;
 import model.Objet;
 import model.SystemLoader;
 import model.Systeme;
+import model.Vaisseau;
 
+import java.io.File;
 import java.util.ArrayList;
 import java.util.Observable;
 import java.util.Observer;
@@ -41,12 +43,11 @@ public class Affichage implements Observer{
 	boolean afficherPlanete = true;
 	boolean afficherSoleil = true;
 
-	public Affichage(AffichageControl ac, Information info, ArrayList<Objet> listeObjet) {
+	public Affichage(AffichageControl ac) {
 		this.ac = ac;
 		sl = ac.getModel();
-		this.listeObjet = listeObjet;
+		this.listeObjet = sl.objectInit();
 		sys = ac.getSysteme();
-		this.info = info;
 	}
 
 	/**
@@ -70,6 +71,13 @@ public class Affichage implements Observer{
 		gc.setFill(Color.BLACK);
 		gc.fillOval(x, y, 15, 15);
 	}
+	
+	public void creerInfo() {
+		info = new Information(listeObjet);
+		for(Objet o : listeObjet) {
+			o.addObserver(info);
+		}
+	}
 
 	public void start(Stage stage) throws Exception {
 
@@ -81,12 +89,13 @@ public class Affichage implements Observer{
 		Button open = new Button("Ouvrir");
 		Button reset = new Button("Reset");
 		Separator separator = new Separator();
+		Separator separator2 = new Separator();
 		Button bvs = new Button("Vaisseau");
 		Button bp = new Button("Planètes");
 		Button bs = new Button("Soleil");
 		Button binfo = new Button("Infos");
 		
-		toolBar.getItems().addAll(open,reset,separator,bvs,bp,bs,binfo);
+		toolBar.getItems().addAll(open,reset,separator,bvs,bp,bs,separator2,binfo);
 		
 		Timeline tl = new Timeline(new KeyFrame(Duration.seconds(sys.getDt()/sys.getFa()/10), e -> run(gc))); //enlevez le /10
 		tl.setCycleCount(Timeline.INDEFINITE);
@@ -95,11 +104,21 @@ public class Affichage implements Observer{
 		Scene scene = new Scene(root, 500, 580);
 
 		open.setOnAction( e-> {
-			//TODO: ouverture de fichier
+			File file = ac.getFileExplorer(stage);
+			sl.reader(file);
+			listeObjet = ac.reset();
+			for(Objet o : listeObjet) {
+				o.addObserver(info);
+			}
+			info.setListe(listeObjet);
 		});
 		
 		reset.setOnAction( e-> {
 			listeObjet = ac.reset();
+			for(Objet o : listeObjet) {
+				o.addObserver(info);
+			}
+			info.setListe(listeObjet);
 		});	
 		
 		bvs.setOnAction( e-> {
@@ -119,16 +138,17 @@ public class Affichage implements Observer{
 		
 		binfo.setOnAction( e-> {
 			try {
+				creerInfo();
 				info.start();
 			} catch (Exception e1) {
 				e1.printStackTrace();
 			}
 		});
 		
-		
 		scene.setOnKeyPressed( e-> {
 			if(e.getCode().equals(KeyCode.I)) {
 				try {
+					creerInfo();
 					info.start();
 				} catch (Exception e1) {
 					e1.printStackTrace();
@@ -136,10 +156,10 @@ public class Affichage implements Observer{
 			}
 			for(Objet o : listeObjet) {
 				if(o.getType().equals("Vaisseau")) {
-					if(e.getCode().equals(KeyCode.DOWN)) ac.down(o, 0.005);
-					if(e.getCode().equals(KeyCode.UP)) ac.up(o, 0.005);
-					if(e.getCode().equals(KeyCode.RIGHT)) ac.right(o, 0.005);
-					if(e.getCode().equals(KeyCode.LEFT)) ac.left(o, 0.005);
+					if(e.getCode().equals(KeyCode.DOWN)) ac.down((Vaisseau)o, 0.005);
+					if(e.getCode().equals(KeyCode.UP)) ac.up((Vaisseau)o, 0.005);
+					if(e.getCode().equals(KeyCode.RIGHT)) ac.right((Vaisseau)o, 0.005);
+					if(e.getCode().equals(KeyCode.LEFT)) ac.left((Vaisseau)o, 0.005);
 				}
 			}
 		});
@@ -147,10 +167,10 @@ public class Affichage implements Observer{
 		scene.setOnKeyReleased( e-> {
 			for(Objet o : listeObjet) {
 				if(o.getType().equals("Vaisseau")) {
-					if(e.getCode().equals(KeyCode.DOWN)) ac.down(o, 0);
-					if(e.getCode().equals(KeyCode.UP)) ac.up(o, 0);
-					if(e.getCode().equals(KeyCode.RIGHT)) ac.right(o, 0);
-					if(e.getCode().equals(KeyCode.LEFT)) ac.left(o, 0);
+					if(e.getCode().equals(KeyCode.DOWN)) ac.down((Vaisseau)o, 0);
+					if(e.getCode().equals(KeyCode.UP)) ac.up((Vaisseau)o, 0);
+					if(e.getCode().equals(KeyCode.RIGHT)) ac.right((Vaisseau)o, 0);
+					if(e.getCode().equals(KeyCode.LEFT)) ac.left((Vaisseau)o, 0);
 				}
 			}
 		});
@@ -168,17 +188,16 @@ public class Affichage implements Observer{
 		gc.clearRect(0, 0, sys.getRayon(), sys.getRayon());
 		for(Objet o : listeObjet) {
 			if(o.getType().matches("Fixe") && afficherSoleil) createSun(o.getPos().getPosX()/2 + sys.getRayon()/2, o.getPos().getPosY() + sys.getRayon()/2, gc);
-			if(o.getType().matches("Simulé") && afficherPlanete) {
-				createPlanete(o.getPos().getPosX()/2 + sys.getRayon()/2, o.getPos().getPosY()/2 + sys.getRayon()/2, gc);
+			if(o.getType().matches("Simulé")) {
 				for(Objet o2 : listeObjet) {
 					if(o2.getType().equals("Fixe")) {
 						ac.Force(o, o2);
 					}
 				}
 				ac.pos(o);
+				if(afficherPlanete) createPlanete(o.getPos().getPosX()/2 + sys.getRayon()/2, o.getPos().getPosY()/2 + sys.getRayon()/2, gc);
 			}
-			if(o.getType().equals("Vaisseau") && afficherVaisseau) {
-				createSpaceShip(o.getPos().getPosX()/2 + sys.getRayon()/2, o.getPos().getPosY()/2 + sys.getRayon()/2, gc);
+			if(o.getType().equals("Vaisseau")) {
 				for(Objet o2 : listeObjet) {
 					if(!o2.getType().equals("Vaisseau")) {
 						ac.Force(o, o2);
@@ -186,6 +205,7 @@ public class Affichage implements Observer{
 				}
 				ac.pos(o);
 				ac.bordure(o);
+				if(afficherVaisseau) createSpaceShip(o.getPos().getPosX()/2 + sys.getRayon()/2, o.getPos().getPosY()/2 + sys.getRayon()/2, gc);
 			}
 		}
 

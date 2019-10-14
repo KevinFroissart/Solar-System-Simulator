@@ -14,12 +14,18 @@ public class SystemLoader {
 	private static ArrayList<String> lignes;
 
 	/** Méthode qui s'occupe de charger le fichier passé en paramètre de ligne de commande */
-	public void reader() {
+	public void reader(File toRead) {
 
 		lignes = new ArrayList<String>();
 
 		try {
 			File file = new File("ressources/system.txt");
+			try {
+				if(!toRead.equals(null)) file = toRead;
+			}
+			catch(NullPointerException e) {
+				e.printStackTrace();
+			}
 			BufferedReader br = new BufferedReader(new FileReader(file));
 			String read = "";
 			while ((read = br.readLine()) != null) {
@@ -95,11 +101,13 @@ public class SystemLoader {
 			double posy = 0;
 			double vitx = 0;
 			double vity = 0;
+			@SuppressWarnings("unused")
 			double pprincipal = 0;
+			@SuppressWarnings("unused")
 			double pretro = 0;
 			String nom = "";
 			String type = "";
-			
+
 			if(cpt+20 < lim) {
 				nom = nameReader(0, lim, lignes.get(i),':');
 				type = nameReader(nom.length()+2, lim, lignes.get(i),' ');
@@ -110,47 +118,48 @@ public class SystemLoader {
 				case "Ellipse" : expected = 6; listSize++; break;
 				case "Vaisseau" : expected = 7; listSize++; break;
 				}
-				
+
 				System.out.println(nom + ":" + type + ":" + expected);
 			}
 			cpt = 0;
 			while(cpt < lim && valid != expected) {
+				if(1 < lim && lignes.get(i).charAt(0) != '#') {
+					if(cpt+5 < lim && lignes.get(i).substring(cpt,cpt+5).equals("masse")) {
+						masse = Double.parseDouble(wordReader(cpt, lim, lignes.get(i),'=',' '));
+						valid++;
+						System.out.println("masse ok");
+					}
+					if(cpt+4 < lim && lignes.get(i).substring(cpt,cpt+4).equals("posx")) {
+						posx = Double.parseDouble(wordReader(cpt, lim, lignes.get(i),'=',' '));
+						valid++;
+						System.out.println("posx ok");
+					}
+					if(cpt+4 < lim && lignes.get(i).substring(cpt,cpt+4).equals("posy")) {
+						posy = Double.parseDouble(wordReader(cpt, lim, lignes.get(i),'=',' '));
+						valid++;
+						System.out.println("posy ok");
 
-				if(cpt+5 < lim && lignes.get(i).substring(cpt,cpt+5).equals("masse")) {
-					masse = Double.parseDouble(wordReader(cpt, lim, lignes.get(i),'=',' '));
-					valid++;
-					System.out.println("masse ok");
-				}
-				if(cpt+4 < lim && lignes.get(i).substring(cpt,cpt+4).equals("posx")) {
-					posx = Double.parseDouble(wordReader(cpt, lim, lignes.get(i),'=',' '));
-					valid++;
-					System.out.println("posx ok");
-				}
-				if(cpt+4 < lim && lignes.get(i).substring(cpt,cpt+4).equals("posy")) {
-					posy = Double.parseDouble(wordReader(cpt, lim, lignes.get(i),'=',' '));
-					valid++;
-					System.out.println("posy ok");
-
-				}
-				if(cpt+4 < lim && lignes.get(i).substring(cpt,cpt+4).equals("vity")) {
-					vity = Double.parseDouble(wordReader(cpt, lim, lignes.get(i),'=',' '));
-					valid++;
-					System.out.println("vity ok");
-				}
-				if(cpt+4 < lim && lignes.get(i).substring(cpt,cpt+4).equals("vitx")) {
-					vitx = Double.parseDouble(wordReader(cpt, lim, lignes.get(i),'=',' '));
-					valid++;
-					System.out.println("vitx ok");
-				}
-				if(cpt+10 < lim && lignes.get(i).substring(cpt,cpt+10).equals("pprincipal")) {
-					vitx = Double.parseDouble(wordReader(cpt, lim, lignes.get(i),'=',' '));
-					valid++;
-					System.out.println("pprincipal ok");
-				}
-				if(cpt+6 < lim && lignes.get(i).substring(cpt,cpt+6).equals("pretro")) {
-					vitx = Double.parseDouble(wordReader(cpt, lim, lignes.get(i),'=',' '));
-					valid++;
-					System.out.println("pretro ok");
+					}
+					if(cpt+4 < lim && lignes.get(i).substring(cpt,cpt+4).equals("vity")) {
+						vity = Double.parseDouble(wordReader(cpt, lim, lignes.get(i),'=',' '));
+						valid++;
+						System.out.println("vity ok");
+					}
+					if(cpt+4 < lim && lignes.get(i).substring(cpt,cpt+4).equals("vitx")) {
+						vitx = Double.parseDouble(wordReader(cpt, lim, lignes.get(i),'=',' '));
+						valid++;
+						System.out.println("vitx ok");
+					}
+					if(cpt+10 < lim && lignes.get(i).substring(cpt,cpt+10).equals("pprincipal")) {
+						pprincipal = Double.parseDouble(wordReader(cpt, lim, lignes.get(i),'=',' '));
+						valid++;
+						System.out.println("pprincipal ok");
+					}
+					if(cpt+6 < lim && lignes.get(i).substring(cpt,cpt+6).equals("pretro")) {
+						pretro = Double.parseDouble(wordReader(cpt, lim, lignes.get(i),'=',' '));
+						valid++;
+						System.out.println("pretro ok");
+					}
 				}
 				cpt++;
 			}

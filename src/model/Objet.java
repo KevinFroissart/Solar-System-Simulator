@@ -127,5 +127,7 @@ public abstract class Objet extends Observable{
 	 */
 	public void setAttraction(double attraction) {
 		this.attraction = attraction;
+		setChanged();
+		notifyObservers(pos);
 	}	
 }

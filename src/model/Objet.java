@@ -35,7 +35,7 @@ public abstract class Objet extends Observable{
 	 * @param acc
 	 * @param attraction
 	 */
-	public Objet(String name, String type, double masse,Vecteur pos, Vecteur vitesse, Vecteur acc) {
+	public Objet(String name, String type, double masse,Vecteur pos, Vecteur vitesse, Vecteur acc, double attraction) {
 		this.name = name;
 		this.type = type;
 		this.masse = masse;
@@ -123,7 +123,7 @@ public abstract class Objet extends Observable{
 
 	/**
 	 * Modifie la valeur de la force d'attraction que subit l'objet
-	 * @param a
+	 * @param attraction
 	 */
 	public void setAttraction(double attraction) {
 		this.attraction = attraction;

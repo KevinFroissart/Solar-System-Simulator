@@ -49,11 +49,11 @@ public class AffichageControl {
 	public void Force(Objet objA, Objet objB) {
 		double distance = Math.sqrt(Math.pow((objA.getPos().getPosX() - objB.getPos().getPosX()),2) + Math.pow(objA.getPos().getPosY() - objB.getPos().getPosY(), 2));
 		double f = (sys.getG()*objA.getMasse()*objB.getMasse()) / Math.pow(distance, 2);
-		double a = f / objA.getMasse() * sys.getFa();
+		objA.setAttraction(f / objA.getMasse() * sys.getFa());
 		double dirX = (objB.getPos().getPosX() - objA.getPos().getPosX()) / distance;
 		double dirY = (objB.getPos().getPosY() - objA.getPos().getPosY()) / distance;
 		
-		objA.setVit(new Vecteur(objA.getVitesse().getPosX() + dirX * a, objA.getVitesse().getPosY() + dirY * a));
+		objA.setVit(new Vecteur(objA.getVitesse().getPosX() + dirX * objA.getAttraction(), objA.getVitesse().getPosY() + dirY * objA.getAttraction()));
 	}
 	
 	/** Changer la position de l'objet en paramètre*/ 

@@ -26,23 +26,23 @@ public class AffichageControl {
 	}
 
 	/** Active le propulseur droit du vaisseau pour se déplacer à gauche */
-	public void left(Vaisseau obj, double value) {
-		obj.left(value);
+	public void left(Vaisseau obj, boolean avance) {
+		obj.left(avance);
 	}
 
 	/** Active le propulseur gauche du vaisseau pour se déplacer à droite */
-	public void right(Vaisseau obj, double value) {
-		obj.right(value);
+	public void right(Vaisseau obj, boolean avance) {
+		obj.right(avance);
 	}
 	
 	/** Active le propulseur bas du vaisseau pour accélérer */
-	public void down(Vaisseau obj, double value) {
-		obj.down(value);
+	public void down(Vaisseau obj, boolean avance) {
+		obj.down(avance);
 	}
 
 	/** Active le propulseur haut du vaisseau pour ralentir/freiner/reculer */
-	public void up(Vaisseau obj, double value) {
-		obj.up(value);
+	public void up(Vaisseau obj, boolean avance) {
+		obj.up(avance);
 	}
 
 	/** Méthode qui définit la vitesse de l'objet en fonction de son accélération et de l'attraction des autres objets (planètes) */

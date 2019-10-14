@@ -1,10 +1,15 @@
 package controller;
 
+import java.io.File;
 import java.util.ArrayList;
 
+import javafx.stage.FileChooser;
+import javafx.stage.Stage;
+import javafx.stage.FileChooser.ExtensionFilter;
 import model.Objet;
 import model.SystemLoader;
 import model.Systeme;
+import model.Vaisseau;
 import model.Vecteur;
 
 /** Cette classe contient les méthodes permettant le contrôle de la fusée et l'interaction des objets entre eux.
@@ -21,23 +26,23 @@ public class AffichageControl {
 	}
 
 	/** Active le propulseur droit du vaisseau pour se déplacer à gauche */
-	public void left(Objet obj, double value) {
-		obj.setVit(new Vecteur(obj.getVitesse().getPosX()+value, obj.getVitesse().getPosY()));
+	public void left(Vaisseau obj, double value) {
+		obj.left(value);
 	}
 
 	/** Active le propulseur gauche du vaisseau pour se déplacer à droite */
-	public void right(Objet obj, double value) {
-		obj.setVit(new Vecteur(obj.getVitesse().getPosX()-value, obj.getVitesse().getPosY()));
+	public void right(Vaisseau obj, double value) {
+		obj.right(value);
 	}
 	
 	/** Active le propulseur bas du vaisseau pour accélérer */
-	public void down(Objet obj, double value) {
-		obj.setVit(new Vecteur(obj.getVitesse().getPosX(), obj.getVitesse().getPosY()-value));
+	public void down(Vaisseau obj, double value) {
+		obj.down(value);
 	}
 
 	/** Active le propulseur haut du vaisseau pour ralentir/freiner/reculer */
-	public void up(Objet obj, double value) {
-		obj.setVit(new Vecteur(obj.getVitesse().getPosX(), obj.getVitesse().getPosY()+value));
+	public void up(Vaisseau obj, double value) {
+		obj.up(value);
 	}
 
 	/** Méthode qui définit la vitesse de l'objet en fonction de son accélération et de l'attraction des autres objets (planètes) */
@@ -82,4 +87,14 @@ public class AffichageControl {
 	public ArrayList<Objet> reset() {
 		return sl.objectInit();
 	}
+	
+	public File getFileExplorer (Stage stage) {
+		final FileChooser fileChooser = new FileChooser();
+		fileChooser.setTitle("Open Resource File");
+		fileChooser.getExtensionFilters().addAll(
+				new ExtensionFilter("Text Files", "*.txt"), new ExtensionFilter("Astro", "*.astro"));
+		File selectedFile = fileChooser.showOpenDialog(stage);
+		return selectedFile;
+	}
+
 }

@@ -16,4 +16,20 @@ public class Vaisseau extends Objet{
 	public Vaisseau(String name, String type, double masse, Vecteur pos,Vecteur vitesse,Vecteur acc) {
 		super(name, type, masse, pos, vitesse, acc);
 	}
+	
+	public void up(double value) {
+		this.setVit(new Vecteur(this.getVitesse().getPosX(), this.getVitesse().getPosY()+value));
+	}
+	
+	public void down(double value) {
+		this.setVit(new Vecteur(this.getVitesse().getPosX(), this.getVitesse().getPosY()-value));
+	}
+	
+	public void right(double value) {
+		this.setVit(new Vecteur(this.getVitesse().getPosX()-value, this.getVitesse().getPosY()));
+	}
+	
+	public void left(double value) {
+		this.setVit(new Vecteur(this.getVitesse().getPosX()+value, this.getVitesse().getPosY()));
+	}
 }

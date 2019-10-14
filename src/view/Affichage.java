@@ -110,7 +110,7 @@ public class Affichage implements Observer{
 		
 		toolBar.getItems().addAll(open,reset,separator,bvs,bp,bs,separator2,binfo);
 		
-		Timeline tl = new Timeline(new KeyFrame(Duration.seconds(sys.getDt()/sys.getFa()/10), e -> run(gc))); //enlevez le /10
+		Timeline tl = new Timeline(new KeyFrame(Duration.seconds(sys.getDt()/sys.getFa()), e -> run(gc)));
 		tl.setCycleCount(Timeline.INDEFINITE);
 
 		Group root = new Group();
@@ -169,10 +169,10 @@ public class Affichage implements Observer{
 			}
 			for(Objet o : listeObjet) {
 				if(o.getType().equals("Vaisseau")) {
-					if(e.getCode().equals(KeyCode.DOWN)) ac.down((Vaisseau)o, 0.005);
-					if(e.getCode().equals(KeyCode.UP)) ac.up((Vaisseau)o, 0.005);
-					if(e.getCode().equals(KeyCode.RIGHT)) ac.right((Vaisseau)o, 0.005);
-					if(e.getCode().equals(KeyCode.LEFT)) ac.left((Vaisseau)o, 0.005);
+					if(e.getCode().equals(KeyCode.DOWN)) ac.down((Vaisseau)o, true);
+					if(e.getCode().equals(KeyCode.UP)) ac.up((Vaisseau)o, true);
+					if(e.getCode().equals(KeyCode.RIGHT)) ac.right((Vaisseau)o, true);
+					if(e.getCode().equals(KeyCode.LEFT)) ac.left((Vaisseau)o, true);
 				}
 			}
 		});
@@ -180,10 +180,10 @@ public class Affichage implements Observer{
 		scene.setOnKeyReleased( e-> {
 			for(Objet o : listeObjet) {
 				if(o.getType().equals("Vaisseau")) {
-					if(e.getCode().equals(KeyCode.DOWN)) ac.down((Vaisseau)o, 0);
-					if(e.getCode().equals(KeyCode.UP)) ac.up((Vaisseau)o, 0);
-					if(e.getCode().equals(KeyCode.RIGHT)) ac.right((Vaisseau)o, 0);
-					if(e.getCode().equals(KeyCode.LEFT)) ac.left((Vaisseau)o, 0);
+					if(e.getCode().equals(KeyCode.DOWN)) ac.down((Vaisseau)o, false);
+					if(e.getCode().equals(KeyCode.UP)) ac.up((Vaisseau)o, false);
+					if(e.getCode().equals(KeyCode.RIGHT)) ac.right((Vaisseau)o, false);
+					if(e.getCode().equals(KeyCode.LEFT)) ac.left((Vaisseau)o, false);
 				}
 			}
 		});

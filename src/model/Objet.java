@@ -23,6 +23,7 @@ public abstract class Objet extends Observable{
 	protected Vecteur acc;
 	protected Vecteur vitesse;
 	protected String type;
+	protected double attraction;
 	
 	/**
 	 * Constructeur qui instancie un objet à l'aide des valeurs de chacun des attributs mis en paramètre
@@ -32,6 +33,7 @@ public abstract class Objet extends Observable{
 	 * @param pos
 	 * @param vitesse
 	 * @param acc
+	 * @param attraction
 	 */
 	public Objet(String name, String type, double masse,Vecteur pos, Vecteur vitesse, Vecteur acc) {
 		this.name = name;
@@ -109,5 +111,21 @@ public abstract class Objet extends Observable{
 	 */
 	public String getType() {
 		return type;
+	}
+	
+	/**
+	 * Retourne la force d'attraction que subit l'objet
+	 * @return valeur double de la force d'attraction
+	 */
+	public double getAttraction() {
+		return attraction;
+	}
+
+	/**
+	 * Modifie la valeur de la force d'attraction que subit l'objet
+	 * @param a
+	 */
+	public void setAttraction(double attraction) {
+		this.attraction = attraction;
 	}	
 }

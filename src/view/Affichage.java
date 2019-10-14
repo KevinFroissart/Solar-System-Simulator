@@ -1,16 +1,21 @@
 package view;
 
 import javafx.scene.Scene;
+import javafx.scene.SnapshotParameters;
 import javafx.scene.canvas.Canvas;
 import javafx.scene.canvas.GraphicsContext;
 import javafx.scene.control.Button;
 import javafx.scene.control.Separator;
 import javafx.scene.control.ToolBar;
+import javafx.scene.image.Image;
+import javafx.scene.image.ImageView;
 import javafx.scene.paint.Color;
+import javafx.scene.transform.Affine;
 import javafx.stage.Stage;
 import javafx.util.Duration;
 import javafx.animation.KeyFrame;
 import javafx.animation.Timeline;
+import javafx.geometry.Rectangle2D;
 import javafx.scene.input.KeyCode;
 import javafx.scene.layout.VBox;
 import model.Objet;
@@ -22,6 +27,7 @@ import java.io.File;
 import java.util.ArrayList;
 import java.util.Observable;
 import java.util.Observer;
+
 
 import controller.AffichageControl;
 import javafx.scene.Group;
@@ -42,6 +48,7 @@ public class Affichage implements Observer{
 	boolean afficherVaisseau = true;
 	boolean afficherPlanete = true;
 	boolean afficherSoleil = true;
+	private Image imgVaisseau = new Image("file:///home/infoetu/bourdinm/git/mode2020-h1/ressources/vaisseau.png", 15, 15, true, false);
 
 	public Affichage(AffichageControl ac) {
 		this.ac = ac;
@@ -59,7 +66,8 @@ public class Affichage implements Observer{
 	 */
 	public void createSpaceShip(double x, double y , GraphicsContext gc){
 		gc.setFill(Color.ORANGE);
-		gc.fillRect(x, y, 7, 3);
+		gc.drawImage(imgVaisseau, x, y);
+	
 	}
 
 	public void createSun(double x, double y , GraphicsContext gc){

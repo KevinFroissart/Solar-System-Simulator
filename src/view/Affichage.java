@@ -94,6 +94,7 @@ public class Affichage implements Observer{
 
 	public void start(Stage stage) throws Exception {
 
+		creerInfo();
 		canvas = new Canvas(sys.getRayon(),sys.getRayon());
 		gc = canvas.getGraphicsContext2D();
 

@@ -12,10 +12,17 @@ import java.util.ArrayList;
 public class SystemLoader {
 
 	private static ArrayList<String> lignes;
+	File read;
 
+	public File getFile() {
+		return read;
+	}
+	
 	/** Méthode qui s'occupe de charger le fichier passé en paramètre de ligne de commande */
 	public void reader(File toRead) {
 
+		read = toRead;
+		
 		lignes = new ArrayList<String>();
 
 		try {
@@ -26,6 +33,10 @@ public class SystemLoader {
 			catch(NullPointerException e) {
 				e.printStackTrace();
 			}
+			catch(Exception e2) {
+				e2.printStackTrace();
+			}
+			
 			BufferedReader br = new BufferedReader(new FileReader(file));
 			String read = "";
 			while ((read = br.readLine()) != null) {

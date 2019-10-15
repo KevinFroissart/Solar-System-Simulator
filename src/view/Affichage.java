@@ -51,7 +51,7 @@ public class Affichage implements Observer{
 	private Image imgVaisseau = new Image("File:ressources/vaisseau.png", 15, 15, true, false);
 	final int tailleSoleil = 40;
 	final int taillePlanete = 15;
-	
+
 	public Affichage(AffichageControl ac) {
 		this.ac = ac;
 		sl = ac.getModel();
@@ -71,7 +71,7 @@ public class Affichage implements Observer{
 		double w = imgVaisseau.getWidth();
 		gc.setFill(Color.ORANGE);
 		gc.drawImage(imgVaisseau, x-h/2, y-w/2);
-	
+
 	}
 
 	public void createSun(double x, double y , GraphicsContext gc){
@@ -84,7 +84,7 @@ public class Affichage implements Observer{
 		gc.setFill(Color.BLACK);
 		gc.fillOval(x-taillePlanete/2, y-taillePlanete/2, taillePlanete, taillePlanete);
 	}
-	
+
 	public void creerInfo() {
 		info = new Information(listeObjet);
 		for(Objet o : listeObjet) {
@@ -107,9 +107,9 @@ public class Affichage implements Observer{
 		Button bp = new Button("Planètes");
 		Button bs = new Button("Soleil");
 		Button binfo = new Button("Infos");
-		
+
 		toolBar.getItems().addAll(open,reset,separator,bvs,bp,bs,separator2,binfo);
-		
+
 		Timeline tl = new Timeline(new KeyFrame(Duration.seconds(sys.getDt()/sys.getFa()), e -> run(gc)));
 		tl.setCycleCount(Timeline.INDEFINITE);
 
@@ -117,38 +117,53 @@ public class Affichage implements Observer{
 		Scene scene = new Scene(root, sys.getRayon(), sys.getRayon() + 80);
 
 		open.setOnAction( e-> {
-			File file = ac.getFileExplorer(stage);
-			sl.reader(file);
-			listeObjet = ac.reset();
-			for(Objet o : listeObjet) {
-				o.addObserver(info);
+			try {
+				File file = ac.getFileExplorer(stage);
+				sl.reader(file);
+				listeObjet = ac.reset();
+				for(Objet o : listeObjet) {
+					o.addObserver(info);
+				}
+				info.setListe(listeObjet);
+			} 
+			catch(NullPointerException e1) {
+				e1.printStackTrace();
 			}
-			info.setListe(listeObjet);
+			catch(Exception e2) {
+				e2.printStackTrace();
+			}
 		});
-		
+
 		reset.setOnAction( e-> {
 			listeObjet = ac.reset();
+
+			try {
+				info.setListe(listeObjet);
+			}catch(NullPointerException e1) {
+				e1.printStackTrace();
+			}catch(Exception e2) {
+				e2.printStackTrace();
+			}
 			for(Objet o : listeObjet) {
 				o.addObserver(info);
-			}
-			info.setListe(listeObjet);
+			}		
 		});	
-		
+
 		bvs.setOnAction( e-> {
 			if(afficherVaisseau) afficherVaisseau = false;
 			else afficherVaisseau = true;
 		});
-		
+
 		bp.setOnAction( e-> {
 			if(afficherPlanete) afficherPlanete = false;
 			else afficherPlanete = true;
 		});
-		
+
 		bs.setOnAction( e-> {
 			if(afficherSoleil) afficherSoleil = false;
 			else afficherSoleil = true;		
 		});
-		
+
 		binfo.setOnAction( e-> {
 			try {
 				creerInfo();
@@ -157,7 +172,7 @@ public class Affichage implements Observer{
 				e1.printStackTrace();
 			}
 		});
-		
+
 		scene.setOnKeyPressed( e-> {
 			if(e.getCode().equals(KeyCode.I)) {
 				try {

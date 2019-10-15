@@ -44,6 +44,7 @@ public abstract class Objet extends Observable{
 		this.vitesse=vitesse;
 		this.acc=acc;
 		this.attraction=attraction;
+		
 	}
 
 	/**

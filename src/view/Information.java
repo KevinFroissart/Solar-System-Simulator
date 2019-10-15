@@ -23,6 +23,7 @@ public class Information implements Observer{
 	DecimalFormat df = new DecimalFormat("0.00");
 	DecimalFormat df2 = new DecimalFormat("0.00000");
 	DecimalFormat df3 = new DecimalFormat("0.0000000");
+	
 
 	public Information(ArrayList<Objet> listeObjet) {
 		this.listeObjet = listeObjet;

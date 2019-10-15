@@ -21,6 +21,8 @@ public class Information implements Observer{
 	String str ="";
 	Label info=new Label();
 	DecimalFormat df = new DecimalFormat("0.00");
+	DecimalFormat df2 = new DecimalFormat("0.00000");
+	DecimalFormat df3 = new DecimalFormat("0.0000000");
 
 	public Information(ArrayList<Objet> listeObjet) {
 		this.listeObjet = listeObjet;
@@ -56,13 +58,13 @@ public class Information implements Observer{
 			}
 			if(o2.getType().equals("Simulé")) {
 				sim += "     "+o2.getName()+"\n Masse : "+o2.getMasse()+" \n Position : X: "+df.format((o2.getPos().getPosX()))+
-					   "; Y: "+df.format(o2.getPos().getPosY())+"\n Vitesse  X:"+df.format(o2.getVitesse().getPosX()) +"  Y :"+df.format(o2.getVitesse().getPosY())+"\n"
-					  +" Force Attraction : "+df.format(o2.getAttraction()) +"\n \n";
+					   "; Y: "+df.format(o2.getPos().getPosY())+"\n Vitesse  X:"+df2.format(o2.getVitesse().getPosX()) +"  Y :"+df2.format(o2.getVitesse().getPosY())+"\n"
+					  +" Force Attraction : "+df3.format(o2.getAttraction()) +"\n \n";
 			}
 			if(o2.getType().equals("Vaisseau")) {
 				vais += "     "+o2.getName()+"\n Masse : "+o2.getMasse()+" \n Position : X: "+df.format((o2.getPos().getPosX()))+
-						   "; Y: "+df.format(o2.getPos().getPosY())+"\n Vitesse  X:"+df.format(o2.getVitesse().getPosX()) +"  Y :"+df.format(o2.getVitesse().getPosY())+"\n"
-							  +" Force Attraction : "+df.format(o2.getAttraction()) +"\n \n";
+						   "; Y: "+df.format(o2.getPos().getPosY())+"\n Vitesse  X:"+df2.format(o2.getVitesse().getPosX()) +"  Y :"+df2.format(o2.getVitesse().getPosY())+"\n"
+							  +" Force Attraction : "+df3.format(o2.getAttraction()) +"\n \n";
 			}
 		}
 		str+=sim+vais;

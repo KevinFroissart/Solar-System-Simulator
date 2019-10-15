@@ -48,8 +48,10 @@ public class Affichage implements Observer{
 	boolean afficherVaisseau = true;
 	boolean afficherPlanete = true;
 	boolean afficherSoleil = true;
-	private Image imgVaisseau = new Image("file:///home/infoetu/bourdinm/git/mode2020-h1/ressources/vaisseau.png", 15, 15, true, false);
-
+	private Image imgVaisseau = new Image("File:ressources/vaisseau.png", 15, 15, true, false);
+	final int tailleSoleil = 40;
+	final int taillePlanete = 15;
+	
 	public Affichage(AffichageControl ac) {
 		this.ac = ac;
 		sl = ac.getModel();
@@ -65,19 +67,22 @@ public class Affichage implements Observer{
 	 * @param gc GraphicsContext du canvas de la fenêtre
 	 */
 	public void createSpaceShip(double x, double y , GraphicsContext gc){
+		double h = imgVaisseau.getHeight();
+		double w = imgVaisseau.getWidth();
 		gc.setFill(Color.ORANGE);
-		gc.drawImage(imgVaisseau, x, y);
+		gc.drawImage(imgVaisseau, x-h/2, y-w/2);
 	
 	}
 
 	public void createSun(double x, double y , GraphicsContext gc){
 		gc.setFill(Color.RED);
-		gc.fillOval(x, y, 40, 40);
+		gc.fillOval(x-tailleSoleil/2, y-tailleSoleil/2, tailleSoleil, tailleSoleil);
 	}
 
 	public void createPlanete(double x, double y, GraphicsContext gc){
+		int taille = 15;
 		gc.setFill(Color.BLACK);
-		gc.fillOval(x, y, 15, 15);
+		gc.fillOval(x-taillePlanete/2, y-taillePlanete/2, taillePlanete, taillePlanete);
 	}
 	
 	public void creerInfo() {
@@ -105,11 +110,11 @@ public class Affichage implements Observer{
 		
 		toolBar.getItems().addAll(open,reset,separator,bvs,bp,bs,separator2,binfo);
 		
-		Timeline tl = new Timeline(new KeyFrame(Duration.seconds(sys.getDt()/sys.getFa()/10), e -> run(gc))); //enlevez le /10
+		Timeline tl = new Timeline(new KeyFrame(Duration.seconds(sys.getDt()/sys.getFa()), e -> run(gc)));
 		tl.setCycleCount(Timeline.INDEFINITE);
 
 		Group root = new Group();
-		Scene scene = new Scene(root, 500, 580);
+		Scene scene = new Scene(root, sys.getRayon(), sys.getRayon() + 80);
 
 		open.setOnAction( e-> {
 			File file = ac.getFileExplorer(stage);
@@ -164,10 +169,10 @@ public class Affichage implements Observer{
 			}
 			for(Objet o : listeObjet) {
 				if(o.getType().equals("Vaisseau")) {
-					if(e.getCode().equals(KeyCode.DOWN)) ac.down((Vaisseau)o, 0.005);
-					if(e.getCode().equals(KeyCode.UP)) ac.up((Vaisseau)o, 0.005);
-					if(e.getCode().equals(KeyCode.RIGHT)) ac.right((Vaisseau)o, 0.005);
-					if(e.getCode().equals(KeyCode.LEFT)) ac.left((Vaisseau)o, 0.005);
+					if(e.getCode().equals(KeyCode.DOWN)) ac.down((Vaisseau)o, true);
+					if(e.getCode().equals(KeyCode.UP)) ac.up((Vaisseau)o, true);
+					if(e.getCode().equals(KeyCode.RIGHT)) ac.right((Vaisseau)o, true);
+					if(e.getCode().equals(KeyCode.LEFT)) ac.left((Vaisseau)o, true);
 				}
 			}
 		});
@@ -175,10 +180,10 @@ public class Affichage implements Observer{
 		scene.setOnKeyReleased( e-> {
 			for(Objet o : listeObjet) {
 				if(o.getType().equals("Vaisseau")) {
-					if(e.getCode().equals(KeyCode.DOWN)) ac.down((Vaisseau)o, 0);
-					if(e.getCode().equals(KeyCode.UP)) ac.up((Vaisseau)o, 0);
-					if(e.getCode().equals(KeyCode.RIGHT)) ac.right((Vaisseau)o, 0);
-					if(e.getCode().equals(KeyCode.LEFT)) ac.left((Vaisseau)o, 0);
+					if(e.getCode().equals(KeyCode.DOWN)) ac.down((Vaisseau)o, false);
+					if(e.getCode().equals(KeyCode.UP)) ac.up((Vaisseau)o, false);
+					if(e.getCode().equals(KeyCode.RIGHT)) ac.right((Vaisseau)o, false);
+					if(e.getCode().equals(KeyCode.LEFT)) ac.left((Vaisseau)o, false);
 				}
 			}
 		});
@@ -189,11 +194,14 @@ public class Affichage implements Observer{
 		stage.setScene(scene); 
 		stage.centerOnScreen();
 		stage.show();
+		stage.getIcons().add(imgVaisseau);
 		tl.play();
 	}
 
 	private void run(GraphicsContext gc) {
 		gc.clearRect(0, 0, sys.getRayon(), sys.getRayon());
+		gc.strokeLine(sys.getRayon()/2, 0, sys.getRayon()/2, sys.getRayon());
+		gc.strokeLine(0, sys.getRayon()/2, sys.getRayon(), sys.getRayon()/2);
 		for(Objet o : listeObjet) {
 			if(o.getType().matches("Fixe") && afficherSoleil) createSun(o.getPos().getPosX()/2 + sys.getRayon()/2, o.getPos().getPosY() + sys.getRayon()/2, gc);
 			if(o.getType().matches("Simulé")) {

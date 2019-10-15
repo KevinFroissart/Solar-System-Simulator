@@ -93,8 +93,15 @@ public class AffichageControl {
 		fileChooser.setTitle("Open Resource File");
 		fileChooser.getExtensionFilters().addAll(
 				new ExtensionFilter("Text Files", "*.txt"), new ExtensionFilter("Astro", "*.astro"));
+		try {
 		File selectedFile = fileChooser.showOpenDialog(stage);
 		return selectedFile;
+		} catch(NullPointerException e) {
+			e.printStackTrace();
+		} catch (Exception e2) {
+			e2.printStackTrace();
+		}
+		return sl.getFile();
 	}
 
 }

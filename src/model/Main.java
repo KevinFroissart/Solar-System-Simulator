@@ -24,7 +24,6 @@ public class Main extends Application{
 
 		
 		try {
-			af.chargerImgPlanetes();
 			af.start(primaryStage);
 		} catch (Exception e1) {
 			e1.printStackTrace();

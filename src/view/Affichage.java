@@ -80,24 +80,25 @@ public class Affichage implements Observer{
 	}
 
 	public void createPlanete(double x, double y, GraphicsContext gc){
+		Random rand = new Random();
 		gc.drawImage(planetes.get(1) ,x-taillePlanete/2, y-taillePlanete/2, taillePlanete, taillePlanete);
 	}
 	//On charge toutes les images du dossier des planetes dans l'arraylist globale du meme nom
 	//TODO : rajouter try catch
 	public void chargerImgPlanetes() {
 		planetes = new ArrayList<>();
-		planetes.add(new Image("planetes/ceres.png", 30,30,true,false));
-		planetes.add(new Image("planetes/eris.png", 30,30,true,false));
-		planetes.add(new Image("planetes/jupiter.png", 30,30,true,false));
-		planetes.add(new Image("planetes/lune.png", 30,30,true,false));
-		planetes.add(new Image("planetes/mars.png", 30,30,true,false));
-		planetes.add(new Image("planetes/mercure.png", 30,30,true,false));
-		planetes.add(new Image("planetes/neptune.png", 30,30,true,false));
-		planetes.add(new Image("planetes/pluton.png", 30,30,true,false));
-		planetes.add(new Image("planetes/saturne.png", 30,30,true,false));
-		planetes.add(new Image("planetes/terre.png", 30,30,true,false));
-		planetes.add(new Image("planetes/uranus.png", 30,30,true,false));
-		planetes.add(new Image("planetes/venus.png", 30,30,true,false));
+		planetes.add(new Image("File:ressources/planetes/ceres.png", 30,30,true,false));
+		planetes.add(new Image("File:ressources/planetes/eris.png", 30,30,true,false));
+		planetes.add(new Image("File:ressources/planetes/jupiter.png", 30,30,true,false));
+		planetes.add(new Image("File:ressources/planetes/lune.png", 30,30,true,false));
+		planetes.add(new Image("File:ressources/planetes/mars.png", 30,30,true,false));
+		planetes.add(new Image("File:ressources/planetes/mercure.png", 30,30,true,false));
+		planetes.add(new Image("File:ressources/planetes/neptune.png", 30,30,true,false));
+		planetes.add(new Image("File:ressources/planetes/pluton.png", 30,30,true,false));
+		planetes.add(new Image("File:ressources/planetes/saturne.png", 30,30,true,false));
+		planetes.add(new Image("File:ressources/planetes/terre.png", 30,30,true,false));
+		planetes.add(new Image("File:ressources/planetes/uranus.png", 30,30,true,false));
+		planetes.add(new Image("File:ressources/planetes/venus.png", 30,30,true,false));
 	}
 
 	public void creerInfo() {
@@ -112,7 +113,7 @@ public class Affichage implements Observer{
 		creerInfo();
 		canvas = new Canvas(sys.getRayon(),sys.getRayon());
 		gc = canvas.getGraphicsContext2D();
-
+		chargerImgPlanetes();
 
 		VBox vb = new VBox();
 		ToolBar toolBar = new ToolBar();
@@ -128,14 +129,14 @@ public class Affichage implements Observer{
 		toolBar.getItems().addAll(open,reset,separator,bvs,bp,bs,separator2,binfo);
 
 		//Unité de temps et de simulation du systeme
-		Timeline tl = new Timeline(new KeyFrame(Duration.seconds(sys.getDt()/sys.getFa()/200), e -> run(gc)));
+		Timeline tl = new Timeline(new KeyFrame(Duration.seconds(sys.getDt()/sys.getFa()/10), e -> run(gc)));
 		tl.setCycleCount(Timeline.INDEFINITE);
 
 		Group root = new Group();
 		Scene scene = new Scene(root, sys.getRayon(), sys.getRayon() + 80);
 
 		//Ici j'ajoute le background image à la VBox qui est root de notre systeme
-		BackgroundImage back = new BackgroundImage(new Image("background.jpg",0, 0, true, false), BackgroundRepeat.REPEAT, BackgroundRepeat.NO_REPEAT, BackgroundPosition.DEFAULT, BackgroundSize.DEFAULT);
+		BackgroundImage back = new BackgroundImage(new Image("File:ressources/background.jpg",0, 0, true, false), BackgroundRepeat.REPEAT, BackgroundRepeat.NO_REPEAT, BackgroundPosition.DEFAULT, BackgroundSize.DEFAULT);
 		vb.setBackground(new Background(back));
 
 		open.setOnAction( e-> {

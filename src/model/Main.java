@@ -18,10 +18,13 @@ public class Main extends Application{
 		SystemLoader sl = new SystemLoader();
 		sl.reader(new File("ressources/system.txt"));
 		Systeme sys = sl.paramInit(4);
+
 	
 		Affichage af = new Affichage(new AffichageControl(sl, sys));
+
 		
 		try {
+			af.chargerImgPlanetes();
 			af.start(primaryStage);
 		} catch (Exception e1) {
 			e1.printStackTrace();

@@ -9,6 +9,7 @@ import javafx.scene.control.Separator;
 import javafx.scene.control.ToolBar;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
+import javafx.scene.layout.*;
 import javafx.scene.paint.Color;
 import javafx.scene.transform.Affine;
 import javafx.stage.Stage;
@@ -17,7 +18,6 @@ import javafx.animation.KeyFrame;
 import javafx.animation.Timeline;
 import javafx.geometry.Rectangle2D;
 import javafx.scene.input.KeyCode;
-import javafx.scene.layout.VBox;
 import model.Objet;
 import model.SystemLoader;
 import model.Systeme;
@@ -27,13 +27,14 @@ import java.io.File;
 import java.util.ArrayList;
 import java.util.Observable;
 import java.util.Observer;
+import java.util.Random;
 
 
 import controller.AffichageControl;
 import javafx.scene.Group;
 
-/** Classe g�rant l'affichage principal du syst�me.
- * @author Froissart Kevin
+/** Classe gérant l'affichage principal du système.
+ * @author Kevin, Maxence
  */
 
 public class Affichage implements Observer{
@@ -48,9 +49,11 @@ public class Affichage implements Observer{
 	boolean afficherVaisseau = true;
 	boolean afficherPlanete = true;
 	boolean afficherSoleil = true;
-	private Image imgVaisseau = new Image("File:ressources/vaisseau.png", 15, 15, true, false);
-	final int tailleSoleil = 40;
-	final int taillePlanete = 15;
+	final int tailleSoleil = 80;
+	final int taillePlanete = 30;
+	Image imgSoleil = new Image("File:ressources/soleil.png", tailleSoleil, tailleSoleil, true, false);
+	Image imgVaisseau = new Image("File:ressources/vaisseau.png", 15, 15, true, false);
+	private static ArrayList<Image> planetes;
 
 	public Affichage(AffichageControl ac) {
 		this.ac = ac;
@@ -69,20 +72,32 @@ public class Affichage implements Observer{
 	public void createSpaceShip(double x, double y , GraphicsContext gc){
 		double h = imgVaisseau.getHeight();
 		double w = imgVaisseau.getWidth();
-		gc.setFill(Color.ORANGE);
 		gc.drawImage(imgVaisseau, x-h/2, y-w/2);
-
 	}
 
 	public void createSun(double x, double y , GraphicsContext gc){
-		gc.setFill(Color.RED);
-		gc.fillOval(x-tailleSoleil/2, y-tailleSoleil/2, tailleSoleil, tailleSoleil);
+		gc.drawImage(imgSoleil, x-tailleSoleil/2, y-tailleSoleil/2, tailleSoleil, tailleSoleil);
 	}
 
 	public void createPlanete(double x, double y, GraphicsContext gc){
-		int taille = 15;
-		gc.setFill(Color.BLACK);
-		gc.fillOval(x-taillePlanete/2, y-taillePlanete/2, taillePlanete, taillePlanete);
+		gc.drawImage(planetes.get(1) ,x-taillePlanete/2, y-taillePlanete/2, taillePlanete, taillePlanete);
+	}
+	//On charge toutes les images du dossier des planetes dans l'arraylist globale du meme nom
+	//TODO : rajouter try catch
+	public void chargerImgPlanetes() {
+		planetes = new ArrayList<>();
+		planetes.add(new Image("planetes/ceres.png", 30,30,true,false));
+		planetes.add(new Image("planetes/eris.png", 30,30,true,false));
+		planetes.add(new Image("planetes/jupiter.png", 30,30,true,false));
+		planetes.add(new Image("planetes/lune.png", 30,30,true,false));
+		planetes.add(new Image("planetes/mars.png", 30,30,true,false));
+		planetes.add(new Image("planetes/mercure.png", 30,30,true,false));
+		planetes.add(new Image("planetes/neptune.png", 30,30,true,false));
+		planetes.add(new Image("planetes/pluton.png", 30,30,true,false));
+		planetes.add(new Image("planetes/saturne.png", 30,30,true,false));
+		planetes.add(new Image("planetes/terre.png", 30,30,true,false));
+		planetes.add(new Image("planetes/uranus.png", 30,30,true,false));
+		planetes.add(new Image("planetes/venus.png", 30,30,true,false));
 	}
 
 	public void creerInfo() {
@@ -98,6 +113,7 @@ public class Affichage implements Observer{
 		canvas = new Canvas(sys.getRayon(),sys.getRayon());
 		gc = canvas.getGraphicsContext2D();
 
+
 		VBox vb = new VBox();
 		ToolBar toolBar = new ToolBar();
 		Button open = new Button("Ouvrir");
@@ -111,11 +127,16 @@ public class Affichage implements Observer{
 
 		toolBar.getItems().addAll(open,reset,separator,bvs,bp,bs,separator2,binfo);
 
-		Timeline tl = new Timeline(new KeyFrame(Duration.seconds(sys.getDt()/sys.getFa()), e -> run(gc)));
+		//Unité de temps et de simulation du systeme
+		Timeline tl = new Timeline(new KeyFrame(Duration.seconds(sys.getDt()/sys.getFa()/200), e -> run(gc)));
 		tl.setCycleCount(Timeline.INDEFINITE);
 
 		Group root = new Group();
 		Scene scene = new Scene(root, sys.getRayon(), sys.getRayon() + 80);
+
+		//Ici j'ajoute le background image à la VBox qui est root de notre systeme
+		BackgroundImage back = new BackgroundImage(new Image("background.jpg",0, 0, true, false), BackgroundRepeat.REPEAT, BackgroundRepeat.NO_REPEAT, BackgroundPosition.DEFAULT, BackgroundSize.DEFAULT);
+		vb.setBackground(new Background(back));
 
 		open.setOnAction( e-> {
 			try {
@@ -210,7 +231,7 @@ public class Affichage implements Observer{
 		stage.setScene(scene); 
 		stage.centerOnScreen();
 		stage.show();
-		stage.getIcons().add(imgVaisseau);
+		stage.getIcons().add(imgSoleil);
 		tl.play();
 	}
 

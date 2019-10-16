@@ -11,7 +11,7 @@ import javafx.scene.layout.VBox;
 import javafx.stage.Stage;
 import model.Objet;
 
-/** Classe g�rant l'affichage principal du syst�me.
+/** Classe gérant l'affichage principal du système.
  * @author Lucas,Kevin
  */
 

@@ -246,7 +246,7 @@ public class Affichage implements Observer{
 		stage.getIcons().add(imgSoleil);
 		tl.play();
 	}
-
+ 
 	private void run(GraphicsContext gc) {
 		tl.setRate((sys.getDt()/sys.getFa()));
 		gc.clearRect(0, 0, sys.getRayon(), sys.getRayon());

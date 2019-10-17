@@ -91,7 +91,6 @@ public class Affichage implements Observer{
 		gc.drawImage(planetes.get(1) ,x-taillePlanete/2, y-taillePlanete/2, taillePlanete, taillePlanete);
 	}
 	//On charge toutes les images du dossier des planetes dans l'arraylist globale du meme nom
-	//TODO : rajouter try catch
 	public void chargerImgPlanetes() {
 		planetes = ac.loadImages();
 	}
@@ -121,8 +120,7 @@ public class Affichage implements Observer{
 		Button bp = new Button("Planètes");
 		Button bs = new Button("Soleil");
 		Button binfo = new Button("Infos");
-		
-		
+				
 		vbVitesse.getChildren().addAll(labelVitesse,vitesseSimuSLider);
 		vbZoom.getChildren().addAll(labelZoom,zoomSlider);
 		
@@ -214,7 +212,6 @@ public class Affichage implements Observer{
 
 		binfo.setOnAction( e-> {
 			try {
-				creerInfo();
 				info.start();
 			} catch (Exception e1) {
 				e1.printStackTrace();
@@ -224,7 +221,6 @@ public class Affichage implements Observer{
 		scene.setOnKeyPressed( e-> {
 			if(e.getCode().equals(KeyCode.I)) {
 				try {
-					creerInfo();
 					info.start();
 				} catch (Exception e1) {
 					e1.printStackTrace();

@@ -49,7 +49,7 @@ public class AffichageControl {
 	public void Force(Objet objA, Objet objB) {
 		double distance = Math.sqrt(Math.pow((objA.getPos().getPosX() - objB.getPos().getPosX()),2) + Math.pow(objA.getPos().getPosY() - objB.getPos().getPosY(), 2));
 		objA.setAttraction((sys.getG()*objA.getMasse()*objB.getMasse()) / Math.pow(distance, 2));
-		double a = objA.getAttraction() / objA.getMasse() * sys.getFa();
+		double a = objA.getAttraction() / objA.getMasse();
 		double dirX = (objB.getPos().getPosX() - objA.getPos().getPosX()) / distance;
 		double dirY = (objB.getPos().getPosY() - objA.getPos().getPosY()) / distance;
 		
@@ -84,8 +84,12 @@ public class AffichageControl {
 		return sys;
 	}
 	
-	public ArrayList<Objet> reset() {
+	public ArrayList<Objet> resetObj() {
 		return sl.objectInit();
+	}
+	
+	public Systeme resetSys() {
+		return sl.paramInit(4);
 	}
 	
 	public File getFileExplorer (Stage stage) {
@@ -102,6 +106,10 @@ public class AffichageControl {
 			e2.printStackTrace();
 		}
 		return sl.getFile();
+	}
+	
+	public void setSlider(Systeme sys, double value) {
+		sys.setDt(value);
 	}
 
 }

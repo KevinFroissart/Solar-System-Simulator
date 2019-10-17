@@ -65,7 +65,7 @@ public class Affichage implements Observer{
 	public Affichage(AffichageControl ac) {
 		this.ac = ac;
 		sl = ac.getModel();
-		this.listeObjet = sl.objectInit();
+		listeObjet = sl.objectInit();
 		sys = ac.getSysteme();
 	}
 
@@ -93,19 +93,7 @@ public class Affichage implements Observer{
 	//On charge toutes les images du dossier des planetes dans l'arraylist globale du meme nom
 	//TODO : rajouter try catch
 	public void chargerImgPlanetes() {
-		planetes = new ArrayList<>();
-		planetes.add(new Image("File:ressources/planetes/ceres.png", 30,30,true,false));
-		planetes.add(new Image("File:ressources/planetes/eris.png", 30,30,true,false));
-		planetes.add(new Image("File:ressources/planetes/jupiter.png", 30,30,true,false));
-		planetes.add(new Image("File:ressources/planetes/lune.png", 30,30,true,false));
-		planetes.add(new Image("File:ressources/planetes/mars.png", 30,30,true,false));
-		planetes.add(new Image("File:ressources/planetes/mercure.png", 30,30,true,false));
-		planetes.add(new Image("File:ressources/planetes/neptune.png", 30,30,true,false));
-		planetes.add(new Image("File:ressources/planetes/pluton.png", 30,30,true,false));
-		planetes.add(new Image("File:ressources/planetes/saturne.png", 30,30,true,false));
-		planetes.add(new Image("File:ressources/planetes/terre.png", 30,30,true,false));
-		planetes.add(new Image("File:ressources/planetes/uranus.png", 30,30,true,false));
-		planetes.add(new Image("File:ressources/planetes/venus.png", 30,30,true,false));
+		planetes = ac.loadImages();
 	}
 
 	public void creerInfo() {

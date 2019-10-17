@@ -1,10 +1,12 @@
 package model;
 
+import java.util.Observable;
+
 /** Classe stockant les paramètres du système solaire utilisé pour la simulation
  *
  * */
 
-public class Systeme {
+public class Systeme extends Observable{
 
 	/**@param g la constante de la gravité
 	 * @param dt la pas de temps
@@ -61,5 +63,25 @@ public class Systeme {
 	 */
 	public double getRayon() {
 		return rayon;
+	}
+
+	/**
+	 * Modifie la valeur du pas du Systeme
+	 * @param fa
+	 */
+	public void setFa(double fa) {
+		this.fa = fa;
+		setChanged();
+		notifyObservers(fa);
+	}	
+	
+	/**
+	 * Modifie la valeur du pas du Systeme
+	 * @param dt
+	 */
+	public void setDt(double dt) {
+		this.dt = dt;
+		setChanged();
+		notifyObservers(dt);
 	}	
 }

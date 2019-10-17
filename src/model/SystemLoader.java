@@ -87,7 +87,6 @@ public class SystemLoader {
 				cpt++;
 			}
 			if(valid == expected && expected == 4) {
-				System.out.println("Paramètres correctement initialisés");
 				return new Systeme(g, dt, fa, rayon); 	
 			}
 		}
@@ -129,8 +128,6 @@ public class SystemLoader {
 				case "Ellipse" : expected = 6; listSize++; break;
 				case "Vaisseau" : expected = 7; listSize++; break;
 				}
-
-				System.out.println(nom + ":" + type + ":" + expected);
 			}
 			cpt = 0;
 			while(cpt < lim && valid != expected) {
@@ -138,38 +135,30 @@ public class SystemLoader {
 					if(cpt+5 < lim && lignes.get(i).substring(cpt,cpt+5).equals("masse")) {
 						masse = Double.parseDouble(wordReader(cpt, lim, lignes.get(i),'=',' '));
 						valid++;
-						System.out.println("masse ok");
 					}
 					if(cpt+4 < lim && lignes.get(i).substring(cpt,cpt+4).equals("posx")) {
 						posx = Double.parseDouble(wordReader(cpt, lim, lignes.get(i),'=',' '));
 						valid++;
-						System.out.println("posx ok");
 					}
 					if(cpt+4 < lim && lignes.get(i).substring(cpt,cpt+4).equals("posy")) {
 						posy = Double.parseDouble(wordReader(cpt, lim, lignes.get(i),'=',' '));
 						valid++;
-						System.out.println("posy ok");
-
 					}
 					if(cpt+4 < lim && lignes.get(i).substring(cpt,cpt+4).equals("vity")) {
 						vity = Double.parseDouble(wordReader(cpt, lim, lignes.get(i),'=',' '));
 						valid++;
-						System.out.println("vity ok");
 					}
 					if(cpt+4 < lim && lignes.get(i).substring(cpt,cpt+4).equals("vitx")) {
 						vitx = Double.parseDouble(wordReader(cpt, lim, lignes.get(i),'=',' '));
 						valid++;
-						System.out.println("vitx ok");
 					}
 					if(cpt+10 < lim && lignes.get(i).substring(cpt,cpt+10).equals("pprincipal")) {
 						pprincipal = Double.parseDouble(wordReader(cpt, lim, lignes.get(i),'=',' '));
 						valid++;
-						System.out.println("pprincipal ok");
 					}
 					if(cpt+6 < lim && lignes.get(i).substring(cpt,cpt+6).equals("pretro")) {
 						pretro = Double.parseDouble(wordReader(cpt, lim, lignes.get(i),'=',' '));
 						valid++;
-						System.out.println("pretro ok");
 					}
 				}
 				cpt++;
@@ -178,19 +167,16 @@ public class SystemLoader {
 			if(valid == expected && type.equals("Fixe")) {
 				Vecteur pos = new Vecteur(posx,posy);
 				objectList.add(new ObjetFixe(nom, type, masse, pos));
-				System.out.println("Objet " + nom +" correctement ajouté à la liste");
 			}
 			if(valid == expected && type.equals("Simulé")) {
 				Vecteur pos = new Vecteur(posx,posy);
 				Vecteur vit = new Vecteur(vitx,vity);
 				objectList.add(new ObjetSimule(nom, type, masse, pos, vit, 0));
-				System.out.println("Objet " + nom +" correctement ajouté à la liste");
 			}
 			if(valid == expected && type.equals("Ellipse")) {
 			}
 			if(valid == expected && type.equals("Cercle")) {
 			}
-
 			if(valid == expected && type.equals("Vaisseau")) {
 				Vecteur pos = new Vecteur(posx,posy);
 				Vecteur vit = new Vecteur(vitx,vity);
@@ -198,14 +184,6 @@ public class SystemLoader {
 				objectList.add(new Vaisseau(nom, type, masse, pos, vit, acc, 0, pprincipal, pretro));
 			}
 		}
-
-		for(Objet o : objectList) {
-			System.out.println(o.getName());
-		}
-		System.out.println("taille de liste attendue : " + listSize);
-		System.out.println("taille de liste réelle : " + objectList.size());
-		if(objectList.size() !=  listSize) System.err.println("Arguments manquants ou incorrect");
-		else System.out.println("Liste correctement initialisée");
 		return objectList;
 	}
 

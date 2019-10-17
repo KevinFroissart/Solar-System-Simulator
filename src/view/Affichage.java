@@ -25,8 +25,6 @@ import java.io.File;
 import java.util.ArrayList;
 import java.util.Observable;
 import java.util.Observer;
-import java.util.Random;
-
 
 import controller.AffichageControl;
 import javafx.scene.Group;
@@ -47,8 +45,7 @@ public class Affichage implements Observer{
 	boolean afficherVaisseau = true;
 	boolean afficherPlanete = true;
 	boolean afficherSoleil = true;
-	final int tailleSoleil = 80;
-	final int taillePlanete = 30;
+	final int tailleSoleil = 60;
 	Image imgSoleil = new Image("File:ressources/soleil.png", tailleSoleil, tailleSoleil, true, false);
 	Image imgVaisseau = new Image("File:ressources/vaisseau.png", 15, 15, true, false);
 	private static ArrayList<Image> planetes;
@@ -71,25 +68,17 @@ public class Affichage implements Observer{
 
 	/**
 	 * Constructeur de la vue du vaisseau, des planêtes, et de l'étoile. 
-	 * Cette fonction instancie le vaisseau aux coordonn�es indiqu� en param�tre
-	 * @param x indique la position x initiale du vaisseau � son instanciation
-	 * @param y indique la position y initiale du vaisseau � son instanciation 
+	 * @param o donne l'objet à afficher
 	 * @param gc GraphicsContext du canvas de la fenêtre
 	 */
-	public void createSpaceShip(double x, double y , GraphicsContext gc){
-		double h = imgVaisseau.getHeight();
-		double w = imgVaisseau.getWidth();
-		gc.drawImage(imgVaisseau, x-h/2, y-w/2);
+	public void createObject(Objet o, GraphicsContext gc) {
+		double x = o.getPos().getPosX()/2 + sys.getRayon()/2;
+		double y = o.getPos().getPosY()/2 + sys.getRayon()/2;
+		if(o.getType().matches("Fixe") && afficherSoleil) gc.drawImage(imgSoleil, x-tailleSoleil/2, y-tailleSoleil/2, tailleSoleil, tailleSoleil);
+		if(o.getType().matches("Simulé") && afficherPlanete) gc.drawImage(planetes.get(1), x-(o.getMasse()*6+5)/2, y-(o.getMasse()*6+5)/2, o.getMasse()*6+5, o.getMasse()*6+5);
+		if(o.getType().matches("Vaisseau") && afficherVaisseau) gc.drawImage(imgVaisseau, x-imgVaisseau.getHeight()/2, y-imgVaisseau.getWidth()/2);
 	}
 
-	public void createSun(double x, double y , GraphicsContext gc){
-		gc.drawImage(imgSoleil, x-tailleSoleil/2, y-tailleSoleil/2, tailleSoleil, tailleSoleil);
-	}
-
-	public void createPlanete(double x, double y, GraphicsContext gc){
-		Random rand = new Random();
-		gc.drawImage(planetes.get(1) ,x-taillePlanete/2, y-taillePlanete/2, taillePlanete, taillePlanete);
-	}
 	//On charge toutes les images du dossier des planetes dans l'arraylist globale du meme nom
 	public void chargerImgPlanetes() {
 		planetes = ac.loadImages();
@@ -120,10 +109,10 @@ public class Affichage implements Observer{
 		Button bp = new Button("Planètes");
 		Button bs = new Button("Soleil");
 		Button binfo = new Button("Infos");
-				
+
 		vbVitesse.getChildren().addAll(labelVitesse,vitesseSimuSLider);
 		vbZoom.getChildren().addAll(labelZoom,zoomSlider);
-		
+
 		vitesseSimuSLider.setMin(1);
 		vitesseSimuSLider.setMax(sys.getDt()*1000);
 		vitesseSimuSLider.setOrientation(Orientation.HORIZONTAL);
@@ -131,14 +120,14 @@ public class Affichage implements Observer{
 		vitesseSimuSLider.setShowTickLabels(true);
 		vitesseSimuSLider.setShowTickMarks(true);
 		vitesseSimuSLider.setValue(sys.getFa());
-		
+
 		zoomSlider.setMin(-10);
 		zoomSlider.setMax(10);
 		zoomSlider.setOrientation(Orientation.HORIZONTAL);
 		zoomSlider.setMinWidth(sys.getRayon()/2);
 		zoomSlider.setShowTickLabels(true);
 		zoomSlider.setShowTickMarks(true);
-		
+
 		hb.getChildren().addAll(vbVitesse, vbZoom);
 		toolBar.getItems().addAll(open,reset,separator,bvs,bp,bs,separator2,binfo);
 
@@ -152,7 +141,7 @@ public class Affichage implements Observer{
 		//Ici j'ajoute le background image à la VBox qui est root de notre systeme
 		BackgroundImage back = new BackgroundImage(new Image("File:ressources/background.jpg",0, 0, true, false), BackgroundRepeat.REPEAT, BackgroundRepeat.NO_REPEAT, BackgroundPosition.DEFAULT, BackgroundSize.DEFAULT);
 		vb.setBackground(new Background(back));
-		
+
 		vitesseSimuSLider.setOnMouseDragged( e-> {
 			ac.setSlider(sys, vitesseSimuSLider.getValue());
 		});
@@ -246,7 +235,7 @@ public class Affichage implements Observer{
 				}
 			}
 		});
-		
+
 		vb.getChildren().addAll(toolBar,canvas,hb);
 		root.getChildren().add(vb);
 		stage.setResizable(true);
@@ -261,35 +250,22 @@ public class Affichage implements Observer{
 	private void run(GraphicsContext gc) {
 		tl.setRate((sys.getDt()/sys.getFa()));
 		gc.clearRect(0, 0, sys.getRayon(), sys.getRayon());
-		gc.strokeLine(sys.getRayon()/2, 0, sys.getRayon()/2, sys.getRayon());
-		gc.strokeLine(0, sys.getRayon()/2, sys.getRayon(), sys.getRayon()/2);
 		for(Objet o : listeObjet) {
-			if(o.getType().matches("Fixe") && afficherSoleil) createSun(o.getPos().getPosX()/2 + sys.getRayon()/2, o.getPos().getPosY() + sys.getRayon()/2, gc);
-			if(o.getType().matches("Simulé")) {
-				for(Objet o2 : listeObjet) {
-					if(o2.getType().equals("Fixe")) {
-						ac.Force(o, o2);
-					}
+			createObject(o, gc);
+			for(Objet o2 : listeObjet) {
+				if(o.getType().matches("Simulé") && o2.getType().equals("Fixe")) {
+					ac.Force(o, o2);
 				}
-				ac.pos(o);
-				if(afficherPlanete) createPlanete(o.getPos().getPosX()/2 + sys.getRayon()/2, o.getPos().getPosY()/2 + sys.getRayon()/2, gc);
-			}
-			if(o.getType().equals("Vaisseau")) {
-				for(Objet o2 : listeObjet) {
-					if(!o2.getType().equals("Vaisseau")) {
-						ac.Force(o, o2);
-					}
+				if(o.getType().equals("Vaisseau") && !o2.getType().equals("Vaisseau")) {
+					ac.Force(o, o2);
 				}
-				ac.pos(o);
-				ac.bordure(o);
-				if(afficherVaisseau) createSpaceShip(o.getPos().getPosX()/2 + sys.getRayon()/2, o.getPos().getPosY()/2 + sys.getRayon()/2, gc);
 			}
+			ac.pos(o);
 		}
 	}
 
 	@Override
 	public void update(Observable arg0, Object arg1) {
 		vitesseSimuSLider.setValue(sys.getDt());
-		System.out.println(sys.getDt());
 	}
 }

@@ -50,7 +50,7 @@ public class AffichageControl {
 	public void Force(Objet objA, Objet objB) {
 		double distance = Math.sqrt(Math.pow((objA.getPos().getPosX() - objB.getPos().getPosX()),2) + Math.pow(objA.getPos().getPosY() - objB.getPos().getPosY(), 2));
 		objA.setAttraction((sys.getG()*objA.getMasse()*objB.getMasse()) / Math.pow(distance, 2));
-		double a = objA.getAttraction() / objA.getMasse();
+		double a = objA.getAttraction() / objA.getMasse() * sys.getFa();
 		double dirX = (objB.getPos().getPosX() - objA.getPos().getPosX()) / distance;
 		double dirY = (objB.getPos().getPosY() - objA.getPos().getPosY()) / distance;
 
@@ -60,14 +60,6 @@ public class AffichageControl {
 	/** Changer la position de l'objet en paramètre*/ 
 	public void pos(Objet obj) {
 		obj.setPos(new Vecteur(obj.getPos().getPosX() + obj.getVitesse().getPosX(), obj.getPos().getPosY() + obj.getVitesse().getPosY()));
-	}
-
-	/** Effet "PacMan", quand un objet traverse une bordure de fenêtre il apparait à la bordure opposé*/
-	public void bordure(Objet obj) {
-		if(obj.getPos().getPosX() > sys.getRayon()) obj.setPos(new Vecteur(-sys.getRayon(), obj.getPos().getPosY()));
-		if(obj.getPos().getPosX() < -sys.getRayon()) obj.setPos(new Vecteur(sys.getRayon(), obj.getPos().getPosY()));
-		if(obj.getPos().getPosY() > sys.getRayon()) obj.setPos(new Vecteur(obj.getPos().getPosX(), -sys.getRayon()));
-		if(obj.getPos().getPosY() < -sys.getRayon()) obj.setPos(new Vecteur(obj.getPos().getPosX(), sys.getRayon()));
 	}
 
 	/** Retourne le SystemLoader du controller 
@@ -116,18 +108,18 @@ public class AffichageControl {
 	public ArrayList<Image> loadImages(){
 		ArrayList<Image> image = new ArrayList<Image>();
 		try {
-			image.add(new Image("File:ressources/image/ceres.png", 30,30,true,false));
-			image.add(new Image("File:ressources/image/eris.png", 30,30,true,false));
-			image.add(new Image("File:ressources/image/jupiter.png", 30,30,true,false));
-			image.add(new Image("File:ressources/image/lune.png", 30,30,true,false));
-			image.add(new Image("File:ressources/image/mars.png", 30,30,true,false));
-			image.add(new Image("File:ressources/image/mercure.png", 30,30,true,false));
-			image.add(new Image("File:ressources/image/neptune.png", 30,30,true,false));
-			image.add(new Image("File:ressources/image/pluton.png", 30,30,true,false));
-			image.add(new Image("File:ressources/image/saturne.png", 30,30,true,false));
-			image.add(new Image("File:ressources/image/terre.png", 30,30,true,false));
-			image.add(new Image("File:ressources/image/uranus.png", 30,30,true,false));
-			image.add(new Image("File:ressources/image/venus.png", 30,30,true,false));
+			image.add(new Image("File:ressources/planetes/ceres.png", 30,30,true,false));
+			image.add(new Image("File:ressources/planetes/eris.png", 30,30,true,false));
+			image.add(new Image("File:ressources/planetes/jupiter.png", 30,30,true,false));
+			image.add(new Image("File:ressources/planetes/lune.png", 30,30,true,false));
+			image.add(new Image("File:ressources/planetes/mars.png", 30,30,true,false));
+			image.add(new Image("File:ressources/planetes/mercure.png", 30,30,true,false));
+			image.add(new Image("File:ressources/planetes/neptune.png", 30,30,true,false));
+			image.add(new Image("File:ressources/planetes/pluton.png", 30,30,true,false));
+			image.add(new Image("File:ressources/planetes/saturne.png", 30,30,true,false));
+			image.add(new Image("File:ressources/planetes/terre.png", 30,30,true,false));
+			image.add(new Image("File:ressources/planetes/uranus.png", 30,30,true,false));
+			image.add(new Image("File:ressources/planetes/venus.png", 30,30,true,false));
 		}
 		catch (NullPointerException e2) {
 			e2.printStackTrace();

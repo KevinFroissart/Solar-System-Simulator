@@ -31,6 +31,7 @@ public class SystemLoader {
 				if(!toRead.equals(null)) file = toRead;
 			}
 			catch(NullPointerException e) {
+				System.err.println("Aucun fichier selectionné !");
 				e.printStackTrace();
 			}
 			catch(Exception e2) {

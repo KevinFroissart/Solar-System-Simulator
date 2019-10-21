@@ -48,12 +48,28 @@ public class AffichageControl {
 
 	/** Méthode qui définit la vitesse de l'objet en fonction de son accélération et de l'attraction des autres objets (planètes) */
 	public void Force(Objet objA, Objet objB) {
-		double distance = Math.sqrt(Math.pow((objA.getPos().getPosX() - objB.getPos().getPosX()),2) + Math.pow(objA.getPos().getPosY() - objB.getPos().getPosY(), 2));
+
+		double xA = objA.getPos().getPosX();
+		double yA = objA.getPos().getPosY();
+		double xB = objB.getPos().getPosX();
+		double yB = objB.getPos().getPosY();
+		
+		double distance = Math.sqrt(Math.pow(xA - xB,2) + Math.pow(yA - yB, 2));
+		/*  ## modifier la distance en fonction de la taille des objets
+		switch(objB.getType()) {
+		case "Fixe" : 
+			if(objA.getType().equals("Vaisseau")) distance = Math.sqrt(Math.pow(xA - xB,2) + Math.pow(yA - yB, 2) - (objB.getMasse() + 5));
+			if(objA.getType().equals("Simulé")) distance = Math.sqrt(Math.pow(xA - xB,2) + Math.pow(yA - yB, 2) - (objB.getMasse() + 5) - (objA.getMasse()*3+5));
+		case "Simulé" : 
+			if(objA.getType().equals("Vaisseau")) distance = Math.sqrt(Math.pow(xA - xB,2) + Math.pow(yA - yB, 2) - (objB.getMasse()*3 + 5));
+			if(objA.getType().equals("Simulé")) distance = Math.sqrt(Math.pow(xA - xB,2) + Math.pow(yA - yB, 2) - (objA.getMasse()*6+10));
+		} */ 
 		objA.setAttraction((sys.getG()*objA.getMasse()*objB.getMasse()) / Math.pow(distance, 2));
 		objA.setAcc(objA.getAttraction() / objA.getMasse() * sys.getFa());
-		double dirX = (objB.getPos().getPosX() - objA.getPos().getPosX()) / distance;
-		double dirY = (objB.getPos().getPosY() - objA.getPos().getPosY()) / distance;
- 		objA.setVit(new Vecteur(objA.getVitesse().getPosX() + dirX * objA.getacc(), objA.getVitesse().getPosY() + dirY * objA.getacc()));
+		double dirX = (xB - xA) / distance;
+		double dirY = (yB - yA) / distance;
+
+		objA.setVit(new Vecteur(objA.getVitesse().getPosX() + dirX * objA.getacc(), objA.getVitesse().getPosY() + dirY * objA.getacc()));
 	}
 
 	/** Changer la position de l'objet en paramètre*/ 

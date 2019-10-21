@@ -16,7 +16,7 @@ public class Vaisseau extends Objet{
 	protected double pprincipal;
 	protected double pretro;
 	
-	public Vaisseau(String name, String type, double masse, Vecteur pos,Vecteur vitesse,Vecteur acc,double attraction, double pprincipal, double pretro) {
+	public Vaisseau(String name, String type, double masse, Vecteur pos, Vecteur vitesse, double acc, double attraction, double pprincipal, double pretro) {
 		super(name, type, masse, pos, vitesse, acc, attraction);
 		this.pprincipal = pprincipal;
 		this.pretro = pretro;
@@ -24,21 +24,17 @@ public class Vaisseau extends Objet{
 	
 	public void up(boolean avance) {
 		if(avance) this.setVit(new Vecteur(this.getVitesse().getPosX(), this.getVitesse().getPosY()+pretro));
-		else this.setVit(new Vecteur(this.getVitesse().getPosX(), this.getVitesse().getPosY()+0));
 	}
 	
 	public void down(boolean avance) {
 		if(avance) this.setVit(new Vecteur(this.getVitesse().getPosX(), this.getVitesse().getPosY()-pprincipal));
-		else this.setVit(new Vecteur(this.getVitesse().getPosX(), this.getVitesse().getPosY()-0));
 	}
 	
 	public void right(boolean avance) {
 		if(avance) this.setVit(new Vecteur(this.getVitesse().getPosX()-pretro, this.getVitesse().getPosY()));
-		else this.setVit(new Vecteur(this.getVitesse().getPosX()-0, this.getVitesse().getPosY()));
 	}
 	
 	public void left(boolean avance) {
 		if(avance) this.setVit(new Vecteur(this.getVitesse().getPosX()+pretro, this.getVitesse().getPosY()));
-		else this.setVit(new Vecteur(this.getVitesse().getPosX()+0, this.getVitesse().getPosY()));
 	}
 }

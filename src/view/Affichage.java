@@ -10,6 +10,7 @@ import javafx.scene.control.Slider;
 import javafx.scene.control.ToolBar;
 import javafx.scene.image.Image;
 import javafx.scene.layout.*;
+import javafx.scene.paint.Color;
 import javafx.stage.Stage;
 import javafx.util.Duration;
 import javafx.animation.KeyFrame;
@@ -74,7 +75,7 @@ public class Affichage implements Observer{
 	public void createObject(Objet o, GraphicsContext gc) {
 		double x = o.getPos().getPosX()/2 + sys.getRayon()/2;
 		double y = o.getPos().getPosY()/2 + sys.getRayon()/2;
-		if(o.getType().matches("Fixe") && afficherSoleil) gc.drawImage(imgSoleil, x-tailleSoleil/2, y-tailleSoleil/2, tailleSoleil, tailleSoleil);
+		if(o.getType().matches("Fixe") && afficherSoleil) gc.drawImage(imgSoleil, x-(o.getMasse()*2+5)/2, y-(o.getMasse()*2+5)/2, o.getMasse()*2+5, o.getMasse()*2+5);
 		if(o.getType().matches("Simulé") && afficherPlanete) gc.drawImage(planetes.get(1), x-(o.getMasse()*6+5)/2, y-(o.getMasse()*6+5)/2, o.getMasse()*6+5, o.getMasse()*6+5);
 		if(o.getType().matches("Vaisseau") && afficherVaisseau) gc.drawImage(imgVaisseau, x-imgVaisseau.getHeight()/2, y-imgVaisseau.getWidth()/2);
 	}
@@ -250,6 +251,9 @@ public class Affichage implements Observer{
 	private void run(GraphicsContext gc) {
 		tl.setRate((sys.getDt()/sys.getFa()));
 		gc.clearRect(0, 0, sys.getRayon(), sys.getRayon());
+		gc.setFill(Color.WHITE);
+//		gc.strokeLine(sys.getRayon()/2, 0, sys.getRayon()/2, sys.getRayon());
+//		gc.strokeLine(0, sys.getRayon()/2, sys.getRayon(), sys.getRayon()/2);
 		for(Objet o : listeObjet) {
 			createObject(o, gc);
 			for(Objet o2 : listeObjet) {

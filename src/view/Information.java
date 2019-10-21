@@ -23,6 +23,7 @@ public class Information implements Observer{
 	DecimalFormat df = new DecimalFormat("0.00");
 	DecimalFormat df2 = new DecimalFormat("0.00000");
 	DecimalFormat df3 = new DecimalFormat("0.0000000");
+	DecimalFormat df4 = new DecimalFormat("0.000000000");
 	
 
 	public Information(ArrayList<Objet> listeObjet) {
@@ -55,17 +56,17 @@ public class Information implements Observer{
 		String vais="\n			VAISSEAU \n \n";
 		for(Objet o2 : listeObjet) {
 			if(o2.getType().equals("Fixe")){
-				str +="     "+ o2.getName()+"     Masse : "+o2.getMasse()+"\n";
+				str +="     "+ o2.getName()+"     Masse : "+o2.getMasse()+" kg\n";
 			}
 			if(o2.getType().equals("Simulé")) {
-				sim += "     "+o2.getName()+"\n Masse : "+o2.getMasse()+" \n Position : X: "+df.format((o2.getPos().getPosX()))+
-					   "; Y: "+df.format(o2.getPos().getPosY())+"\n Vitesse  X:"+df2.format(o2.getVitesse().getPosX()) +"  Y :"+df2.format(o2.getVitesse().getPosY())+"\n"
-					  +" Force Attraction : "+df3.format(o2.getAttraction()) +"\n \n";
+				sim += "     "+o2.getName()+"\n Masse : "+o2.getMasse()+" kg\n Position : X: "+df.format((o2.getPos().getPosX()))+
+					   " m; Y: "+df.format(o2.getPos().getPosY())+" m\n Vitesse  X:"+df2.format(o2.getVitesse().getPosX()) +" m/s Y :"+df2.format(o2.getVitesse().getPosY())+" m/s\n"
+					  +" Force Attraction : "+df3.format(o2.getAttraction()) +" N\n \n";
 			}
 			if(o2.getType().equals("Vaisseau")) {
-				vais += "     "+o2.getName()+"\n Masse : "+o2.getMasse()+" \n Position : X: "+df.format((o2.getPos().getPosX()))+
-						   "; Y: "+df.format(o2.getPos().getPosY())+"\n Vitesse  X:"+df2.format(o2.getVitesse().getPosX()) +"  Y :"+df2.format(o2.getVitesse().getPosY())+"\n"
-							  +" Force Attraction : "+df3.format(o2.getAttraction()) +"\n \n";
+				vais += "     "+o2.getName()+"\n Masse : "+o2.getMasse()+" kg\n Position : X: "+df.format((o2.getPos().getPosX()))+
+						   " m; Y: "+df.format(o2.getPos().getPosY())+" m\n Vitesse  X:"+df2.format(o2.getVitesse().getPosX()) +" m/s Y :"+df2.format(o2.getVitesse().getPosY())+" m/s\n"
+							  +" Force Attraction : "+df4.format(o2.getAttraction()) +" N\n \n";
 			}
 		}
 		str+=sim+vais;

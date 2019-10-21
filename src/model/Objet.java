@@ -20,7 +20,7 @@ public abstract class Objet extends Observable{
 	protected String name;
 	protected double masse;
 	protected Vecteur pos;
-	protected Vecteur acc;
+	protected double acc;
 	protected Vecteur vitesse;
 	protected String type;
 	protected double attraction;
@@ -35,7 +35,7 @@ public abstract class Objet extends Observable{
 	 * @param acc
 	 * @param attraction
 	 */
-	public Objet(String name, String type, double masse,Vecteur pos, Vecteur vitesse, Vecteur acc, double attraction) {
+	public Objet(String name, String type, double masse,Vecteur pos, Vecteur vitesse, double acc, double attraction) {
 		this.name = name;
 		this.type = type;
 		this.masse = masse;
@@ -75,7 +75,7 @@ public abstract class Objet extends Observable{
 	 * Retourne Vecteur accélération de l'Objet
 	 * @return Vecteur accélération de l'Objet
 	 */
-	public Vecteur getacc() {
+	public double getacc() {
 		return acc;
 	}
 	
@@ -105,6 +105,16 @@ public abstract class Objet extends Observable{
 		this.vitesse = vit;
 		setChanged();
 		notifyObservers(vit);
+	}
+	
+	/**
+	 * Modifie valeur de l'accélération de l'Objet
+	 * @param acc
+	 */
+	public void setAcc(double acc) {
+		this.acc = acc;
+		setChanged();
+		notifyObservers(acc);
 	}
 
 	/**

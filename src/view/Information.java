@@ -67,6 +67,7 @@ public class Information implements Observer{
 				vais += "     "+o2.getName()+"\n Masse : "+o2.getMasse()+" kg\n Position : X: "+df.format((o2.getPos().getPosX()))+
 						   " m; Y: "+df.format(o2.getPos().getPosY())+" m\n Vitesse  X:"+df2.format(o2.getVitesse().getPosX()) +" m/s Y :"+df2.format(o2.getVitesse().getPosY())+" m/s\n"
 							  +" Force Attraction : "+df4.format(o2.getAttraction()) +" N\n \n";
+				System.out.println(o2.getAttraction());
 			}
 		}
 		str+=sim+vais;

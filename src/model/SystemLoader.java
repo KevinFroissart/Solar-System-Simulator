@@ -17,12 +17,12 @@ public class SystemLoader {
 	public File getFile() {
 		return read;
 	}
-	
+
 	/** Méthode qui s'occupe de charger le fichier passé en paramètre de ligne de commande */
 	public void reader(File toRead) {
 
 		read = toRead;
-		
+
 		lignes = new ArrayList<String>();
 
 		try {
@@ -36,7 +36,7 @@ public class SystemLoader {
 			catch(Exception e2) {
 				e2.printStackTrace();
 			}
-			
+
 			BufferedReader br = new BufferedReader(new FileReader(file));
 			String read = "";
 			while ((read = br.readLine()) != null) {
@@ -51,7 +51,7 @@ public class SystemLoader {
 		catch(IOException e) {
 			e.printStackTrace();
 		}
-		//TODO : ne pas oublier que par la suite le fichier (son chemin) sera passé en paramètre de ligne de commande -> faire un scanner
+		//TODO : ne pas oublier que par la suite le fichier (son chemin) sera passé en paramètre de ligne de commande -> faire un scanner /non/ ligne donnée en parametre de la méthode
 	}
 
 	/** Méthode qui charge les paramètres du sytème lus dans la classe Système {@link model.Systeme#Systeme(double, double, double, double)}  */
@@ -68,21 +68,30 @@ public class SystemLoader {
 
 			while(cpt < lim && valid != expected) {
 
-				if(cpt+1 < lim && lignes.get(i).substring(cpt,cpt+1).equals("G")) {
-					g = Double.parseDouble(wordReader(cpt, lim, lignes.get(i),'=',' '));
-					valid++;
-				}
-				if(cpt+2 < lim && lignes.get(i).substring(cpt,cpt+2).equals("dt")) {
-					dt = Double.parseDouble(wordReader(cpt, lim, lignes.get(i),'=',' '));
-					valid++;
-				}
-				if(cpt+2 < lim && lignes.get(i).substring(cpt,cpt+2).equals("fa")) {
-					fa = Double.parseDouble(wordReader(cpt, lim, lignes.get(i),'=',' '));
-					valid++;
-				}
-				if(cpt+5 < lim && lignes.get(i).substring(cpt,cpt+5).equals("rayon")) {
-					rayon = Double.parseDouble(wordReader(cpt, lim, lignes.get(i),'=',' '));
-					valid++;
+				try {
+					if(cpt+1 < lim && lignes.get(i).substring(cpt,cpt+1).equals("G")) {
+						g = Double.parseDouble(wordReader(cpt, lim, lignes.get(i),'=',' '));
+						valid++;
+					}
+					if(cpt+2 < lim && lignes.get(i).substring(cpt,cpt+2).equals("dt")) {
+						dt = Double.parseDouble(wordReader(cpt, lim, lignes.get(i),'=',' '));
+						valid++;
+					}
+					if(cpt+2 < lim && lignes.get(i).substring(cpt,cpt+2).equals("fa")) {
+						fa = Double.parseDouble(wordReader(cpt, lim, lignes.get(i),'=',' '));
+						valid++;
+					}
+					if(cpt+5 < lim && lignes.get(i).substring(cpt,cpt+5).equals("rayon")) {
+						rayon = Double.parseDouble(wordReader(cpt, lim, lignes.get(i),'=',' '));
+						valid++;
+					}
+				}catch(NumberFormatException e) {
+					System.err.println("Erreur de format !");
+					e.printStackTrace();
+					System.exit(1);
+				}catch(Exception e) {
+					e.printStackTrace();
+					System.exit(1);
 				}
 				cpt++;
 			}
@@ -91,6 +100,7 @@ public class SystemLoader {
 			}
 		}
 		System.err.println("Arguments manquants ou incorrect");
+		System.exit(1);
 		return null;
 	}			
 
@@ -98,22 +108,22 @@ public class SystemLoader {
 	public ArrayList<Objet> objectInit() {		
 
 		ArrayList<Objet> objectList = new ArrayList<Objet>();
-		int listSize = 0;
-
+		int nbVaisseau = 0;
+		int expected = 0;
+		int valid = 0;
+		@SuppressWarnings("unused")
+		boolean paramsPremiereLigne = false;
+		
 		for(int i = 0; i < lignes.size(); i++) {
 
-			int expected = 1;
 			int cpt = 0;
-			int valid = 0;
 			int lim = lignes.get(i).length();
 			double masse = 0;
 			double posx = 0;
 			double posy = 0;
 			double vitx = 0;
 			double vity = 0;
-			@SuppressWarnings("unused")
 			double pprincipal = 0;
-			@SuppressWarnings("unused")
 			double pretro = 0;
 			String nom = "";
 			String type = "";
@@ -122,83 +132,89 @@ public class SystemLoader {
 				nom = nameReader(0, lim, lignes.get(i),':');
 				type = nameReader(nom.length()+2, lim, lignes.get(i),' ');
 				switch(type) {
-				case "Fixe" : expected = 3; listSize++; break;
-				case "Simulé" : expected = 5; listSize++; break;
-				case "Cercle" : expected = 5; listSize++; break;
-				case "Ellipse" : expected = 6; listSize++; break;
-				case "Vaisseau" : expected = 7; listSize++; break;
+				case "Fixe" : expected += 3; break;
+				case "Simulé" : expected += 5; break;
+				case "Cercle" : expected += 5; break;
+				case "Ellipse" : expected += 6; break;
+				case "Vaisseau" : expected += 7; break;
 				}
 			}
 			cpt = 0;
 			while(cpt < lim && valid != expected) {
 				if(1 < lim && lignes.get(i).charAt(0) != '#') {
-					if(cpt+5 < lim && lignes.get(i).substring(cpt,cpt+5).equals("masse")) {
-						masse = Double.parseDouble(wordReader(cpt, lim, lignes.get(i),'=',' '));
-						valid++;
-					}
-					if(cpt+4 < lim && lignes.get(i).substring(cpt,cpt+4).equals("posx")) {
-						posx = Double.parseDouble(wordReader(cpt, lim, lignes.get(i),'=',' '));
-						valid++;
-					}
-					if(cpt+4 < lim && lignes.get(i).substring(cpt,cpt+4).equals("posy")) {
-						posy = Double.parseDouble(wordReader(cpt, lim, lignes.get(i),'=',' '));
-						valid++;
-					}
-					if(cpt+4 < lim && lignes.get(i).substring(cpt,cpt+4).equals("vity")) {
-						vity = Double.parseDouble(wordReader(cpt, lim, lignes.get(i),'=',' '));
-						valid++;
-					}
-					if(cpt+4 < lim && lignes.get(i).substring(cpt,cpt+4).equals("vitx")) {
-						vitx = Double.parseDouble(wordReader(cpt, lim, lignes.get(i),'=',' '));
-						valid++;
-					}
-					if(cpt+10 < lim && lignes.get(i).substring(cpt,cpt+10).equals("pprincipal")) {
-						pprincipal = Double.parseDouble(wordReader(cpt, lim, lignes.get(i),'=',' '));
-						valid++;
-					}
-					if(cpt+6 < lim && lignes.get(i).substring(cpt,cpt+6).equals("pretro")) {
-						pretro = Double.parseDouble(wordReader(cpt, lim, lignes.get(i),'=',' '));
-						valid++;
+					//TODO: tester si PARAMS est la première ligne
+					try {
+						if(cpt+5 < lim && lignes.get(i).substring(cpt,cpt+5).equals("masse")) {
+							masse = Double.parseDouble(wordReader(cpt, lim, lignes.get(i),'=',' '));
+							valid++;
+						}
+						if(cpt+4 < lim && lignes.get(i).substring(cpt,cpt+4).equals("posx")) {
+							posx = Double.parseDouble(wordReader(cpt, lim, lignes.get(i),'=',' '));
+							valid++;
+						}
+						if(cpt+4 < lim && lignes.get(i).substring(cpt,cpt+4).equals("posy")) {
+							posy = Double.parseDouble(wordReader(cpt, lim, lignes.get(i),'=',' '));
+							valid++;
+						}
+						if(cpt+4 < lim && lignes.get(i).substring(cpt,cpt+4).equals("vity")) {
+							vity = Double.parseDouble(wordReader(cpt, lim, lignes.get(i),'=',' '));
+							valid++;
+						}
+						if(cpt+4 < lim && lignes.get(i).substring(cpt,cpt+4).equals("vitx")) {
+							vitx = Double.parseDouble(wordReader(cpt, lim, lignes.get(i),'=',' '));
+							valid++;
+						}
+						if(cpt+10 < lim && lignes.get(i).substring(cpt,cpt+10).equals("pprincipal")) {
+							pprincipal = Double.parseDouble(wordReader(cpt, lim, lignes.get(i),'=',' '));
+							valid++;
+						}
+						if(cpt+6 < lim && lignes.get(i).substring(cpt,cpt+6).equals("pretro")) {
+							pretro = Double.parseDouble(wordReader(cpt, lim, lignes.get(i),'=',' '));
+							valid++;
+						}
+					}catch(NumberFormatException e) {
+						System.err.println("Erreur de format !");
+						e.printStackTrace();
+						System.exit(1);
+					}catch(Exception e) {
+						e.printStackTrace();
+						System.exit(1);
 					}
 				}
 				cpt++;
 			}
 
-			if(valid == expected && type.equals("Fixe")) {
-				Vecteur pos = new Vecteur(posx,posy);
-				objectList.add(new ObjetFixe(nom, type, masse, pos));
+			if(valid == expected) {
+				switch(type) {
+				case "Fixe" : 
+					Vecteur pos = new Vecteur(posx,posy);
+					objectList.add(new ObjetFixe(nom, type, masse, pos));
+					break;
+				case "Simulé" : 
+					pos = new Vecteur(posx,posy);
+					Vecteur vit = new Vecteur(vitx,vity);
+					objectList.add(new ObjetSimule(nom, type, masse, pos, vit, 0));
+					break;
+				case "Ellipse" : ; break;
+				case "Cercle" : ; break;
+				case "Vaisseau" : 
+					pos = new Vecteur(posx,posy);
+					vit = new Vecteur(vitx,vity);
+					objectList.add(new Vaisseau(nom, type, masse, pos, vit, 0, 0, pprincipal, pretro));
+					nbVaisseau++;
+					break;
+				}
+			} else {
+				System.err.println("Arguments incorrect ou manquants !");
+				System.exit(1);
 			}
-			if(valid == expected && type.equals("Simulé")) {
-				Vecteur pos = new Vecteur(posx,posy);
-				Vecteur vit = new Vecteur(vitx,vity);
-				objectList.add(new ObjetSimule(nom, type, masse, pos, vit, 0));
-			}
-			if(valid == expected && type.equals("Ellipse")) {
-			}
-			if(valid == expected && type.equals("Cercle")) {
-			}
-			if(valid == expected && type.equals("Vaisseau")) {
-				Vecteur pos = new Vecteur(posx,posy);
-				Vecteur vit = new Vecteur(vitx,vity);
-				objectList.add(new Vaisseau(nom, type, masse, pos, vit, 0, 0, pprincipal, pretro));
+
+			if(nbVaisseau > 1) {
+				System.err.println("Le système ne support qu'un vaisseau");
+				System.exit(1);
 			}
 		}
 		return objectList;
-	}
-
-	/** Méthode qui retourne le nombre d'occurence du mot passer en paramètre */
-	public static int occurenceReader(String nom) {
-		int len = nom.length();
-		int occ = 0;
-		for(int i = 0; i < lignes.size(); i++) {
-			int lim = lignes.get(i).length();
-			int cpt = 0;
-			while(cpt+len < lim) {
-				if(removeAccent(lignes.get(i).substring(cpt,cpt+len)).equals(removeAccent(nom))) occ++;
-				cpt++;
-			}
-		}		
-		return occ;
 	}
 
 	/** Méthode qui retire les accents des mots lus dans le fichier system.txt pour rendre générique la lecture */
@@ -218,7 +234,7 @@ public class SystemLoader {
 		}
 		return txt.substring(debut,fin);
 	}
-
+	//TODO: mixer ces deux méthodes
 	/** Méthode qui retourne les informations comprise entre les deux caractères passé en paramètre */
 	public static String wordReader(int idx, int lim, String txt, char beg, char end) {
 		int debut = 0;

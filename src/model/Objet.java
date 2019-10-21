@@ -26,7 +26,7 @@ public abstract class Objet extends Observable{
 	protected double attraction;
 	
 	/**
-	 * Constructeur qui instancie un objet à l'aide des valeurs de chacun des attributs mis en paramètre
+	 * Constructeur qui instancie un objet du système
 	 * @param name
 	 * @param type
 	 * @param masse

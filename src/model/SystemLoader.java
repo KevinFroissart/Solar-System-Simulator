@@ -52,7 +52,6 @@ public class SystemLoader {
 		catch(IOException e) {
 			e.printStackTrace();
 		}
-		//TODO : ne pas oublier que par la suite le fichier (son chemin) sera passé en paramètre de ligne de commande -> faire un scanner /non/ ligne donnée en parametre de la méthode
 	}
 
 	/** Méthode qui charge les paramètres du sytème lus dans la classe Système {@link model.Systeme#Systeme(double, double, double, double)}  */
@@ -71,19 +70,23 @@ public class SystemLoader {
 
 				try {
 					if(cpt+1 < lim && lignes.get(i).substring(cpt,cpt+1).equals("G")) {
-						g = Double.parseDouble(wordReader(cpt, lim, lignes.get(i),'=',' '));
+						g = Double.parseDouble(wordReader(cpt, lim, lignes.get(i),'=',' ',false));
+						System.out.println(g);
 						valid++;
 					}
 					if(cpt+2 < lim && lignes.get(i).substring(cpt,cpt+2).equals("dt")) {
-						dt = Double.parseDouble(wordReader(cpt, lim, lignes.get(i),'=',' '));
+						dt = Double.parseDouble(wordReader(cpt, lim, lignes.get(i),'=',' ',false));
+						System.out.println(g);
 						valid++;
 					}
 					if(cpt+2 < lim && lignes.get(i).substring(cpt,cpt+2).equals("fa")) {
-						fa = Double.parseDouble(wordReader(cpt, lim, lignes.get(i),'=',' '));
+						fa = Double.parseDouble(wordReader(cpt, lim, lignes.get(i),'=',' ',false));
+						System.out.println(g);
 						valid++;
 					}
 					if(cpt+5 < lim && lignes.get(i).substring(cpt,cpt+5).equals("rayon")) {
-						rayon = Double.parseDouble(wordReader(cpt, lim, lignes.get(i),'=',' '));
+						rayon = Double.parseDouble(wordReader(cpt, lim, lignes.get(i),'=',' ',false));
+						System.out.println(g);
 						valid++;
 					}
 				}catch(NumberFormatException e) {
@@ -130,8 +133,9 @@ public class SystemLoader {
 			String type = "";
 
 			if(cpt+20 < lim) {
-				nom = nameReader(0, lim, lignes.get(i),':');
-				type = nameReader(nom.length()+2, lim, lignes.get(i),' ');
+				nom = wordReader(0, lim, lignes.get(i),'=',':',true);
+				System.out.println(nom);
+				type = wordReader(nom.length()+2, lim, lignes.get(i),'=',' ',true);
 				switch(type) {
 				case "Fixe" : expected += 3; break;
 				case "Simulé" : expected += 5; break;
@@ -146,31 +150,31 @@ public class SystemLoader {
 					//TODO: tester si PARAMS est la première ligne
 					try {
 						if(cpt+5 < lim && lignes.get(i).substring(cpt,cpt+5).equals("masse")) {
-							masse = Double.parseDouble(wordReader(cpt, lim, lignes.get(i),'=',' '));
+							masse = Double.parseDouble(wordReader(cpt, lim, lignes.get(i),'=',' ',false));
 							valid++;
 						}
 						if(cpt+4 < lim && lignes.get(i).substring(cpt,cpt+4).equals("posx")) {
-							posx = Double.parseDouble(wordReader(cpt, lim, lignes.get(i),'=',' '));
+							posx = Double.parseDouble(wordReader(cpt, lim, lignes.get(i),'=',' ',false));
 							valid++;
 						}
 						if(cpt+4 < lim && lignes.get(i).substring(cpt,cpt+4).equals("posy")) {
-							posy = Double.parseDouble(wordReader(cpt, lim, lignes.get(i),'=',' '));
+							posy = Double.parseDouble(wordReader(cpt, lim, lignes.get(i),'=',' ',false));
 							valid++;
 						}
 						if(cpt+4 < lim && lignes.get(i).substring(cpt,cpt+4).equals("vity")) {
-							vity = Double.parseDouble(wordReader(cpt, lim, lignes.get(i),'=',' '));
+							vity = Double.parseDouble(wordReader(cpt, lim, lignes.get(i),'=',' ',false));
 							valid++;
 						}
 						if(cpt+4 < lim && lignes.get(i).substring(cpt,cpt+4).equals("vitx")) {
-							vitx = Double.parseDouble(wordReader(cpt, lim, lignes.get(i),'=',' '));
+							vitx = Double.parseDouble(wordReader(cpt, lim, lignes.get(i),'=',' ',false));
 							valid++;
 						}
 						if(cpt+10 < lim && lignes.get(i).substring(cpt,cpt+10).equals("pprincipal")) {
-							pprincipal = Double.parseDouble(wordReader(cpt, lim, lignes.get(i),'=',' '));
+							pprincipal = Double.parseDouble(wordReader(cpt, lim, lignes.get(i),'=',' ',false));
 							valid++;
 						}
 						if(cpt+6 < lim && lignes.get(i).substring(cpt,cpt+6).equals("pretro")) {
-							pretro = Double.parseDouble(wordReader(cpt, lim, lignes.get(i),'=',' '));
+							pretro = Double.parseDouble(wordReader(cpt, lim, lignes.get(i),'=',' ',false));
 							valid++;
 						}
 					}catch(NumberFormatException e) {
@@ -223,30 +227,27 @@ public class SystemLoader {
 		return Normalizer.normalize(str, Normalizer.Form.NFD).replaceAll("[\u0300-\u036F]", "");
 	}
 
-	/** Méthode qui retourne le nom des objets du fichier system.txt */
-	public static String nameReader(int idx, int lim, String txt, char end) {
-		int debut = idx;
-		int fin = 0;
-		for(int i = idx; i < lim; i++) {
-			if(txt.charAt(i) == end || txt.charAt(i) == ':') {
-				fin = i;
-				break;
-			}
-		}
-		return txt.substring(debut,fin);
-	}
-	//TODO: mixer ces deux méthodes
 	/** Méthode qui retourne les informations comprise entre les deux caractères passé en paramètre */
-	public static String wordReader(int idx, int lim, String txt, char beg, char end) {
-		int debut = 0;
+	public static String wordReader(int idx, int lim, String txt, char beg, char end, boolean name) {
+				int debut = 0;
+		if(name) debut = idx;
 		int fin = 0;
 		for(int i = idx; i < lim; i++) {
-			if(txt.charAt(i) == beg) debut = i+1;
-			if(txt.charAt(i) == end || txt.charAt(i) == ';') {
-				fin = i;
-				break;
+			if(txt.charAt(i) == beg && !name) debut = i+1;
+			if(!name) {
+				if(txt.charAt(i) == end || txt.charAt(i) == ';') {  
+					fin = i;
+					break;
+				}
+			} else if(name) {
+				if(txt.charAt(i) == end || txt.charAt(i) == ':') {
+					fin = i;
+					break;
+				}
+	
 			}
 		}
+		System.out.println("debut : " + debut + " ; fin : " + fin);
 		return txt.substring(debut,fin);
 	}
 }

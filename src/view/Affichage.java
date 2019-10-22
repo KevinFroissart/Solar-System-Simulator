@@ -29,6 +29,7 @@ import java.util.Observer;
 
 import controller.AffichageControl;
 import javafx.scene.Group;
+import model.ObjetSimule;
 
 /** Classe gérant l'affichage principal du système.
  * @author Kevin, Maxence
@@ -82,7 +83,7 @@ public class Affichage implements Observer{
 
 	//On charge toutes les images du dossier des planetes dans l'arraylist globale du meme nom
 	public void chargerImgPlanetes() {
-		planetes = ac.loadImages();
+		planetes = ac.imagePlanete();
 	}
 
 	public void creerInfo() {

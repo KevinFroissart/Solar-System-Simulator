@@ -54,7 +54,7 @@ public class AffichageControl {
 		double yA = objA.getPos().getPosY();
 		double xB = objB.getPos().getPosX();
 		double yB = objB.getPos().getPosY();
-		
+
 		double distance = Math.sqrt(Math.pow(xA - xB,2) + Math.pow(yA - yB, 2));
 		/*  ## modifier la distance en fonction de la taille des objets
 		switch(objB.getType()) {
@@ -121,39 +121,8 @@ public class AffichageControl {
 		sys.setDt(value);
 	}
 
-	public ArrayList<Image> loadImages(){
-		ArrayList<Image> image = new ArrayList<Image>();
-		try {
-			image.add(new Image("File:ressources/planetes/ceres.png", 30,30,true,false));
-			image.add(new Image("File:ressources/planetes/eris.png", 30,30,true,false));
-			image.add(new Image("File:ressources/planetes/jupiter.png", 30,30,true,false));
-			image.add(new Image("File:ressources/planetes/lune.png", 30,30,true,false));
-			image.add(new Image("File:ressources/planetes/mars.png", 30,30,true,false));
-			image.add(new Image("File:ressources/planetes/mercure.png", 30,30,true,false));
-			image.add(new Image("File:ressources/planetes/neptune.png", 30,30,true,false));
-			image.add(new Image("File:ressources/planetes/pluton.png", 30,30,true,false));
-			image.add(new Image("File:ressources/planetes/saturne.png", 30,30,true,false));
-			image.add(new Image("File:ressources/planetes/terre.png", 30,30,true,false));
-			image.add(new Image("File:ressources/planetes/uranus.png", 30,30,true,false));
-			image.add(new Image("File:ressources/planetes/venus.png", 30,30,true,false));
-		}
-		catch (NullPointerException e2) {
-			e2.printStackTrace();
-		}
-		catch(Exception e) {
-			e.printStackTrace();
-		}
-		return image;
-	}
 	
-	public ArrayList<Image> imagePlanete() {
-		Random rand = new Random();
-		int index = rand.nextInt(loadImages().size());
-		ArrayList<Image> image = new ArrayList<Image>();
-		Image tmp = loadImages().get(index);
-		image.add(tmp);
-		return image;
-		}
+
 
 
 }

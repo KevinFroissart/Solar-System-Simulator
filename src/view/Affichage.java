@@ -1,6 +1,7 @@
 package view;
 
 import javafx.scene.Scene;
+
 import javafx.scene.canvas.Canvas;
 import javafx.scene.canvas.GraphicsContext;
 import javafx.scene.control.Button;
@@ -77,14 +78,14 @@ public class Affichage implements Observer{
 		double x = o.getPos().getPosX()/2 + sys.getRayon()/2;
 		double y = o.getPos().getPosY()/2 + sys.getRayon()/2;
 		if(o.getType().matches("Fixe") && afficherSoleil) gc.drawImage(imgSoleil, x-(o.getMasse()*2+5)/2, y-(o.getMasse()*2+5)/2, o.getMasse()*2+5, o.getMasse()*2+5);
-		if(o.getType().matches("Simulé") && afficherPlanete) gc.drawImage(planetes.get(1), x-(o.getMasse()*6+5)/2, y-(o.getMasse()*6+5)/2, o.getMasse()*6+5, o.getMasse()*6+5);
+		if(o.getType().matches("Simulé") && afficherPlanete) {
+			ObjetSimule o2 = (ObjetSimule) o;
+			gc.drawImage(o2.getImage(), x-(o.getMasse()*6+5)/2, y-(o.getMasse()*6+5)/2, o.getMasse()*6+5, o.getMasse()*6+5);
+		}
 		if(o.getType().matches("Vaisseau") && afficherVaisseau) gc.drawImage(imgVaisseau, x-imgVaisseau.getHeight()/2, y-imgVaisseau.getWidth()/2);
 	}
 
-	//On charge toutes les images du dossier des planetes dans l'arraylist globale du meme nom
-	public void chargerImgPlanetes() {
-		planetes = ac.imagePlanete();
-	}
+
 
 	public void creerInfo() {
 		info = new Information(listeObjet);
@@ -99,7 +100,7 @@ public class Affichage implements Observer{
 		creerInfo();
 		canvas = new Canvas(sys.getRayon(),sys.getRayon());
 		gc = canvas.getGraphicsContext2D();
-		chargerImgPlanetes();
+		
 
 		VBox vb = new VBox();
 		ToolBar toolBar = new ToolBar();

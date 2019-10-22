@@ -36,7 +36,7 @@ public class Main extends Application{
 	}
 
 	public static void main(String[] args){
-		try {
+		try { 
 			config = new File(args[0]);
 		} catch (NullPointerException e) {
 			System.err.println("Impossible de trouver le fichier spécifié. Vérifiez votre chemin de fichier. Ex : ressources/system.txt");

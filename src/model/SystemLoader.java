@@ -42,7 +42,6 @@ public class SystemLoader {
 		catch(IOException e) {
 			e.printStackTrace();
 		}
-		System.exit(1);
 	} 
 
 

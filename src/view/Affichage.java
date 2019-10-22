@@ -113,11 +113,11 @@ public class Affichage implements Observer{
 
 		vbVitesse.getChildren().addAll(labelVitesse,vitesseSimuSLider);
 		vbZoom.getChildren().addAll(labelZoom,zoomSlider);
-
+		vbVitesse.setStyle("-fx-padding: 0 0 0 30;");
 		vitesseSimuSLider.setMin(1);
 		vitesseSimuSLider.setMax(sys.getDt()*1000);
 		vitesseSimuSLider.setOrientation(Orientation.HORIZONTAL);
-		vitesseSimuSLider.setMinWidth(sys.getRayon()/2);
+		vitesseSimuSLider.setMinWidth(sys.getRayon()/2.5);
 		vitesseSimuSLider.setShowTickLabels(true);
 		vitesseSimuSLider.setShowTickMarks(true);
 		vitesseSimuSLider.setValue(sys.getFa());
@@ -125,11 +125,17 @@ public class Affichage implements Observer{
 		zoomSlider.setMin(-10);
 		zoomSlider.setMax(10);
 		zoomSlider.setOrientation(Orientation.HORIZONTAL);
-		zoomSlider.setMinWidth(sys.getRayon()/2);
+		zoomSlider.setMinWidth(sys.getRayon()/2.5);
 		zoomSlider.setShowTickLabels(true);
 		zoomSlider.setShowTickMarks(true);
-
+		
+		labelZoom.setStyle("-fx-font-weight:bold;");
+		labelVitesse.setStyle("-fx-font-weight:bold;");
+		
 		hb.getChildren().addAll(vbVitesse, vbZoom);
+		hb.setStyle("-fx-padding: 10;" + "-fx-border-style: solid inside;"
+		        + "-fx-border-width: 2;" + "-fx-border-insets: 10;"
+		        + "-fx-border-radius: 10;" + "-fx-border-color: black;");
 		toolBar.getItems().addAll(open,reset,separator,bvs,bp,bs,separator2,binfo);
 
 		//Unité de temps et de simulation du systeme
@@ -137,7 +143,7 @@ public class Affichage implements Observer{
 		tl.setCycleCount(Timeline.INDEFINITE);
 
 		Group root = new Group();
-		Scene scene = new Scene(root, sys.getRayon(), sys.getRayon() + 130);
+		Scene scene = new Scene(root,sys.getRayon(), sys.getRayon() + 130);
 
 		//Ici j'ajoute le background image à la VBox qui est root de notre systeme
 		BackgroundImage back = new BackgroundImage(new Image("File:ressources/background.jpg",0, 0, true, false), BackgroundRepeat.REPEAT, BackgroundRepeat.NO_REPEAT, BackgroundPosition.DEFAULT, BackgroundSize.DEFAULT);

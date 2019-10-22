@@ -2,6 +2,7 @@ package controller;
 
 import java.io.File;
 import java.util.ArrayList;
+import java.util.Random;
 
 import javafx.scene.image.Image;
 import javafx.stage.FileChooser;
@@ -144,5 +145,15 @@ public class AffichageControl {
 		}
 		return image;
 	}
+	
+	public ArrayList<Image> imagePlanete() {
+		Random rand = new Random();
+		int index = rand.nextInt(loadImages().size());
+		ArrayList<Image> image = new ArrayList<Image>();
+		Image tmp = loadImages().get(index);
+		image.add(tmp);
+		return image;
+		}
+
 
 }

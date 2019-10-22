@@ -128,7 +128,6 @@ public class Affichage implements Observer{
 		zoomSlider.setMinWidth(sys.getRayon()/2.5);
 		zoomSlider.setShowTickLabels(true);
 		zoomSlider.setShowTickMarks(true);
-		
 		labelZoom.setStyle("-fx-font-weight:bold;");
 		labelVitesse.setStyle("-fx-font-weight:bold;");
 		

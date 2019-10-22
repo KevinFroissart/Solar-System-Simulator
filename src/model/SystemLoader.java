@@ -25,8 +25,12 @@ public class SystemLoader {
 		File config;
 		BufferedReader br;
 		try {
-			if(!toRead.equals(null)) config = toRead;
-			else config = new File("ressources/system.txt");
+			if(!toRead.equals(null) && toRead.canRead()) {
+				config = toRead;
+			} else {
+				System.out.println("Impossible de lire le fichier du chemin spécifié, lecture du fichier par défaut initialisée");
+				config = new File("ressources/system.txt");
+			}
 			br = new BufferedReader(new FileReader(config));
 			String read = "";
 			while ((read = br.readLine()) != null) {

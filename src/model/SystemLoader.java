@@ -20,25 +20,18 @@ public class SystemLoader {
 
 	/** Méthode qui s'occupe de charger le fichier passé en paramètre de ligne de commande */
 	public void reader(File toRead) {
-
 		read = toRead;
-
 		lignes = new ArrayList<String>();
-
+		File config;
+		BufferedReader br;
 		try {
-			File file = new File("ressources/system.txt");
-			try {
-				if(!toRead.equals(null)) file = toRead;
+			if(!toRead.equals(null) && toRead.canRead()) {
+				config = toRead;
+			} else {
+				System.out.println("Impossible de lire le fichier du chemin spécifié, lecture du fichier par défaut initialisée");
+				config = new File("ressources/system.txt");
 			}
-			catch(NullPointerException e) {
-				System.err.println("Aucun fichier selectionné !");
-				e.printStackTrace();
-			}
-			catch(Exception e2) {
-				e2.printStackTrace();
-			}
-
-			BufferedReader br = new BufferedReader(new FileReader(file));
+			br = new BufferedReader(new FileReader(config));
 			String read = "";
 			while ((read = br.readLine()) != null) {
 				read += ";";
@@ -46,13 +39,13 @@ public class SystemLoader {
 			}
 			br.close();
 		}
-		catch(FileNotFoundException e) {
-			e.printStackTrace();
-		}
 		catch(IOException e) {
 			e.printStackTrace();
 		}
-	}
+		System.exit(1);
+	} 
+
+
 
 	/** Méthode qui charge les paramètres du sytème lus dans la classe Système {@link model.Systeme#Systeme(double, double, double, double)}  */
 	public Systeme paramInit(int expected) {
@@ -117,7 +110,7 @@ public class SystemLoader {
 		int valid = 0;
 		@SuppressWarnings("unused")
 		boolean paramsPremiereLigne = false;
-		
+
 		for(int i = 0; i < lignes.size(); i++) {
 
 			int cpt = 0;
@@ -229,7 +222,7 @@ public class SystemLoader {
 
 	/** Méthode qui retourne les informations comprise entre les deux caractères passé en paramètre */
 	public static String wordReader(int idx, int lim, String txt, char beg, char end, boolean name) {
-				int debut = 0;
+		int debut = 0;
 		if(name) debut = idx;
 		int fin = 0;
 		for(int i = idx; i < lim; i++) {
@@ -244,7 +237,7 @@ public class SystemLoader {
 					fin = i;
 					break;
 				}
-	
+
 			}
 		}
 		System.out.println("debut : " + debut + " ; fin : " + fin);

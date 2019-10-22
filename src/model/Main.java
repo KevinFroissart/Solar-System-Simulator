@@ -19,15 +19,19 @@ public class Main extends Application{
 
 	@Override
 	public void start(Stage primaryStage) throws Exception {
-
 		SystemLoader sl = new SystemLoader();
-		sl.reader(config);
-		Systeme sys = sl.paramInit(4);
-		Affichage af = new Affichage(new AffichageControl(sl, sys));
 		try {
+			sl.reader(config);
+			Systeme sys = sl.paramInit(4);
+			Affichage af = new Affichage(new AffichageControl(sl, sys));
 			af.start(primaryStage);
+		} catch (FileNotFoundException e) {
+			System.err.println("Impossible de trouver le fichier spécifié. Vérifiez votre chemin de fichier. Ex : ressources/system.txt");
+			System.exit(1);
 		} catch (Exception e1) {
+			System.out.println("tetetete");
 			e1.printStackTrace();
+			System.exit(1);
 		}
 	}
 

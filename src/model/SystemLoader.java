@@ -20,25 +20,14 @@ public class SystemLoader {
 
 	/** Méthode qui s'occupe de charger le fichier passé en paramètre de ligne de commande */
 	public void reader(File toRead) {
-
 		read = toRead;
-
 		lignes = new ArrayList<String>();
-
+		File config;
+		BufferedReader br;
 		try {
-			File file = new File("ressources/system.txt");
-			try {
-				if(!toRead.equals(null)) file = toRead;
-			}
-			catch(NullPointerException e) {
-				System.err.println("Aucun fichier selectionné !");
-				e.printStackTrace();
-			}
-			catch(Exception e2) {
-				e2.printStackTrace();
-			}
-
-			BufferedReader br = new BufferedReader(new FileReader(file));
+			if(!toRead.equals(null)) config = toRead;
+			else config = new File("ressources/system.txt");
+			br = new BufferedReader(new FileReader(config));
 			String read = "";
 			while ((read = br.readLine()) != null) {
 				read += ";";
@@ -46,14 +35,12 @@ public class SystemLoader {
 			}
 			br.close();
 		}
-		catch(FileNotFoundException e) {
-			e.printStackTrace();
-		}
 		catch(IOException e) {
 			e.printStackTrace();
-		}
-		//TODO : ne pas oublier que par la suite le fichier (son chemin) sera passé en paramètre de ligne de commande -> faire un scanner /non/ ligne donnée en parametre de la méthode
+			System.exit(1);
+		} 
 	}
+
 
 	/** Méthode qui charge les paramètres du sytème lus dans la classe Système {@link model.Systeme#Systeme(double, double, double, double)}  */
 	public Systeme paramInit(int expected) {
@@ -114,7 +101,7 @@ public class SystemLoader {
 		int valid = 0;
 		@SuppressWarnings("unused")
 		boolean paramsPremiereLigne = false;
-		
+
 		for(int i = 0; i < lignes.size(); i++) {
 
 			int cpt = 0;

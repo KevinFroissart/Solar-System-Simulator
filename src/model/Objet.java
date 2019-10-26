@@ -75,10 +75,10 @@ public abstract class Objet extends Observable{
 	 * Retourne Vecteur accélération de l'Objet
 	 * @return Vecteur accélération de l'Objet
 	 */
-	public double getacc() {
+	public double getAcc() {
 		return acc;
 	}
-	
+
 	/**
 	 * Retourne Vecteur vitesse de l'Objet
 	 * @return Vecteur vitesse de l'Objet
@@ -141,5 +141,13 @@ public abstract class Objet extends Observable{
 		this.attraction = attraction;
 		setChanged();
 		notifyObservers(pos);
-	}	
+	}
+
+	/**
+	 * Retourne la taille d'affichage de l'objet
+	 * @return taille la taille de l'objet
+	 */
+	public double getTaille(){
+		return masse*2+20;
+	}
 }

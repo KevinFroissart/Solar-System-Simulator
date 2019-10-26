@@ -1,6 +1,7 @@
 package model;
 
 import java.io.*;
+import java.rmi.NotBoundException;
 import java.text.Normalizer;
 import java.util.ArrayList;
 
@@ -25,10 +26,10 @@ public class SystemLoader {
 		File config;
 		BufferedReader br;
 		try {
-			if(!toRead.equals(null) && toRead.canRead()) {
+			if (!toRead.equals(null) && toRead.canRead()) {
 				config = toRead;
 			} else {
-				System.out.println("Impossible de lire le fichier du chemin spécifié, lecture du fichier par défaut initialisée");
+				System.err.println("Impossible de lire le fichier du chemin spécifié, lecture du fichier par défaut initialisée");
 				config = new File("ressources/system.txt");
 			}
 			br = new BufferedReader(new FileReader(config));
@@ -38,47 +39,46 @@ public class SystemLoader {
 				lignes.add(read);
 			}
 			br.close();
-		}
-		catch(IOException e) {
+		}catch(NullPointerException e){
+			e.printStackTrace();
+		}catch(IOException e) {
 			e.printStackTrace();
 		}
-	} 
-
-
+	}
 
 	/** Méthode qui charge les paramètres du sytème lus dans la classe Système {@link model.Systeme#Systeme(double, double, double, double)}  */
 	public Systeme paramInit(int expected) {
 
+		int nbHashtags = 0;
+		int ligneParam = 0;
+		int valid = 0;
+		double g = 0;
+		double dt = 0;
+		double fa = 0;
+		double rayon = 0;
+
 		for(int i = 0; i < lignes.size(); i++) {
 			int cpt = 0;
-			int valid = 0;
 			int lim = lignes.get(i).length();
-			double g = 0;
-			double dt = 0;
-			double fa = 0;
-			double rayon = 0;
-
-			while(cpt < lim && valid != expected) {
+			if(lignes.get(i).charAt(0) == '#') nbHashtags++;
+			if(lignes.get(i).substring(0,6).equals("PARAMS")) ligneParam = i+1;
+			while(cpt < lim && valid != expected && ligneParam != 0) {
 
 				try {
 					if(cpt+1 < lim && lignes.get(i).substring(cpt,cpt+1).equals("G")) {
 						g = Double.parseDouble(wordReader(cpt, lim, lignes.get(i),'=',' ',false));
-						System.out.println(g);
 						valid++;
 					}
 					if(cpt+2 < lim && lignes.get(i).substring(cpt,cpt+2).equals("dt")) {
 						dt = Double.parseDouble(wordReader(cpt, lim, lignes.get(i),'=',' ',false));
-						System.out.println(g);
 						valid++;
 					}
 					if(cpt+2 < lim && lignes.get(i).substring(cpt,cpt+2).equals("fa")) {
 						fa = Double.parseDouble(wordReader(cpt, lim, lignes.get(i),'=',' ',false));
-						System.out.println(g);
 						valid++;
 					}
 					if(cpt+5 < lim && lignes.get(i).substring(cpt,cpt+5).equals("rayon")) {
 						rayon = Double.parseDouble(wordReader(cpt, lim, lignes.get(i),'=',' ',false));
-						System.out.println(g);
 						valid++;
 					}
 				}catch(NumberFormatException e) {
@@ -91,9 +91,13 @@ public class SystemLoader {
 				}
 				cpt++;
 			}
-			if(valid == expected && expected == 4) {
-				return new Systeme(g, dt, fa, rayon); 	
-			}
+		}
+		if(nbHashtags+1 != ligneParam){
+			System.err.println("La ligne PARAMS doit être la première du fichier système.");
+			System.exit(1);
+		}
+		if(valid == expected && expected == 4) {
+			return new Systeme(g, dt, fa, rayon);
 		}
 		System.err.println("Arguments manquants ou incorrect");
 		System.exit(1);
@@ -107,8 +111,8 @@ public class SystemLoader {
 		int nbVaisseau = 0;
 		int expected = 0;
 		int valid = 0;
-		@SuppressWarnings("unused")
-		boolean paramsPremiereLigne = false;
+		int nbHastags = 0;
+		int ligneParam = 0;
 
 		for(int i = 0; i < lignes.size(); i++) {
 
@@ -126,7 +130,6 @@ public class SystemLoader {
 
 			if(cpt+20 < lim) {
 				nom = wordReader(0, lim, lignes.get(i),'=',':',true);
-				System.out.println(nom);
 				type = wordReader(nom.length()+2, lim, lignes.get(i),'=',' ',true);
 				switch(type) {
 				case "Fixe" : expected += 3; break;
@@ -139,7 +142,7 @@ public class SystemLoader {
 			cpt = 0;
 			while(cpt < lim && valid != expected) {
 				if(1 < lim && lignes.get(i).charAt(0) != '#') {
-					//TODO: tester si PARAMS est la première ligne
+					if(cpt + 5 < lim && lignes.get(i).substring(0,5).equals("PARAMS")) ligneParam = i;
 					try {
 						if(cpt+5 < lim && lignes.get(i).substring(cpt,cpt+5).equals("masse")) {
 							masse = Double.parseDouble(wordReader(cpt, lim, lignes.get(i),'=',' ',false));
@@ -225,21 +228,20 @@ public class SystemLoader {
 		if(name) debut = idx;
 		int fin = 0;
 		for(int i = idx; i < lim; i++) {
-			if(txt.charAt(i) == beg && !name) debut = i+1;
-			if(!name) {
-				if(txt.charAt(i) == end || txt.charAt(i) == ';') {  
+			if (txt.charAt(i) == beg && !name) debut = i + 1;
+			if (!name) {
+				if (txt.charAt(i) == end || txt.charAt(i) == ';') {
 					fin = i;
 					break;
 				}
-			} else if(name) {
-				if(txt.charAt(i) == end || txt.charAt(i) == ':') {
+			} else if (name) {
+				if (txt.charAt(i) == end || txt.charAt(i) == ':') {
 					fin = i;
 					break;
 				}
 
 			}
 		}
-		System.out.println("debut : " + debut + " ; fin : " + fin);
 		return txt.substring(debut,fin);
 	}
 }

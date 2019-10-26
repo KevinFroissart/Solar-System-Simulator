@@ -48,8 +48,7 @@ public class Affichage implements Observer{
 	boolean afficherVaisseau = true;
 	boolean afficherPlanete = true;
 	boolean afficherSoleil = true;
-	final int tailleSoleil = 60;
-	Image imgSoleil = new Image("File:ressources/soleil.png", tailleSoleil, tailleSoleil, true, false);
+	Image imgSoleil = new Image("File:ressources/soleil.png", 60, 60, true, false);
 	Image imgVaisseau = new Image("File:ressources/vaisseau.png", 15, 15, true, false);
 	private static ArrayList<Image> planetes;
 	double vitesseSimu;
@@ -77,15 +76,13 @@ public class Affichage implements Observer{
 	public void createObject(Objet o, GraphicsContext gc) {
 		double x = o.getPos().getPosX()/2 + sys.getRayon()/2;
 		double y = o.getPos().getPosY()/2 + sys.getRayon()/2;
-		if(o.getType().matches("Fixe") && afficherSoleil) gc.drawImage(imgSoleil, x-(o.getMasse()*2+5)/2, y-(o.getMasse()*2+5)/2, o.getMasse()*2+5, o.getMasse()*2+5);
+		if(o.getType().matches("Fixe") && afficherSoleil) gc.drawImage(imgSoleil, x-(o.getTaille()/2), y-(o.getTaille()/2), o.getTaille(), o.getTaille());
 		if(o.getType().matches("Simulé") && afficherPlanete) {
 			ObjetSimule o2 = (ObjetSimule) o;
-			gc.drawImage(o2.getImage(), x-(o.getMasse()*6+5)/2, y-(o.getMasse()*6+5)/2, o.getMasse()*6+5, o.getMasse()*6+5);
+			gc.drawImage(o2.getImage(), x-(o.getTaille()/2), y-(o.getTaille()/2), o.getTaille(), o.getTaille());
 		}
-		if(o.getType().matches("Vaisseau") && afficherVaisseau) gc.drawImage(imgVaisseau, x-imgVaisseau.getHeight()/2, y-imgVaisseau.getWidth()/2);
+		if(o.getType().matches("Vaisseau") && afficherVaisseau) gc.drawImage(imgVaisseau,x-(o.getTaille()/4), y-(o.getTaille()/4), o.getTaille()/2, o.getTaille()/2);
 	}
-
-
 
 	public void creerInfo() {
 		info = new Information(listeObjet);
@@ -132,7 +129,7 @@ public class Affichage implements Observer{
 		zoomSlider.setShowTickMarks(true);
 		labelZoom.setStyle("-fx-font-weight:bold;");
 		labelVitesse.setStyle("-fx-font-weight:bold;");
-		
+
 		hb.getChildren().addAll(vbVitesse, vbZoom);
 		hb.setStyle("-fx-padding: 10;" + "-fx-border-style: solid inside;"
 		        + "-fx-border-width: 2;" + "-fx-border-insets: 10;"
@@ -259,8 +256,8 @@ public class Affichage implements Observer{
 		tl.setRate((sys.getDt()/sys.getFa()));
 		gc.clearRect(0, 0, sys.getRayon(), sys.getRayon());
 		gc.setFill(Color.WHITE);
-//		gc.strokeLine(sys.getRayon()/2, 0, sys.getRayon()/2, sys.getRayon());
-//		gc.strokeLine(0, sys.getRayon()/2, sys.getRayon(), sys.getRayon()/2);
+		gc.strokeLine(sys.getRayon()/2, 0, sys.getRayon()/2, sys.getRayon());
+		gc.strokeLine(0, sys.getRayon()/2, sys.getRayon(), sys.getRayon()/2);
 		for(Objet o : listeObjet) {
 			createObject(o, gc);
 			for(Objet o2 : listeObjet) {

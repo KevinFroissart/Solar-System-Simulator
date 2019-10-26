@@ -2,9 +2,7 @@ package controller;
 
 import java.io.File;
 import java.util.ArrayList;
-import java.util.Random;
 
-import javafx.scene.image.Image;
 import javafx.stage.FileChooser;
 import javafx.stage.Stage;
 import javafx.stage.FileChooser.ExtensionFilter;
@@ -27,66 +25,73 @@ public class AffichageControl {
 		this.sys = sys;
 	}
 
-	/** Active le propulseur droit du vaisseau pour se déplacer à gauche */
+	/**
+	 * Active le propulseur droit du vaisseau pour se déplacer à gauche
+	 */
 	public void left(Vaisseau obj, boolean avance) {
 		obj.left(avance);
 	}
 
-	/** Active le propulseur gauche du vaisseau pour se déplacer à droite */
+	/**
+	 * Active le propulseur gauche du vaisseau pour se déplacer à droite
+	 */
 	public void right(Vaisseau obj, boolean avance) {
 		obj.right(avance);
 	}
 
-	/** Active le propulseur bas du vaisseau pour accélérer */
+	/**
+	 * Active le propulseur bas du vaisseau pour accélérer
+	 */
 	public void down(Vaisseau obj, boolean avance) {
 		obj.down(avance);
 	}
 
-	/** Active le propulseur haut du vaisseau pour ralentir/freiner/reculer */
+	/**
+	 * Active le propulseur haut du vaisseau pour ralentir/freiner/reculer
+	 */
 	public void up(Vaisseau obj, boolean avance) {
 		obj.up(avance);
 	}
 
-	/** Méthode qui définit la vitesse de l'objet en fonction de son accélération et de l'attraction des autres objets (planètes) */
+	/**
+	 * Méthode qui définit la vitesse de l'objet en fonction de son accélération et de l'attraction des autres objets (planètes)
+	 */
 	public void Force(Objet objA, Objet objB) {
 
 		double xA = objA.getPos().getPosX();
 		double yA = objA.getPos().getPosY();
 		double xB = objB.getPos().getPosX();
 		double yB = objB.getPos().getPosY();
-
-		double distance = Math.sqrt(Math.pow(xA - xB,2) + Math.pow(yA - yB, 2));
-		/*  ## modifier la distance en fonction de la taille des objets
-		switch(objB.getType()) {
-		case "Fixe" : 
-			if(objA.getType().equals("Vaisseau")) distance = Math.sqrt(Math.pow(xA - xB,2) + Math.pow(yA - yB, 2) - (objB.getMasse() + 5));
-			if(objA.getType().equals("Simulé")) distance = Math.sqrt(Math.pow(xA - xB,2) + Math.pow(yA - yB, 2) - (objB.getMasse() + 5) - (objA.getMasse()*3+5));
-		case "Simulé" : 
-			if(objA.getType().equals("Vaisseau")) distance = Math.sqrt(Math.pow(xA - xB,2) + Math.pow(yA - yB, 2) - (objB.getMasse()*3 + 5));
-			if(objA.getType().equals("Simulé")) distance = Math.sqrt(Math.pow(xA - xB,2) + Math.pow(yA - yB, 2) - (objA.getMasse()*6+10));
-		} */ 
-		objA.setAttraction((sys.getG()*objA.getMasse()*objB.getMasse()) / Math.pow(distance, 2));
+		//Il faut qu'on trouve quelque chose pour gerer le volume des objets
+		double distance = Math.sqrt(Math.pow(xA - xB, 2) + Math.pow(yA - yB, 2));
+		//double distance = Math.sqrt(Math.pow(xA+objA.getTaille()/2 - xB+objB.getTaille()/2,2) + Math.pow(yA+objA.getTaille()/2 - yB+objB.getTaille()/2, 2));
+		objA.setAttraction((sys.getG() * objA.getMasse() * objB.getMasse()) / Math.pow(distance, 2));
 		objA.setAcc(objA.getAttraction() / objA.getMasse() * sys.getFa());
 		double dirX = (xB - xA) / distance;
 		double dirY = (yB - yA) / distance;
-
-		objA.setVit(new Vecteur(objA.getVitesse().getPosX() + dirX * objA.getacc(), objA.getVitesse().getPosY() + dirY * objA.getacc()));
+		System.out.println(objA.getName() +" - " + objB.getName() + " = " + distance);
+		objA.setVit(new Vecteur(objA.getVitesse().getPosX() + dirX * objA.getAcc(), objA.getVitesse().getPosY() + dirY * objA.getAcc()));
 	}
 
-	/** Changer la position de l'objet en paramètre*/ 
+	/**
+	 * Changer la position de l'objet en paramètre
+	 */
 	public void pos(Objet obj) {
 		obj.setPos(new Vecteur(obj.getPos().getPosX() + obj.getVitesse().getPosX(), obj.getPos().getPosY() + obj.getVitesse().getPosY()));
 	}
 
-	/** Retourne le SystemLoader du controller 
-	 * 
-	 * @return sl*/
+	/**
+	 * Retourne le SystemLoader du controller
+	 *
+	 * @return sl
+	 */
 	public SystemLoader getModel() {
 		return sl;
 	}
 
-	/** Retourne le systeme actuel du controller
-	 * 
+	/**
+	 * Retourne le systeme actuel du controller
+	 *
 	 * @return sys;
 	 */
 	public Systeme getSysteme() {
@@ -101,7 +106,7 @@ public class AffichageControl {
 		return sl.paramInit(4);
 	}
 
-	public File getFileExplorer (Stage stage) {
+	public File getFileExplorer(Stage stage) {
 		final FileChooser fileChooser = new FileChooser();
 		fileChooser.setTitle("Open Resource File");
 		fileChooser.getExtensionFilters().addAll(
@@ -109,7 +114,7 @@ public class AffichageControl {
 		try {
 			File selectedFile = fileChooser.showOpenDialog(stage);
 			return selectedFile;
-		} catch(NullPointerException e) {
+		} catch (NullPointerException e) {
 			e.printStackTrace();
 		} catch (Exception e2) {
 			e2.printStackTrace();
@@ -120,9 +125,4 @@ public class AffichageControl {
 	public void setSlider(Systeme sys, double value) {
 		sys.setDt(value);
 	}
-
-	
-
-
-
 }

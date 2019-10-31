@@ -148,6 +148,6 @@ public abstract class Objet extends Observable{
 	 * @return taille la taille de l'objet
 	 */
 	public double getTaille(){
-		return masse*2+20;
+		return masse*2+12;
 	}
 }

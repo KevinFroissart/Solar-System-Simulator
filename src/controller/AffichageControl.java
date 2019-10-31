@@ -63,13 +63,12 @@ public class AffichageControl {
 		double xB = objB.getPos().getPosX();
 		double yB = objB.getPos().getPosY();
 		//Il faut qu'on trouve quelque chose pour gerer le volume des objets
-		double distance = Math.sqrt(Math.pow(xA - xB, 2) + Math.pow(yA - yB, 2));
+		double distance = Math.sqrt(Math.pow(xB - xA, 2) + Math.pow(yB - yA, 2));
 		//double distance = Math.sqrt(Math.pow(xA+objA.getTaille()/2 - xB+objB.getTaille()/2,2) + Math.pow(yA+objA.getTaille()/2 - yB+objB.getTaille()/2, 2));
 		objA.setAttraction((sys.getG() * objA.getMasse() * objB.getMasse()) / Math.pow(distance, 2));
 		objA.setAcc(objA.getAttraction() / objA.getMasse() * sys.getFa());
 		double dirX = (xB - xA) / distance;
 		double dirY = (yB - yA) / distance;
-		System.out.println(objA.getName() +" - " + objB.getName() + " = " + distance);
 		objA.setVit(new Vecteur(objA.getVitesse().getPosX() + dirX * objA.getAcc(), objA.getVitesse().getPosY() + dirY * objA.getAcc()));
 	}
 

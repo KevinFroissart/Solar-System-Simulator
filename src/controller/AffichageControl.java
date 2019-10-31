@@ -2,6 +2,7 @@ package controller;
 
 import java.io.File;
 import java.util.ArrayList;
+import java.util.Observable;
 
 import javafx.stage.FileChooser;
 import javafx.stage.Stage;
@@ -15,7 +16,7 @@ import model.Vecteur;
 /** Cette classe contient les méthodes permettant le contrôle de la fusée et l'interaction des objets entre eux.
  * @author Maxence, Kévin
  */
-public class AffichageControl {
+public class AffichageControl extends Observable {
 
 	SystemLoader sl;
 	Systeme sys;
@@ -119,6 +120,12 @@ public class AffichageControl {
 			e2.printStackTrace();
 		}
 		return sl.getFile();
+	}
+
+	public void setZoom(double value){
+
+		setChanged();
+		notifyObservers(value);
 	}
 
 	public void setSlider(Systeme sys, double value) {

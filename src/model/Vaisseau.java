@@ -1,5 +1,8 @@
 package model;
 
+import java.awt.*;
+import javafx.scene.image.Image;
+
 /** Classe héritant de Objet définissant un vaisseau dans le système.
  * @author Lucas, Kevin
  */
@@ -36,5 +39,10 @@ public class Vaisseau extends Objet{
 	
 	public void left(boolean avance) {
 		if(avance) this.setVit(new Vecteur(this.getVitesse().getPosX()+pretro, this.getVitesse().getPosY()));
+	}
+
+	public Image getImage(){
+		return new Image("File:ressources/vaisseau.png", 15, 15, true, false);
+
 	}
 }

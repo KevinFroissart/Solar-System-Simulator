@@ -4,11 +4,7 @@ import javafx.scene.Scene;
 
 import javafx.scene.canvas.Canvas;
 import javafx.scene.canvas.GraphicsContext;
-import javafx.scene.control.Button;
-import javafx.scene.control.Label;
-import javafx.scene.control.Separator;
-import javafx.scene.control.Slider;
-import javafx.scene.control.ToolBar;
+import javafx.scene.control.*;
 import javafx.scene.image.Image;
 import javafx.scene.layout.*;
 import javafx.scene.paint.Color;
@@ -51,8 +47,6 @@ public class Affichage implements Observer{
 	boolean afficherPlanete = true;
 	boolean afficherSoleil = true;
 	boolean afficherTrajectoire = false;
-	Image imgSoleil = new Image("File:ressources/soleil.png", 60, 60, true, false);
-	Image imgVaisseau = new Image("File:ressources/vaisseau.png", 15, 15, true, false);
 	private static ArrayList<Image> planetes;
 	double vitesseSimu;
 	HBox hb = new HBox();
@@ -63,7 +57,8 @@ public class Affichage implements Observer{
 	Slider vitesseSimuSLider = new Slider();
 	Slider zoomSlider = new Slider();
 	Timeline tl;
-	Pane bpane = new Pane();
+	GridPane bpane = new GridPane();
+	int temps = 0;
 
 	public Affichage(AffichageControl ac) {
 		this.ac = ac;
@@ -80,7 +75,7 @@ public class Affichage implements Observer{
 	public void createObject(Objet o, GraphicsContext gc) {
 		double x = o.getPos().getPosX()/2 + sys.getRayon()/2;
 		double y = o.getPos().getPosY()/2 + sys.getRayon()/2;
-		if(o.getType().matches("Fixe") && afficherSoleil) gc.drawImage(imgSoleil, x-(o.getTaille()/2), y-(o.getTaille()/2), o.getTaille(), o.getTaille());
+		if(o.getType().matches("Fixe") && afficherSoleil) gc.drawImage(o.getImage(), x-(o.getTaille()/2), y-(o.getTaille()/2), o.getTaille(), o.getTaille());
 		if(o.getType().matches("Simulé") && afficherPlanete) {
 			ObjetSimule o2 = (ObjetSimule) o;
 			gc.drawImage(o2.getImage(), x-(o.getTaille()/2), y-(o.getTaille()/2), o.getTaille(), o.getTaille());
@@ -88,7 +83,7 @@ public class Affichage implements Observer{
 		if(o.getType().matches("Vaisseau") && afficherVaisseau){
 			gc.save();
 			//gc.rotate(25);
-			gc.drawImage(imgVaisseau,x-(o.getTaille()/4+6), y-(o.getTaille()/4+6), o.getTaille()/2+3, o.getTaille()/2+3);
+			gc.drawImage(o.getImage(),x-(o.getTaille()/4+6), y-(o.getTaille()/4+6), o.getTaille()/2+3, o.getTaille()/2+3);
 			gc.restore();
 		}
 	}
@@ -108,8 +103,10 @@ public class Affichage implements Observer{
 		layer2 = new Canvas(sys.getRayon(),sys.getRayon());
 		gc1 = layer1.getGraphicsContext2D();
 		gc2 = layer2.getGraphicsContext2D();
-		bpane.minWidth(sys.getRayon());
-		bpane.minHeight(sys.getRayon());
+		bpane.setMinSize(sys.getRayon(),sys.getRayon());
+		bpane.setVgap(100);
+		bpane.setHgap(100);
+		bpane.setGridLinesVisible(true);
 		bpane.getChildren().add(layer1);
 		bpane.getChildren().add(layer2);
 		layer1.toFront();
@@ -120,22 +117,22 @@ public class Affichage implements Observer{
 		Button reset = new Button("Reset");
 		Separator separator = new Separator();
 		Separator separator2 = new Separator();
-		Button bvs = new Button("Vaisseau");
-		Button bp = new Button("Planètes");
-		Button bs = new Button("Soleil");
+		ToggleButton bvs = new ToggleButton("Vaisseau");
+		ToggleButton bp = new ToggleButton("Planètes");
+		ToggleButton bs = new ToggleButton("Soleil");
 		Button binfo = new Button("Infos");
-		Button blayer = new Button("Trajectoire");
+		ToggleButton blayer = new ToggleButton("Trajectoire");
 
 		vbVitesse.getChildren().addAll(labelVitesse,vitesseSimuSLider);
 		vbZoom.getChildren().addAll(labelZoom,zoomSlider);
 		vbVitesse.setStyle("-fx-padding: 0 0 0 30;");
-		vitesseSimuSLider.setMin(1);
+		vitesseSimuSLider.setMin(sys.getDt());
 		vitesseSimuSLider.setMax(sys.getDt()*1000);
 		vitesseSimuSLider.setOrientation(Orientation.HORIZONTAL);
 		vitesseSimuSLider.setMinWidth(sys.getRayon()/2.5);
 		vitesseSimuSLider.setShowTickLabels(true);
 		vitesseSimuSLider.setShowTickMarks(true);
-		vitesseSimuSLider.setValue(sys.getFa());
+		vitesseSimuSLider.setValue(sys.getDt());
 
 		zoomSlider.setMin(-10);
 		zoomSlider.setMax(10);
@@ -167,6 +164,10 @@ public class Affichage implements Observer{
 			ac.setSlider(sys, vitesseSimuSLider.getValue());
 		});
 
+		zoomSlider.setOnMouseDragged( e-> {
+			ac.setZoom(zoomSlider.getValue());
+		});
+
 		open.setOnAction( e-> {
 			try {
 				File file = ac.getFileExplorer(stage);
@@ -192,6 +193,11 @@ public class Affichage implements Observer{
 			listeObjet = ac.resetObj();
 			sys = ac.resetSys();
 			gc2.clearRect(0,0,sys.getRayon(),sys.getRayon());
+			afficherTrajectoire = false;
+			blayer.setSelected(false);
+			bp.setSelected(false);
+			bs.setSelected(false);
+			bvs.setSelected(false);
 			try {
 				info.setListe(listeObjet);
 			}catch(NullPointerException e1) {
@@ -207,18 +213,36 @@ public class Affichage implements Observer{
 		});	
 
 		bvs.setOnAction( e-> {
-			if(afficherVaisseau) afficherVaisseau = false;
-			else afficherVaisseau = true;
+			if(bvs.isSelected()){
+				bvs.setSelected(true);
+				afficherVaisseau = false;
+			}
+			else{
+				bvs.setSelected(false);
+				afficherVaisseau = true;
+			}
 		});
 
 		bp.setOnAction( e-> {
-			if(afficherPlanete) afficherPlanete = false;
-			else afficherPlanete = true;
+			if(bp.isSelected()){
+				bp.setSelected(true);
+				afficherPlanete = false;
+			}
+			else{
+				bp.setSelected(false);
+				afficherPlanete = true;
+			}
 		});
 
 		bs.setOnAction( e-> {
-			if(afficherSoleil) afficherSoleil = false;
-			else afficherSoleil = true;		
+			if(bs.isSelected()){
+				bs.setSelected(true);
+				afficherSoleil = false;
+			}
+			else{
+				bs.setSelected(false);
+				afficherSoleil = true;
+			}
 		});
 
 		binfo.setOnAction( e-> {
@@ -230,14 +254,15 @@ public class Affichage implements Observer{
 		});
 
 		blayer.setOnAction( e -> {
-			if(!afficherTrajectoire){
+			if(blayer.isSelected()){
+				blayer.setSelected(true);
 				afficherTrajectoire = true;
 			}
 			else{
+				blayer.setSelected(false);
 				afficherTrajectoire = false;
 				gc2.clearRect(0,0,sys.getRayon(),sys.getRayon());
 			}
-			System.out.println(afficherTrajectoire);
 		});
 
 		scene.setOnKeyPressed( e-> {
@@ -276,16 +301,18 @@ public class Affichage implements Observer{
 		stage.setScene(scene); 
 		stage.centerOnScreen();
 		stage.show();
-		stage.getIcons().add(imgSoleil);
+		stage.getIcons().add(new Image("File:ressources/soleil.png", 60, 60, true, false));
 		tl.play();
 	}
  
 	private void run() {
 		tl.setRate((sys.getDt()/sys.getFa()));
+		temps++;
+		System.out.println(temps);
 		gc1.clearRect(0, 0, sys.getRayon(), sys.getRayon());
 		gc1.setFill(Color.WHITE);
-		gc1.strokeLine(sys.getRayon()/2, 0, sys.getRayon()/2, sys.getRayon());
-		gc1.strokeLine(0, sys.getRayon()/2, sys.getRayon(), sys.getRayon()/2);
+		//gc1.strokeLine(sys.getRayon()/2, 0, sys.getRayon()/2, sys.getRayon());
+		//gc1.strokeLine(0, sys.getRayon()/2, sys.getRayon(), sys.getRayon()/2);
 		for(Objet o : listeObjet) {
 			createObject(o, gc1);
 			for(Objet o2 : listeObjet) {
@@ -304,5 +331,6 @@ public class Affichage implements Observer{
 	@Override
 	public void update(Observable arg0, Object arg1) {
 		vitesseSimuSLider.setValue(sys.getDt());
+		//zoomSlider.setValue();
 	}
 }

@@ -1,5 +1,7 @@
 package model;
 
+import javafx.scene.image.Image;
+
 import java.util.Observable;
 
 /** Classe définissant un objet dans le système, comme une planète.
@@ -150,4 +152,6 @@ public abstract class Objet extends Observable{
 	public double getTaille(){
 		return masse*2+12;
 	}
+
+	public abstract Image getImage();
 }

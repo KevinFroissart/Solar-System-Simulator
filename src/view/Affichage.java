@@ -318,6 +318,7 @@ public class Affichage implements Observer{
 			for(Objet o2 : listeObjet) {
 				if(o.getType().matches("Simulé") && o2.getType().equals("Fixe")) {
 					ac.Force(o, o2);
+					gc2.setFill(Color.WHITE);
 					if(afficherTrajectoire) gc2.fillOval(o.getPos().getPosX()/2+sys.getRayon()/2-0.5,o.getPos().getPosY()/2+sys.getRayon()/2-0.5,1,1);
 				}
 				if(o.getType().equals("Vaisseau") && !o2.getType().equals("Vaisseau")) {

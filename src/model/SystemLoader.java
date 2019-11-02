@@ -30,7 +30,7 @@ public class SystemLoader {
 				config = toRead;
 			} else {
 				System.err.println("Impossible de lire le fichier du chemin spécifié, lecture du fichier par défaut initialisée");
-				config = new File("ressources/system.txt");
+				config = new File("exemples/system.txt");
 			}
 			br = new BufferedReader(new FileReader(config));
 			String read = "";

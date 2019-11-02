@@ -134,12 +134,13 @@ public class Affichage implements Observer{
 		vitesseSimuSLider.setShowTickMarks(true);
 		vitesseSimuSLider.setValue(sys.getDt());
 
-		zoomSlider.setMin(-10);
-		zoomSlider.setMax(10);
+		zoomSlider.setMin(-1);
+		zoomSlider.setMax(1);
 		zoomSlider.setOrientation(Orientation.HORIZONTAL);
 		zoomSlider.setMinWidth(sys.getRayon()/2.5);
 		zoomSlider.setShowTickLabels(true);
 		zoomSlider.setShowTickMarks(true);
+		zoomSlider.setDisable(true);
 		labelZoom.setStyle("-fx-font-weight:bold;");
 		labelVitesse.setStyle("-fx-font-weight:bold;");
 
@@ -166,6 +167,10 @@ public class Affichage implements Observer{
 
 		zoomSlider.setOnMouseDragged( e-> {
 			ac.setZoom(zoomSlider.getValue());
+			for(Objet o : listeObjet){
+				if(zoomSlider.getValue() > 0) o.setTaille(o.getTaille()*(zoomSlider.getValue()+1));
+				if(zoomSlider.getValue() < 0) o.setTaille(o.getTaille()/(zoomSlider.getValue()+1));
+			}
 		});
 
 		open.setOnAction( e-> {
@@ -307,8 +312,6 @@ public class Affichage implements Observer{
  
 	private void run() {
 		tl.setRate((sys.getDt()/sys.getFa()));
-		temps++;
-		System.out.println(temps);
 		gc1.clearRect(0, 0, sys.getRayon(), sys.getRayon());
 		gc1.setFill(Color.WHITE);
 		//gc1.strokeLine(sys.getRayon()/2, 0, sys.getRayon()/2, sys.getRayon());
@@ -331,6 +334,6 @@ public class Affichage implements Observer{
 	@Override
 	public void update(Observable arg0, Object arg1) {
 		vitesseSimuSLider.setValue(sys.getDt());
-		//zoomSlider.setValue();
+		zoomSlider.setValue(sys.getZoom());
 	}
 }

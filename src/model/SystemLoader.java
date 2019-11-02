@@ -1,7 +1,6 @@
 package model;
 
 import java.io.*;
-import java.rmi.NotBoundException;
 import java.text.Normalizer;
 import java.util.ArrayList;
 
@@ -60,8 +59,8 @@ public class SystemLoader {
 		for(int i = 0; i < lignes.size(); i++) {
 			int cpt = 0;
 			int lim = lignes.get(i).length();
-			if(lignes.get(i).charAt(0) == '#') nbHashtags++;
-			if(lignes.get(i).substring(0,6).equals("PARAMS")) ligneParam = i+1;
+			if(lim > 1 && lignes.get(i).charAt(0) == '#') nbHashtags++;
+			if(lim > 6 && lignes.get(i).substring(0,6).equals("PARAMS")) ligneParam = i+1;
 			while(cpt < lim && valid != expected && ligneParam != 0) {
 
 				try {
@@ -111,8 +110,6 @@ public class SystemLoader {
 		int nbVaisseau = 0;
 		int expected = 0;
 		int valid = 0;
-		int nbHastags = 0;
-		int ligneParam = 0;
 
 		for(int i = 0; i < lignes.size(); i++) {
 
@@ -142,7 +139,6 @@ public class SystemLoader {
 			cpt = 0;
 			while(cpt < lim && valid != expected) {
 				if(1 < lim && lignes.get(i).charAt(0) != '#') {
-					if(cpt + 5 < lim && lignes.get(i).substring(0,5).equals("PARAMS")) ligneParam = i;
 					try {
 						if(cpt+5 < lim && lignes.get(i).substring(cpt,cpt+5).equals("masse")) {
 							masse = Double.parseDouble(wordReader(cpt, lim, lignes.get(i),'=',' ',false));

@@ -1,6 +1,5 @@
 package model;
 
-import java.awt.*;
 import javafx.scene.image.Image;
 
 /** Classe héritant de Objet définissant un vaisseau dans le système.

@@ -1,8 +1,7 @@
 package model;
+
 import java.util.ArrayList;
 import java.util.Random;
-
-import controller.*;
 import javafx.scene.image.Image;
 
 
@@ -43,11 +42,9 @@ public class ObjetSimule extends Objet {
 		catch(Exception e) {
 			e.printStackTrace();
 		}
-		Album= Album;
 	}
 
 	public Image getImage() {
 		return Album.get(idx);
 	}
-
 }

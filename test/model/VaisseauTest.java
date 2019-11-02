@@ -1,10 +1,4 @@
 package model;
-import static org.junit.Assert.*;
-
-import org.junit.Test;
-
-import model.Vaisseau;
-import model.Vecteur;
 
 public class VaisseauTest {
 	/*Vaisseau Starship = new Vaisseau("Vaisseau", "Soyouz", 3.0, new Vecteur(0.0,0.0), new Vecteur(1.0,1.0),new Vecteur(2.0,2.0),20.0);

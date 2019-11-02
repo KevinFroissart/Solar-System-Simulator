@@ -14,10 +14,11 @@ public class Systeme extends Observable{
 	 * @param rayon étendue du système
 	 * */
 
-	private double g = 0;
-	private double dt = 0;
-	private double fa = 0;
-	private double rayon = 0;
+	private double g;
+	private double dt;
+	private double fa;
+	private double rayon;
+	private double zoom;
 	
 	/**
 	 * Contructeur qui instancie le Systeme à l'aide des valeurs de chacun des attributs mis en paramètre
@@ -31,6 +32,7 @@ public class Systeme extends Observable{
 		this.dt = dt;
 		this.fa = fa;
 		this.rayon = rayon;
+		zoom = 0;
 	}
 
 	/**
@@ -83,5 +85,19 @@ public class Systeme extends Observable{
 		this.dt = dt;
 		setChanged();
 		notifyObservers(dt);
-	}	
+	}
+
+	public double getZoom(){
+		return zoom;
+	}
+
+	public void setZoom(double value) {
+		this.zoom = value;
+		setChanged();
+		notifyObservers(value);
+	}
+
+	public void setRayon(double value) {
+		this.rayon = value;
+	}
 }

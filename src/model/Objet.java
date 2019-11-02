@@ -18,6 +18,8 @@ public abstract class Objet extends Observable{
 	 * @param acc Vecteur accélération de l'Objet
 	 * @param vitesse Vecteur vitesse de l'Objet
 	 * @param type nom du type de l'Objet
+	 * @param attraction force d'attraction subie par l'objet
+	 * @param taille taille de l'objet dans l'universs
 	 */
 	protected String name;
 	protected double masse;
@@ -26,7 +28,8 @@ public abstract class Objet extends Observable{
 	protected Vecteur vitesse;
 	protected String type;
 	protected double attraction;
-	
+	protected double taille;
+
 	/**
 	 * Constructeur qui instancie un objet du système
 	 * @param name
@@ -41,12 +44,12 @@ public abstract class Objet extends Observable{
 		this.name = name;
 		this.type = type;
 		this.masse = masse;
-		this.name=name;
-		this.pos=pos;
-		this.vitesse=vitesse;
-		this.acc=acc;
-		this.attraction=attraction;
-		
+		this.name = name;
+		this.pos = pos;
+		this.vitesse = vitesse;
+		this.acc = acc;
+		this.attraction = attraction;
+		this.taille = masse*2+12;
 	}
 
 	/**
@@ -150,8 +153,13 @@ public abstract class Objet extends Observable{
 	 * @return taille la taille de l'objet
 	 */
 	public double getTaille(){
-		return masse*2+12;
+		return taille;
+	}
+
+	public void setTaille(double value) {
+		this.taille = value;
 	}
 
 	public abstract Image getImage();
+
 }

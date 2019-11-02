@@ -123,7 +123,9 @@ public class AffichageControl extends Observable {
 	}
 
 	public void setZoom(double value){
-
+		sys.setZoom(value);
+		if(value > 0) sys.setRayon(sys.getRayon()*(value+1));
+		if(value < 0) sys.setRayon(sys.getRayon()/(value+1));
 		setChanged();
 		notifyObservers(value);
 	}

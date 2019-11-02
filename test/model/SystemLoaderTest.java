@@ -6,7 +6,7 @@ import org.junit.Test;
 
 import model.SystemLoader;
 
-public class SystemLoaderTest2 extends SystemLoader{
+public class SystemLoaderTest extends SystemLoader{
 
 
 	

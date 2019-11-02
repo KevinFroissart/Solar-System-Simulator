@@ -5,7 +5,7 @@ import org.junit.Test;
 
 import model.Vecteur;
 
-public class VecteurTest2 {
+public class VecteurTest {
 
 	@Test
 	public void getPosXTest(){

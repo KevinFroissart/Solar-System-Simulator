@@ -29,7 +29,6 @@ public class Main extends Application{
 			System.err.println("Impossible de trouver le fichier spécifié. Vérifiez votre chemin de fichier. Ex : ressources/system.txt");
 			System.exit(1);
 		} catch (Exception e1) {
-			System.out.println("tetetete");
 			e1.printStackTrace();
 			System.exit(1);
 		}

@@ -141,8 +141,8 @@ public class Affichage implements Observer{
 
 		hb.getChildren().addAll(vbVitesse, vbZoom);
 		hb.setStyle("-fx-padding: 10;" + "-fx-border-style: solid inside;"
-		        + "-fx-border-width: 2;" + "-fx-border-insets: 10;"
-		        + "-fx-border-radius: 10;" + "-fx-border-color: black;");
+				+ "-fx-border-width: 2;" + "-fx-border-insets: 10;"
+				+ "-fx-border-radius: 10;" + "-fx-border-color: black;");
 		toolBar.getItems().addAll(open,reset,separator,bvs,bp,bs,blayer,separator2,binfo);
 
 		//Unité de temps et de simulation du systeme
@@ -171,15 +171,17 @@ public class Affichage implements Observer{
 		open.setOnAction( e-> {
 			try {
 				File file = ac.getFileExplorer(stage);
-				sl.reader(file);
-				listeObjet = ac.resetObj();
-				sys = ac.resetSys();
-				vitesseSimuSLider.setValue(sys.getDt());
-				for(Objet o : listeObjet) {
-					o.addObserver(info);
+				if(file != null) { 
+					sl.reader(file);
+					listeObjet = ac.resetObj();
+					sys = ac.resetSys();
+					vitesseSimuSLider.setValue(sys.getFa());
+					for(Objet o : listeObjet) {
+						o.addObserver(info);
+					}
+					sys.addObserver(this);
+					info.setListe(listeObjet);
 				}
-				sys.addObserver(this);
-				info.setListe(listeObjet);
 			} 
 			catch(NullPointerException e1) {
 				e1.printStackTrace();
@@ -304,7 +306,7 @@ public class Affichage implements Observer{
 		stage.getIcons().add(new Image("File:ressources/soleil.png", 60, 60, true, false));
 		tl.play();
 	}
- 
+
 	private void run() {
 		tl.setRate(sys.getFa());
 		gc1.clearRect(0, 0, sys.getRayon(), sys.getRayon());

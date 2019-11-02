@@ -7,6 +7,39 @@
 - BISSON Clément
 - DEROUCK Lucas
 
+## Responsabilités ##
+
+##### DEROUCK Lucas 
+* Création des différentes vues
+* Affichage des informations dans la vue infos
+* CSS & placement des sliders
+* Création des classes Objet
+
+##### BISSON Clément
+* JavaDoc
+* Tests Unitaire
+* Séléction aléatoire des sprites lors de la création des planètes
+* Création classe Vecteurs
+	
+##### BOURDIN Maxence
+* Ajout de tous les sprites sur chacun des objets, icone et background, ressources
+* Chargement du fichier en ligne de commandes
+* Chargement de fichiers depuis l'application
+* Gestion des erreurs
+* Gestion de la progression, ajout de TO:DO & JavaDoc
+
+##### FROISSART Kévin
+* Lecture du fichier
+* Gestion des erreurs textuelles des fichiers
+* Stockage & création des objets dans le canvas
+* Implémentation d'Euler
+* Ajout de la trajectoire des objets
+* Guidage du vaisseau
+* Création du controller
+* Création de l'affichage, des sliders, boutons et leurs actions
+* Communication des informations via des observers
+* Préparation du rendu, captures, dossiers, jar ....
+
 ## Fonctionnalités ##
 
 	- Exécution d'un système depuis une console avec une ligne de commande.

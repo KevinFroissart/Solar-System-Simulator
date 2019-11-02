@@ -58,7 +58,8 @@ public class Affichage implements Observer{
 	Timeline tl;
 	Pane bpane = new Pane();
 	int temps = 0;
-
+	Scene scene;
+	
 	public Affichage(AffichageControl ac) {
 		this.ac = ac;
 		sl = ac.getModel();
@@ -150,8 +151,7 @@ public class Affichage implements Observer{
 		tl.setCycleCount(Timeline.INDEFINITE);
 
 		Group root = new Group();
-		Scene scene = new Scene(root,sys.getRayon(), sys.getRayon() + 130);
-
+		scene = new Scene(root,sys.getRayon(), sys.getRayon() + 130);
 		//Ici j'ajoute le background image à la VBox qui est root de notre systeme
 		BackgroundImage back = new BackgroundImage(new Image("File:ressources/background.jpg",0, 0, true, false), BackgroundRepeat.REPEAT, BackgroundRepeat.NO_REPEAT, BackgroundPosition.DEFAULT, BackgroundSize.DEFAULT);
 		vb.setBackground(new Background(back));
@@ -267,6 +267,7 @@ public class Affichage implements Observer{
 			}
 		});
 
+		scene.getRoot().requestFocus();
 		scene.setOnKeyPressed( e-> {
 			if(e.getCode().equals(KeyCode.I)) {
 				try {
@@ -309,6 +310,7 @@ public class Affichage implements Observer{
 
 	private void run() {
 		tl.setRate(sys.getFa());
+		scene.getRoot().requestFocus();
 		gc1.clearRect(0, 0, sys.getRayon(), sys.getRayon());
 		gc1.setFill(Color.WHITE);
 		//gc1.strokeLine(sys.getRayon()/2, 0, sys.getRayon()/2, sys.getRayon());

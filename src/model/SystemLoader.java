@@ -31,7 +31,7 @@ public class SystemLoader {
 				System.err.println("Impossible de lire le fichier du chemin spécifié, lecture du fichier par défaut initialisée");
 				config = new File("exemples/system.txt");
 			}
-			br = new BufferedReader(new FileReader(config));
+			br = new BufferedReader(new InputStreamReader(new FileInputStream(config), "UTF-8"));
 			String read = "";
 			while ((read = br.readLine()) != null) {
 				read += ";";

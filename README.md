@@ -20,3 +20,8 @@
 	- Contrôle du vaisseau via les flèches du clavier.
 
 ## Exécution du code ##
+
+* Version de java : [Java SE Development Kit 13.0.1](https://www.oracle.com/technetwork/java/javase/downloads/jdk13-downloads-5672538.html)
+* Version de javaFx : [JavaFX 13](https://openjfx.io/)
+* Ligne de commande pour exécuter le .jar : 
+mode2020-h1> java -jar mode2020-h1.jar exemples/fichier-a-executer.astro(txt)

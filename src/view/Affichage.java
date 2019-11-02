@@ -47,7 +47,6 @@ public class Affichage implements Observer{
 	boolean afficherPlanete = true;
 	boolean afficherSoleil = true;
 	boolean afficherTrajectoire = false;
-	private static ArrayList<Image> planetes;
 	double vitesseSimu;
 	HBox hb = new HBox();
 	VBox vbVitesse = new VBox();
@@ -57,7 +56,7 @@ public class Affichage implements Observer{
 	Slider vitesseSimuSLider = new Slider();
 	Slider zoomSlider = new Slider();
 	Timeline tl;
-	GridPane bpane = new GridPane();
+	Pane bpane = new Pane();
 	int temps = 0;
 
 	public Affichage(AffichageControl ac) {
@@ -104,11 +103,7 @@ public class Affichage implements Observer{
 		gc1 = layer1.getGraphicsContext2D();
 		gc2 = layer2.getGraphicsContext2D();
 		bpane.setMinSize(sys.getRayon(),sys.getRayon());
-		bpane.setVgap(100);
-		bpane.setHgap(100);
-		bpane.setGridLinesVisible(true);
-		bpane.getChildren().add(layer1);
-		bpane.getChildren().add(layer2);
+		bpane.getChildren().addAll(layer1,layer2);
 		layer1.toFront();
 
 		VBox vb = new VBox();
@@ -126,8 +121,8 @@ public class Affichage implements Observer{
 		vbVitesse.getChildren().addAll(labelVitesse,vitesseSimuSLider);
 		vbZoom.getChildren().addAll(labelZoom,zoomSlider);
 		vbVitesse.setStyle("-fx-padding: 0 0 0 30;");
-		vitesseSimuSLider.setMin(sys.getDt());
-		vitesseSimuSLider.setMax(sys.getDt()*1000);
+		vitesseSimuSLider.setMin(1);
+		vitesseSimuSLider.setMax(4);
 		vitesseSimuSLider.setOrientation(Orientation.HORIZONTAL);
 		vitesseSimuSLider.setMinWidth(sys.getRayon()/2.5);
 		vitesseSimuSLider.setShowTickLabels(true);
@@ -311,7 +306,7 @@ public class Affichage implements Observer{
 	}
  
 	private void run() {
-		tl.setRate((sys.getDt()/sys.getFa()));
+		tl.setRate(sys.getFa());
 		gc1.clearRect(0, 0, sys.getRayon(), sys.getRayon());
 		gc1.setFill(Color.WHITE);
 		//gc1.strokeLine(sys.getRayon()/2, 0, sys.getRayon()/2, sys.getRayon());
@@ -333,7 +328,7 @@ public class Affichage implements Observer{
 
 	@Override
 	public void update(Observable arg0, Object arg1) {
-		vitesseSimuSLider.setValue(sys.getDt());
+		vitesseSimuSLider.setValue(sys.getFa());
 		zoomSlider.setValue(sys.getZoom());
 	}
 }

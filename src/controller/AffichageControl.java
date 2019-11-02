@@ -67,7 +67,7 @@ public class AffichageControl extends Observable {
 		double distance = Math.sqrt(Math.pow(xB - xA, 2) + Math.pow(yB - yA, 2));
 		//double distance = Math.sqrt(Math.pow(xA+objA.getTaille()/2 - xB+objB.getTaille()/2,2) + Math.pow(yA+objA.getTaille()/2 - yB+objB.getTaille()/2, 2));
 		objA.setAttraction((sys.getG() * objA.getMasse() * objB.getMasse()) / Math.pow(distance, 2));
-		objA.setAcc(objA.getAttraction() / objA.getMasse() * sys.getFa());
+		objA.setAcc(objA.getAttraction() / objA.getMasse());// * sys.getFa());
 		double dirX = (xB - xA) / distance;
 		double dirY = (yB - yA) / distance;
 		objA.setVit(new Vecteur(objA.getVitesse().getPosX() + dirX * objA.getAcc(), objA.getVitesse().getPosY() + dirY * objA.getAcc()));
@@ -131,6 +131,6 @@ public class AffichageControl extends Observable {
 	}
 
 	public void setSlider(Systeme sys, double value) {
-		sys.setDt(value);
+		sys.setFa(value);
 	}
 }

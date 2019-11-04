@@ -28,6 +28,8 @@ public abstract class Objet extends Observable{
 	protected Vecteur vitesse;
 	protected String type;
 	protected double attraction;
+	protected double attractionSoleil;
+	protected double attractionPlanete;
 	protected double taille;
 
 	/**
@@ -137,6 +139,12 @@ public abstract class Objet extends Observable{
 	public double getAttraction() {
 		return attraction;
 	}
+	public double getAttractionSoleil() {
+		return attractionSoleil*(1000000000);
+	}
+	public double getAttractionPlanete() {
+		return attractionPlanete*(1000000000);
+	}
 
 	/**
 	 * Modifie la valeur de la force d'attraction que subit l'objet
@@ -144,6 +152,18 @@ public abstract class Objet extends Observable{
 	 */
 	public void setAttraction(double attraction) {
 		this.attraction = attraction;
+		setChanged();
+		notifyObservers(pos);
+	}
+	
+	public void setAttractionSoleil(double attraction) {
+		this.attractionSoleil = attraction;
+		setChanged();
+		notifyObservers(pos);
+	}
+	
+	public void setAttractionPlanete(double attraction) {
+		this.attractionPlanete= attraction;
 		setChanged();
 		notifyObservers(pos);
 	}

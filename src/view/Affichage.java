@@ -32,7 +32,7 @@ import model.ObjetSimule;
  * @author Kevin, Maxence
  */
 
-public class Affichage implements Observer{
+public class Affichage implements Observer {
 
 	AffichageControl ac;
 	SystemLoader sl;

@@ -151,7 +151,7 @@ public class Affichage implements Observer{
 		tl.setCycleCount(Timeline.INDEFINITE);
 
 		Group root = new Group();
-		scene = new Scene(root,sys.getRayon(), sys.getRayon() + 130);
+		scene = new Scene(root);
 		//Ici j'ajoute le background image à la VBox qui est root de notre systeme
 		BackgroundImage back = new BackgroundImage(new Image("File:ressources/background.jpg",0, 0, true, false), BackgroundRepeat.REPEAT, BackgroundRepeat.NO_REPEAT, BackgroundPosition.DEFAULT, BackgroundSize.DEFAULT);
 		vb.setBackground(new Background(back));

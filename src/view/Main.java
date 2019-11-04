@@ -1,4 +1,4 @@
-package model;
+package view;
 
 import java.io.File;
 import java.io.FileNotFoundException;
@@ -6,7 +6,8 @@ import java.io.FileNotFoundException;
 import controller.AffichageControl;
 import javafx.application.Application;
 import javafx.stage.Stage;
-import view.Affichage;
+import model.SystemLoader;
+import model.Systeme;
 
 /** Modèle initialisant les différentes vues
  * @author Kevin 

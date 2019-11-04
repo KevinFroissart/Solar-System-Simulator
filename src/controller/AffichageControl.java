@@ -133,8 +133,4 @@ public class AffichageControl extends Observable {
 		setChanged();
 		notifyObservers(value);
 	}
-
-	public void setSlider(Systeme sys, double value) {
-		sys.setFa(value);
-	}
 }

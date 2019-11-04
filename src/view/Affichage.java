@@ -49,11 +49,9 @@ public class Affichage implements Observer {
 	boolean afficherTrajectoire = false;
 	double vitesseSimu;
 	HBox hb = new HBox();
-	VBox vbVitesse = new VBox();
 	VBox vbZoom = new VBox();
 	Label labelVitesse = new Label("Vitesse de la simulation");
 	Label labelZoom = new Label("Zoom");
-	Slider vitesseSimuSLider = new Slider();
 	Slider zoomSlider = new Slider();
 	Timeline tl;
 	Pane bpane = new Pane();
@@ -119,16 +117,7 @@ public class Affichage implements Observer {
 		Button binfo = new Button("Infos");
 		ToggleButton blayer = new ToggleButton("Trajectoire");
 
-		vbVitesse.getChildren().addAll(labelVitesse,vitesseSimuSLider);
 		vbZoom.getChildren().addAll(labelZoom,zoomSlider);
-		vbVitesse.setStyle("-fx-padding: 0 0 0 30;");
-		vitesseSimuSLider.setMin(1);
-		vitesseSimuSLider.setMax(4);
-		vitesseSimuSLider.setOrientation(Orientation.HORIZONTAL);
-		vitesseSimuSLider.setMinWidth(sys.getRayon()/2.5);
-		vitesseSimuSLider.setShowTickLabels(true);
-		vitesseSimuSLider.setShowTickMarks(true);
-		vitesseSimuSLider.setValue(sys.getDt());
 
 		zoomSlider.setMin(-1);
 		zoomSlider.setMax(1);
@@ -140,7 +129,7 @@ public class Affichage implements Observer {
 		labelZoom.setStyle("-fx-font-weight:bold;");
 		labelVitesse.setStyle("-fx-font-weight:bold;");
 
-		hb.getChildren().addAll(vbVitesse, vbZoom);
+		hb.getChildren().add(vbZoom);
 		hb.setStyle("-fx-padding: 10;" + "-fx-border-style: solid inside;"
 				+ "-fx-border-width: 2;" + "-fx-border-insets: 10;"
 				+ "-fx-border-radius: 10;" + "-fx-border-color: black;");
@@ -155,10 +144,6 @@ public class Affichage implements Observer {
 		//Ici j'ajoute le background image à la VBox qui est root de notre systeme
 		BackgroundImage back = new BackgroundImage(new Image("File:ressources/background.jpg",0, 0, true, false), BackgroundRepeat.REPEAT, BackgroundRepeat.NO_REPEAT, BackgroundPosition.DEFAULT, BackgroundSize.DEFAULT);
 		vb.setBackground(new Background(back));
-
-		vitesseSimuSLider.setOnMouseDragged( e-> {
-			ac.setSlider(sys, vitesseSimuSLider.getValue());
-		});
 
 		zoomSlider.setOnMouseDragged( e-> {
 			ac.setZoom(zoomSlider.getValue());
@@ -175,7 +160,6 @@ public class Affichage implements Observer {
 					sl.reader(file);
 					listeObjet = ac.resetObj();
 					sys = ac.resetSys();
-					vitesseSimuSLider.setValue(sys.getFa());
 					for(Objet o : listeObjet) {
 						o.addObserver(info);
 					}
@@ -211,7 +195,6 @@ public class Affichage implements Observer {
 				o.addObserver(info);
 			}		
 			sys.addObserver(this);
-			vitesseSimuSLider.setValue(sys.getDt());
 		});	
 
 		bvs.setOnAction( e-> {
@@ -237,6 +220,7 @@ public class Affichage implements Observer {
 		});
 
 		bs.setOnAction( e-> {
+
 			if(bs.isSelected()){
 				bs.setSelected(true);
 				afficherSoleil = false;
@@ -333,7 +317,6 @@ public class Affichage implements Observer {
 
 	@Override
 	public void update(Observable arg0, Object arg1) {
-		vitesseSimuSLider.setValue(sys.getFa());
 		zoomSlider.setValue(sys.getZoom());
 	}
 }

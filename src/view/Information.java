@@ -23,7 +23,6 @@ public class Information implements Observer{
 	DecimalFormat df = new DecimalFormat("0.00");
 	DecimalFormat df2 = new DecimalFormat("0.00000");
 	DecimalFormat df3 = new DecimalFormat("0.0000000");
-	DecimalFormat df4 = new DecimalFormat("0.000000000");
 	
 
 	public Information(ArrayList<Objet> listeObjet) {
@@ -66,7 +65,8 @@ public class Information implements Observer{
 			if(o2.getType().equals("Vaisseau")) {
 				vais += "     "+o2.getName()+"\n Masse : "+o2.getMasse()+" kg\n Position : X: "+df.format((o2.getPos().getPosX()))+
 						   " m; Y: "+df.format(o2.getPos().getPosY())+" m\n Vitesse  X:"+df2.format(o2.getVitesse().getPosX()) +" m/s Y :"+df2.format(o2.getVitesse().getPosY())+" m/s\n"
-							  +" Force Attraction : "+df4.format(o2.getAttraction()) +" N\n \n";
+							  +" Force Attraction Soleil: "+df2.format(o2.getAttractionSoleil())+" *10^-9 N\n"
+							  +" Force Attraction Planete: "+df2.format(o2.getAttractionPlanete()) +" *10^-9 N\n \n";
 				//System.out.println(o2.getAttraction());
 			}
 		}

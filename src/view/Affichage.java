@@ -306,6 +306,20 @@ public class Affichage implements Observer{
 		stage.show();
 		stage.getIcons().add(new Image("File:ressources/soleil.png", 60, 60, true, false));
 		tl.play();
+		
+		double sc = 1.5;
+		layer1.setScaleX(sc);
+		layer1.setScaleY(sc);
+		layer2.setScaleX(sc);
+		layer2.setScaleY(sc);
+	sys.setRayon(sys.getRayon()/sc);
+		layer1.setHeight(sys.getRayon());
+		layer1.setWidth(sys.getRayon());
+		layer2.setHeight(sys.getRayon());
+		layer2.setWidth(sys.getRayon());
+		
+		
+		
 	}
 
 	private void run() {

@@ -102,6 +102,7 @@ public class Affichage implements Observer {
 		gc1 = layer1.getGraphicsContext2D();
 		gc2 = layer2.getGraphicsContext2D();
 		bpane.setMinSize(sys.getRayon(),sys.getRayon());
+		
 		bpane.getChildren().addAll(layer1,layer2);
 		layer1.toFront();
 
@@ -109,6 +110,7 @@ public class Affichage implements Observer {
 		ToolBar toolBar = new ToolBar();
 		Button open = new Button("Ouvrir");
 		Button reset = new Button("Reset");
+		Button vaisseauVue= new Button("Vue Vaisseau");
 		Separator separator = new Separator();
 		Separator separator2 = new Separator();
 		ToggleButton bvs = new ToggleButton("Vaisseau");
@@ -129,7 +131,7 @@ public class Affichage implements Observer {
 		labelZoom.setStyle("-fx-font-weight:bold;");
 		labelVitesse.setStyle("-fx-font-weight:bold;");
 
-		hb.getChildren().add(vbZoom);
+		hb.getChildren().addAll(vbZoom,vaisseauVue);
 		hb.setStyle("-fx-padding: 10;" + "-fx-border-style: solid inside;"
 				+ "-fx-border-width: 2;" + "-fx-border-insets: 10;"
 				+ "-fx-border-radius: 10;" + "-fx-border-color: black;");
@@ -237,6 +239,13 @@ public class Affichage implements Observer {
 			} catch (Exception e1) {
 				e1.printStackTrace();
 			}
+		});
+		vaisseauVue.setOnAction( e-> {
+			for(Objet o : listeObjet){
+				 o.setTaille(o.getTaille()*5);
+				
+			}
+				
 		});
 
 		blayer.setOnAction( e -> {

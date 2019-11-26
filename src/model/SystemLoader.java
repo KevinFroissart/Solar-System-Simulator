@@ -226,13 +226,13 @@ public class SystemLoader {
 		int fin = 0;
 		for(int i = idx; i < lim; i++) {
 			if (txt.charAt(i) == beg && !name) debut = i + 1;
-			if (!name) {
-				if (txt.charAt(i) == end || txt.charAt(i) == ';') {
+			if (name) {
+				if (txt.charAt(i) == end || txt.charAt(i) == ':') {
 					fin = i;
 					break;
 				}
-			} else if (name) {
-				if (txt.charAt(i) == end || txt.charAt(i) == ':') {
+			} else {
+				if (txt.charAt(i) == end || txt.charAt(i) == ';') {
 					fin = i;
 					break;
 				}

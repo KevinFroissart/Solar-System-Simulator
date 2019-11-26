@@ -12,7 +12,7 @@ public class TimerClass extends TimerTask {
 	static Date uDate;
 	Date dateFin;
 	Date duree;
-	long seconde = 0;
+	long seconde;
 
 	@Override
 	public void run() {

@@ -1,6 +1,7 @@
 package model;
 
 import java.util.ArrayList;
+import java.util.List;
 import java.util.Random;
 import javafx.scene.image.Image;
 
@@ -10,8 +11,8 @@ import javafx.scene.image.Image;
  */
 public class ObjetSimule extends Objet {
 	
-	private int idx = 0;
-	private ArrayList<Image> Album;
+	private int idx;
+	private List<Image> Album;
 	
 	public ObjetSimule(String name, String type, double masse, Vecteur pos, Vecteur vit, double attraction) {
 		super(name, type, masse, pos,vit,0,attraction);

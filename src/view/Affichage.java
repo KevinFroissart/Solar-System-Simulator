@@ -21,6 +21,7 @@ import model.Vaisseau;
 
 import java.io.File;
 import java.util.ArrayList;
+import java.util.List;
 import java.util.Observable;
 import java.util.Observer;
 
@@ -36,7 +37,7 @@ public class Affichage implements Observer {
 
 	AffichageControl ac;
 	SystemLoader sl;
-	ArrayList<Objet> listeObjet;
+	List<Objet> listeObjet;
 	Systeme sys;
 	Canvas layer1;
 	Canvas layer2;
@@ -46,7 +47,7 @@ public class Affichage implements Observer {
 	boolean afficherVaisseau = true;
 	boolean afficherPlanete = true;
 	boolean afficherSoleil = true;
-	boolean afficherTrajectoire = false;
+	boolean afficherTrajectoire;
 	double vitesseSimu;
 	HBox hb = new HBox();
 	VBox vbZoom = new VBox();
@@ -55,7 +56,7 @@ public class Affichage implements Observer {
 	Slider zoomSlider = new Slider();
 	Timeline tl;
 	Pane bpane = new Pane();
-	int temps = 0;
+	int temps;
 	Scene scene;
 	
 	public Affichage(AffichageControl ac) {

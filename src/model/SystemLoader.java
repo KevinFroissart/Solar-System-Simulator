@@ -3,6 +3,7 @@ package model;
 import java.io.*;
 import java.text.Normalizer;
 import java.util.ArrayList;
+import java.util.List;
 
 /**
  * Cette classe permet de lire et charger le fichier texte qui contient la configuration pré-établie du système
@@ -11,7 +12,7 @@ import java.util.ArrayList;
  */
 public class SystemLoader {
 
-	private static ArrayList<String> lignes;
+	private static List<String> lignes;
 	File read;
 
 	public File getFile() {
@@ -25,7 +26,7 @@ public class SystemLoader {
 		File config;
 		BufferedReader br;
 		try {
-			if (!toRead.equals(null) && toRead.canRead()) {
+			if((toRead !=null) && toRead.canRead()) {
 				config = toRead;
 			} else {
 				System.err.println("Impossible de lire le fichier du chemin spécifié, lecture du fichier par défaut initialisée");
@@ -104,7 +105,7 @@ public class SystemLoader {
 	}			
 
 	/** Méthode qui ajoute les objets lus dans le fichier system.txt dans une ArrayList et la retourne */
-	public ArrayList<Objet> objectInit() {		
+	public List<Objet> objectInit() {
 
 		ArrayList<Objet> objectList = new ArrayList<Objet>();
 		int nbVaisseau = 0;

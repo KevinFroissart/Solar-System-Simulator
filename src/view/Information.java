@@ -2,6 +2,7 @@ package view;
 
 import java.text.DecimalFormat;
 import java.util.ArrayList;
+import java.util.List;
 import java.util.Observable;
 import java.util.Observer;
 
@@ -17,19 +18,18 @@ import model.Objet;
 
 
 public class Information implements Observer{
-	ArrayList<Objet> listeObjet;
+	List<Objet> listeObjet;
 	String str ="";
 	Label info=new Label();
 	DecimalFormat df = new DecimalFormat("0.00");
 	DecimalFormat df2 = new DecimalFormat("0.00000");
 	DecimalFormat df3 = new DecimalFormat("0.0000000");
-	
 
-	public Information(ArrayList<Objet> listeObjet) {
+	public Information(List<Objet> listeObjet) {
 		this.listeObjet = listeObjet;
 	}
 	
-	public void setListe(ArrayList<Objet> listeObjet) {
+	public void setListe(List<Objet> listeObjet) {
 		this.listeObjet = listeObjet;
 	}
 	

@@ -1,0 +1,52 @@
+<?xml version="1.0"?>
+
+<ruleset name="Custom Rules"
+    xmlns="http://pmd.sourceforge.net/ruleset/2.0.0"
+    xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+    xsi:schemaLocation="http://pmd.sourceforge.net/ruleset/2.0.0 https://pmd.sourceforge.net/ruleset_2_0_0.xsd">
+
+    <description>
+        My custom rules
+    </description>
+
+	<!-- Best practices -->
+    <rule ref="category/java/bestpractices.xml/SystemPrintln" />
+    <rule ref="category/java/bestpractices.xml/ForLoopCanBeForeach" />
+
+    <!-- Code style -->
+	<rule ref="category/java/codestyle.xml/ClassNamingConventions" />
+    <rule ref="category/java/codestyle.xml/ForLoopShouldBeWhileLoop" />
+    <rule ref="category/java/codestyle.xml/ConfusingTernary" />
+    <rule ref="category/java/codestyle.xml/DontImportJavaLang" />
+    <rule ref="category/java/codestyle.xml/PrematureDeclaration" />
+    <rule ref="category/java/codestyle.xml/UselessParentheses" />
+
+    <!-- Error prone -->
+    <rule ref="category/java/errorprone.xml/EmptyCatchBlock" />
+    <rule ref="category/java/errorprone.xml/AvoidFieldNameMatchingMethodName" />
+    <rule ref="category/java/errorprone.xml/AvoidFieldNameMatchingTypeName" />
+    <rule ref="category/java/errorprone.xml/AvoidLiteralsInIfCondition" />
+    <rule ref="category/java/errorprone.xml/BrokenNullCheck" />
+    <rule ref="category/java/errorprone.xml/CompareObjectsWithEquals" />
+    <rule ref="category/java/errorprone.xml/DataflowAnomalyAnalysis" />
+    <rule ref="category/java/errorprone.xml/DontUseFloatTypeForLoopIndices" />
+    <rule ref="category/java/errorprone.xml/EmptyIfStmt" />
+    <rule ref="category/java/errorprone.xml/EmptyStatementBlock" />
+    <rule ref="category/java/errorprone.xml/EmptyStatementNotInLoop" />
+    <rule ref="category/java/errorprone.xml/EmptySwitchStatements" />
+    <rule ref="category/java/errorprone.xml/EmptyTryBlock" />
+    <rule ref="category/java/errorprone.xml/EmptyWhileStmt" />
+    <rule ref="category/java/errorprone.xml/MisplacedNullCheck" />
+    <rule ref="category/java/errorprone.xml/MissingBreakInSwitch" />
+    <rule ref="category/java/errorprone.xml/OverrideBothEqualsAndHashcode" />
+    <rule ref="category/java/errorprone.xml/UseEqualsToCompareStrings" />
+    
+    
+    <!-- Design -->	
+    <rule ref="category/java/design.xml/CollapsibleIfStatements" />
+    <rule ref="category/java/design.xml/CouplingBetweenObjects" />
+    <rule ref="category/java/design.xml/LawOfDemeter" />
+
+
+</ruleset>
+	

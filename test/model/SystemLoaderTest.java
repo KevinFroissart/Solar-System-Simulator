@@ -4,8 +4,6 @@ import java.util.ArrayList;
 import org.junit.Before;
 import org.junit.Test;
 
-import model.SystemLoader;
-
 public class SystemLoaderTest extends SystemLoader{
 
 

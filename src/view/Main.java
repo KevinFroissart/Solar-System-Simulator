@@ -8,6 +8,7 @@ import javafx.application.Application;
 import javafx.stage.Stage;
 import model.SystemLoader;
 import model.Systeme;
+import model.TimerClass;
 
 /** Modèle initialisant les différentes vues
  * @author Kevin 
@@ -17,6 +18,7 @@ import model.Systeme;
 public class Main extends Application{
 
 	static File config;
+	//TimerClass tc = new TimerClass();
 
 	@Override
 	public void start(Stage primaryStage) throws Exception {
@@ -33,6 +35,7 @@ public class Main extends Application{
 			e1.printStackTrace();
 			System.exit(1);
 		}
+		//tc.start();
 	}
 
 	public static void main(String[] args){

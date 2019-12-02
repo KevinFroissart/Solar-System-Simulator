@@ -7,7 +7,7 @@ import java.util.TimerTask;
 public class TimerClass extends TimerTask {
 
 	protected int temps;
-	protected static double dt = 1000;
+	protected static double dt = 25;
 	protected static double fa = 1;
 	static Date uDate;
 	Date dateFin;
@@ -38,12 +38,25 @@ public class TimerClass extends TimerTask {
 		seconde++;
 		long min = seconde / 60;
 		long heures = min / 60;
-
 		long secondes = seconde%60;
+
 		System.out.println (heures + ":" + min + ":" + secondes);
 	}
 
-	public static void main(String args[]){
+	public void start(){
+		TimerTask timerTask = new TimerClass();
+		Timer timer = new Timer(true);
+		timer.scheduleAtFixedRate(timerTask, 0, 1);
+		System.out.println("TimerTask started");
+		try {
+			uDate = new Date (System.currentTimeMillis ());
+			while(true)
+				Thread.sleep(1000);
+		} catch (InterruptedException e) {
+			e.printStackTrace();
+		}
+	}
+	/*public static void main(String args[]){
 		TimerTask timerTask = new TimerClass();
 		Timer timer = new Timer(true);
 		timer.scheduleAtFixedRate(timerTask, 0, 1);
@@ -56,5 +69,5 @@ public class TimerClass extends TimerTask {
 			e.printStackTrace();
 		}
 
-	}
+	}*/
 }

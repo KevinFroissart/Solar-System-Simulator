@@ -123,6 +123,9 @@ public class SystemLoader {
 			double vity = 0;
 			double pprincipal = 0;
 			double pretro = 0;
+			double période = 0;
+			Objet f1 = null;
+			Objet f2 = null;
 			String nom = "";
 			String type = "";
 
@@ -169,6 +172,32 @@ public class SystemLoader {
 							pretro = Double.parseDouble(wordReader(cpt, lim, lignes.get(i),'=',' ',false));
 							valid++;
 						}
+						if(cpt+7 < lim && lignes.get(i).substring(cpt,cpt+7).equals("période")) {
+							pretro = Double.parseDouble(wordReader(cpt, lim, lignes.get(i),'=',' ',false));
+							valid++;
+						}
+						if(cpt+2 < lim && lignes.get(i).substring(cpt,cpt+2).equals("f1")) {
+							String tmp = wordReader(cpt, lim, lignes.get(i),'=',' ',false);
+							for(Objet o : objectList){
+								if(tmp.equals(o.getName())) f1 = o;
+							}
+							valid++;
+						}
+						if(cpt+2 < lim && lignes.get(i).substring(cpt,cpt+2).equals("f2")) {
+							String tmp = wordReader(cpt, lim, lignes.get(i),'=',' ',false);
+							for(Objet o : objectList){
+								if(tmp.equals(o.getName())) f2 = o;
+							}
+							valid++;
+						}
+						if(cpt+6 < lim && lignes.get(i).substring(cpt,cpt+6).equals("centre")) {
+							String tmp = wordReader(cpt, lim, lignes.get(i),'=',' ',false);
+							for(Objet o : objectList){
+								if(tmp.equals(o.getName())) f1 = o;
+							}
+							valid++;
+						}
+
 					}catch(NumberFormatException e) {
 						System.err.println("Erreur de format !");
 						e.printStackTrace();
@@ -192,8 +221,14 @@ public class SystemLoader {
 					Vecteur vit = new Vecteur(vitx,vity);
 					objectList.add(new ObjetSimule(nom, type, masse, pos, vit, 0));
 					break;
-				case "Ellipse" : ; break;
-				case "Cercle" : ; break;
+				case "Ellipse" :
+					pos = new Vecteur(posx,posy);
+					//objectList.add()
+					; break;
+				case "Cercle" :
+					pos = new Vecteur(posx,posy);
+					//objectList.add()
+					; break;
 				case "Vaisseau" : 
 					pos = new Vecteur(posx,posy);
 					vit = new Vecteur(vitx,vity);

@@ -32,7 +32,7 @@ public class Systeme extends Observable{
 		this.dt = dt;
 		this.fa = fa;
 		this.rayon = rayon;
-		zoom = 0;
+		zoom = 1.0;
 	}
 
 	/**

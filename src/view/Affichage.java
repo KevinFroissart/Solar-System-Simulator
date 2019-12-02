@@ -73,19 +73,34 @@ public class Affichage implements Observer{
 	 * @param gc GraphicsContext du canvas de la fenêtre
 	 */
 	public void createObject(Objet o, GraphicsContext gc) {
-		double x = o.getPos().getPosX()/2 + sys.getRayon()/2;
-		double y = o.getPos().getPosY()/2 + sys.getRayon()/2;
+		double x = o.getPos().getPosX()/2* sys.getZoom() + sys.getRayon()/(2* sys.getZoom());
+		double y = o.getPos().getPosY()/2* sys.getZoom() + sys.getRayon()/(2* sys.getZoom());
 		if(o.getType().matches("Fixe") && afficherSoleil) gc.drawImage(o.getImage(), x-(o.getTaille()/2), y-(o.getTaille()/2), o.getTaille(), o.getTaille());
 		if(o.getType().matches("Simulé") && afficherPlanete) {
 			ObjetSimule o2 = (ObjetSimule) o;
-			gc.drawImage(o2.getImage(), x-(o.getTaille()/2), y-(o.getTaille()/2), o.getTaille(), o.getTaille());
+			gc.drawImage(o2.getImage(), x-(o.getTaille()/2* sys.getZoom()), y-(o.getTaille()/2* sys.getZoom()), o.getTaille()* sys.getZoom(), o.getTaille()* sys.getZoom());
 		}
 		if(o.getType().matches("Vaisseau") && afficherVaisseau){
 			gc.save();
 			//gc.rotate(25);
-			gc.drawImage(o.getImage(),x-(o.getTaille()/4+6), y-(o.getTaille()/4+6), o.getTaille()/2+3, o.getTaille()/2+3);
+			gc.drawImage(o.getImage(),x-((o.getTaille()/4+6)* sys.getZoom()), y-((o.getTaille()/4+6)* sys.getZoom()), (o.getTaille()/2+3)* sys.getZoom(), (o.getTaille()/2+3) * sys.getZoom());
 			gc.restore();
 		}
+	}
+	
+	void zoom (double d, GraphicsContext gc , Objet o) {
+		sys.setZoom(1.5);
+		sys.setRayon(sys.getRayon()*sys.getZoom());
+		
+//		layer1.setScaleX(sc);
+//		layer1.setScaleY(sc);
+//		layer2.setScaleX(sc);
+//		layer2.setScaleY(sc);
+		
+//		layer1.setHeight(sys.getRayon());
+//		layer1.setWidth(sys.getRayon());
+//		layer2.setHeight(sys.getRayon());
+//		layer2.setWidth(sys.getRayon());
 	}
 
 	public void creerInfo() {
@@ -307,18 +322,8 @@ public class Affichage implements Observer{
 		stage.getIcons().add(new Image("File:ressources/soleil.png", 60, 60, true, false));
 		tl.play();
 		
-		double sc = 1.5;
-		layer1.setScaleX(sc);
-		layer1.setScaleY(sc);
-		layer2.setScaleX(sc);
-		layer2.setScaleY(sc);
-	sys.setRayon(sys.getRayon()/sc);
-		layer1.setHeight(sys.getRayon());
-		layer1.setWidth(sys.getRayon());
-		layer2.setHeight(sys.getRayon());
-		layer2.setWidth(sys.getRayon());
 		
-		
+
 		
 	}
 
@@ -339,10 +344,13 @@ public class Affichage implements Observer{
 				}
 				if(o.getType().equals("Vaisseau") && !o2.getType().equals("Vaisseau")) {
 					ac.Force(o, o2);
+					
 				}
 			}
 			ac.pos(o);
+			
 		}
+		
 	}
 
 	@Override

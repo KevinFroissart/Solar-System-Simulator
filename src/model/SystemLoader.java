@@ -191,8 +191,8 @@ public class SystemLoader {
 					Vecteur vit = new Vecteur(vitx,vity);
 					objectList.add(new ObjetSimule(nom, type, masse, pos, vit, 0));
 					break;
-				case "Ellipse" : ; break;
-				case "Cercle" : ; break;
+				case "Ellipse" :  break;
+				case "Cercle" :  break;
 				case "Vaisseau" : 
 					pos = new Vecteur(posx,posy);
 					vit = new Vecteur(vitx,vity);

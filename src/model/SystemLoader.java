@@ -223,11 +223,11 @@ public class SystemLoader {
 					break;
 				case "Ellipse" :
 					pos = new Vecteur(posx,posy);
-					//objectList.add()
+					objectList.add(new ObjetEllipse(nom, type, masse, pos, 0, période, f1, f2));
 					; break;
 				case "Cercle" :
 					pos = new Vecteur(posx,posy);
-					//objectList.add()
+					objectList.add(new ObjetCercle(nom, type, masse, pos, 0, période, f1));
 					; break;
 				case "Vaisseau" : 
 					pos = new Vecteur(posx,posy);

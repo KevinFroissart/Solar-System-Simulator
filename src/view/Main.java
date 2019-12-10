@@ -8,7 +8,6 @@ import javafx.application.Application;
 import javafx.stage.Stage;
 import model.SystemLoader;
 import model.Systeme;
-import model.TimerClass;
 
 /** Modèle initialisant les différentes vues
  * @author Kevin 

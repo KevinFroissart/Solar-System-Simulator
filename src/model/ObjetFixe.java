@@ -8,7 +8,7 @@ import javafx.scene.image.Image;
 public class ObjetFixe extends Objet {
 
     public ObjetFixe(String name, String type, double masse, Vecteur pos) {
-        super(name, type, masse, pos, new Vecteur(0,0), 0,0);
+        super(name, type, masse, pos, new Vecteur(0,0), 0,0, 0, null, null);
     }
 
     public Image getImage(){

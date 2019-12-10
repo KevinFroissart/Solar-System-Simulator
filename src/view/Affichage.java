@@ -294,7 +294,7 @@ public class Affichage implements Observer {
 	}
 
 	private void run() {
-		tl.setRate(sys.getFa());
+		//tl.setRate(sys.getFa());
 		scene.getRoot().requestFocus();
 		gc1.clearRect(0, 0, sys.getRayon(), sys.getRayon());
 		gc1.setFill(Color.WHITE);

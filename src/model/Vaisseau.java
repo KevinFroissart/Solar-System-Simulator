@@ -19,7 +19,7 @@ public class Vaisseau extends Objet{
 	protected double pretro;
 	
 	public Vaisseau(String name, String type, double masse, Vecteur pos, Vecteur vitesse, double acc, double attraction, double pprincipal, double pretro) {
-		super(name, type, masse, pos, vitesse, acc, attraction);
+		super(name, type, masse, pos, vitesse, acc, attraction, 0, null, null);
 		this.pprincipal = pprincipal;
 		this.pretro = pretro;
 	}

@@ -31,6 +31,9 @@ public abstract class Objet extends Observable{
 	protected double attractionSoleil;
 	protected double attractionPlanete;
 	protected double taille;
+	protected double periode;
+	protected Objet f1;
+	protected Objet f2;
 
 	/**
 	 * Constructeur qui instancie un objet du système
@@ -41,8 +44,11 @@ public abstract class Objet extends Observable{
 	 * @param vitesse
 	 * @param acc
 	 * @param attraction
+	 * @param periode
+	 * @param f1
+	 * @param f2
 	 */
-	public Objet(String name, String type, double masse,Vecteur pos, Vecteur vitesse, double acc, double attraction) {
+	public Objet(String name, String type, double masse,Vecteur pos, Vecteur vitesse, double acc, double attraction, double periode, Objet f1, Objet f2) {
 		this.name = name;
 		this.type = type;
 		this.masse = masse;
@@ -51,6 +57,9 @@ public abstract class Objet extends Observable{
 		this.vitesse = vitesse;
 		this.acc = acc;
 		this.attraction = attraction;
+		this.periode = periode;
+		this.f1 = f1;
+		this.f2 =f2;
 		this.taille = masse*2+12;
 	}
 
@@ -144,6 +153,38 @@ public abstract class Objet extends Observable{
 	}
 	public double getAttractionPlanete() {
 		return attractionPlanete*(1000000000);
+	}
+	
+	/**
+	 * Retourne la période de l'objet
+	 * @return periode
+	 */
+	public double getPeriode() {
+		return periode;
+	}
+	
+	/**
+	 * Retourne f1
+	 * @return f1
+	 */
+	public Objet getF1() {
+		return f1;
+	}
+	
+	/**
+	 * Retourne f2
+	 * @return f2
+	 */
+	public Objet getF2() {
+		return f2;
+	}
+	
+	/**
+	 * Retourne le centre du cercle
+	 * @return f1
+	 */
+	public Objet getCentre() {
+		return getF1();
 	}
 
 	/**

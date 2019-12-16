@@ -8,11 +8,7 @@ import java.util.Observable;
 import javafx.stage.FileChooser;
 import javafx.stage.Stage;
 import javafx.stage.FileChooser.ExtensionFilter;
-import model.Objet;
-import model.SystemLoader;
-import model.Systeme;
-import model.Vaisseau;
-import model.Vecteur;
+import model.*;
 
 /** Cette classe contient les méthodes permettant le contrôle de la fusée et l'interaction des objets entre eux.
  * @author Maxence, Kévin
@@ -82,7 +78,19 @@ public class AffichageControl extends Observable {
 	 * Changer la position de l'objet en paramètre
 	 */
 	public void pos(Objet obj) {
-		obj.setPos(new Vecteur(obj.getPos().getPosX() + obj.getVitesse().getPosX(), obj.getPos().getPosY() + obj.getVitesse().getPosY()));
+		if(!obj.getType().equals("Cercle")) {
+			obj.setPos(new Vecteur(obj.getPos().getPosX() + obj.getVitesse().getPosX(), obj.getPos().getPosY() + obj.getVitesse().getPosY()));
+		} else {
+			ObjetCercle o = (ObjetCercle) obj;
+			double angle = 0; // 2pi / ( temps t % o.getPeriode());
+			double x2 = Math.pow(o.getPos().getPosX()-o.getCentre().getPos().getPosX(),2);
+			double y2 = Math.pow(o.getPos().getPosY()-o.getCentre().getPos().getPosY(),2);
+			double x = o.getCentre().getPos().getPosX() + Math.sqrt(x2+y2);//*cos(t)
+			double y = o.getCentre().getPos().getPosX() + Math.sqrt(x2+y2);//*sin(t)https://forums.futura-sciences.com/mathematiques-superieur/462651-retrouver-coordonnees-dun-point-un-cercle.html
+			obj.setPos(new Vecteur(x, y));
+		}
+
+
 	}
 
 	/**

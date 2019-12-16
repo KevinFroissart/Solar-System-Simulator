@@ -2,6 +2,7 @@ package controller;
 
 import java.io.File;
 import java.util.ArrayList;
+import java.util.List;
 import java.util.Observable;
 
 import javafx.stage.FileChooser;
@@ -102,7 +103,7 @@ public class AffichageControl extends Observable {
 		return sys;
 	}
 
-	public ArrayList<Objet> resetObj() {
+	public List<Objet> resetObj() {
 		return sl.objectInit();
 	}
 

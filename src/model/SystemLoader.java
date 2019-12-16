@@ -3,6 +3,7 @@ package model;
 import java.io.*;
 import java.text.Normalizer;
 import java.util.ArrayList;
+import java.util.List;
 
 /**
  * Cette classe permet de lire et charger le fichier texte qui contient la configuration pré-établie du système
@@ -11,7 +12,7 @@ import java.util.ArrayList;
  */
 public class SystemLoader {
 
-	private static ArrayList<String> lignes;
+	private static List<String> lignes;
 	File read;
 
 	public File getFile() {
@@ -25,7 +26,7 @@ public class SystemLoader {
 		File config;
 		BufferedReader br;
 		try {
-			if (!toRead.equals(null) && toRead.canRead()) {
+			if((toRead !=null) && toRead.canRead()) {
 				config = toRead;
 			} else {
 				System.err.println("Impossible de lire le fichier du chemin spécifié, lecture du fichier par défaut initialisée");
@@ -104,7 +105,7 @@ public class SystemLoader {
 	}			
 
 	/** Méthode qui ajoute les objets lus dans le fichier system.txt dans une ArrayList et la retourne */
-	public ArrayList<Objet> objectInit() {		
+	public List<Objet> objectInit() {
 
 		ArrayList<Objet> objectList = new ArrayList<Objet>();
 		int nbVaisseau = 0;
@@ -122,6 +123,9 @@ public class SystemLoader {
 			double vity = 0;
 			double pprincipal = 0;
 			double pretro = 0;
+			double période = 0;
+			Objet f1 = null;
+			Objet f2 = null;
 			String nom = "";
 			String type = "";
 
@@ -168,6 +172,32 @@ public class SystemLoader {
 							pretro = Double.parseDouble(wordReader(cpt, lim, lignes.get(i),'=',' ',false));
 							valid++;
 						}
+						if(cpt+7 < lim && lignes.get(i).substring(cpt,cpt+7).equals("période")) {
+							pretro = Double.parseDouble(wordReader(cpt, lim, lignes.get(i),'=',' ',false));
+							valid++;
+						}
+						if(cpt+2 < lim && lignes.get(i).substring(cpt,cpt+2).equals("f1")) {
+							String tmp = wordReader(cpt, lim, lignes.get(i),'=',' ',false);
+							for(Objet o : objectList){
+								if(tmp.equals(o.getName())) f1 = o;
+							}
+							valid++;
+						}
+						if(cpt+2 < lim && lignes.get(i).substring(cpt,cpt+2).equals("f2")) {
+							String tmp = wordReader(cpt, lim, lignes.get(i),'=',' ',false);
+							for(Objet o : objectList){
+								if(tmp.equals(o.getName())) f2 = o;
+							}
+							valid++;
+						}
+						if(cpt+6 < lim && lignes.get(i).substring(cpt,cpt+6).equals("centre")) {
+							String tmp = wordReader(cpt, lim, lignes.get(i),'=',' ',false);
+							for(Objet o : objectList){
+								if(tmp.equals(o.getName())) f1 = o;
+							}
+							valid++;
+						}
+
 					}catch(NumberFormatException e) {
 						System.err.println("Erreur de format !");
 						e.printStackTrace();
@@ -191,8 +221,14 @@ public class SystemLoader {
 					Vecteur vit = new Vecteur(vitx,vity);
 					objectList.add(new ObjetSimule(nom, type, masse, pos, vit, 0));
 					break;
-				case "Ellipse" : ; break;
-				case "Cercle" : ; break;
+				case "Ellipse" :
+					pos = new Vecteur(posx,posy);
+					objectList.add(new ObjetEllipse(nom, type, masse, pos, 0, période, f1, f2));
+					; break;
+				case "Cercle" :
+					pos = new Vecteur(posx,posy);
+					objectList.add(new ObjetCercle(nom, type, masse, pos, 0, période, f1));
+					; break;
 				case "Vaisseau" : 
 					pos = new Vecteur(posx,posy);
 					vit = new Vecteur(vitx,vity);
@@ -225,13 +261,13 @@ public class SystemLoader {
 		int fin = 0;
 		for(int i = idx; i < lim; i++) {
 			if (txt.charAt(i) == beg && !name) debut = i + 1;
-			if (!name) {
-				if (txt.charAt(i) == end || txt.charAt(i) == ';') {
+			if (name) {
+				if (txt.charAt(i) == end || txt.charAt(i) == ':') {
 					fin = i;
 					break;
 				}
-			} else if (name) {
-				if (txt.charAt(i) == end || txt.charAt(i) == ':') {
+			} else {
+				if (txt.charAt(i) == end || txt.charAt(i) == ';') {
 					fin = i;
 					break;
 				}

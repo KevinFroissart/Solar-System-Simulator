@@ -9,8 +9,8 @@ import java.util.Observable;
  */
 
 
-public abstract class Objet extends Observable{
-	
+public abstract class Objet extends Observable {
+
 	/**
 	 * @param name nom de l'Objet
 	 * @param masse la masse de l'objet
@@ -31,9 +31,13 @@ public abstract class Objet extends Observable{
 	protected double attractionSoleil;
 	protected double attractionPlanete;
 	protected double taille;
+	protected double periode;
+	protected Objet f1;
+	protected Objet f2;
 
 	/**
 	 * Constructeur qui instancie un objet du système
+	 *
 	 * @param name
 	 * @param type
 	 * @param masse
@@ -41,8 +45,11 @@ public abstract class Objet extends Observable{
 	 * @param vitesse
 	 * @param acc
 	 * @param attraction
+	 * @param periode
+	 * @param f1
+	 * @param f2
 	 */
-	public Objet(String name, String type, double masse,Vecteur pos, Vecteur vitesse, double acc, double attraction) {
+	public Objet(String name, String type, double masse, Vecteur pos, Vecteur vitesse, double acc, double attraction, double periode, Objet f1, Objet f2) {
 		this.name = name;
 		this.type = type;
 		this.masse = masse;
@@ -51,35 +58,42 @@ public abstract class Objet extends Observable{
 		this.vitesse = vitesse;
 		this.acc = acc;
 		this.attraction = attraction;
-		this.taille = masse*2+12;
+		this.periode = periode;
+		this.f1 = f1;
+		this.f2 = f2;
+		this.taille = masse * 2 + 12;
 	}
 
 	/**
 	 * Retourne nom de l'Objet
+	 *
 	 * @return nom de l'Objet
 	 */
 	public String getName() {
 		return name;
 	}
-	
+
 	/**
 	 * Retourne masse de l'Objet
+	 *
 	 * @return masse de l'Objet
 	 */
 	public double getMasse() {
 		return masse;
 	}
-	
+
 	/**
 	 * Retourne Vecteur position de l'Objet
+	 *
 	 * @return Vecteur position de l'Objet
 	 */
 	public Vecteur getPos() {
 		return pos;
 	}
-	
+
 	/**
 	 * Retourne Vecteur accélération de l'Objet
+	 *
 	 * @return Vecteur accélération de l'Objet
 	 */
 	public double getAcc() {
@@ -88,6 +102,7 @@ public abstract class Objet extends Observable{
 
 	/**
 	 * Retourne Vecteur vitesse de l'Objet
+	 *
 	 * @return Vecteur vitesse de l'Objet
 	 */
 	public Vecteur getVitesse() {
@@ -96,6 +111,7 @@ public abstract class Objet extends Observable{
 
 	/**
 	 * Modifie valeur du Vecteur position de l'Objet
+	 *
 	 * @param pos
 	 */
 	public void setPos(Vecteur pos) {
@@ -103,9 +119,10 @@ public abstract class Objet extends Observable{
 		setChanged();
 		notifyObservers(pos);
 	}
-	
+
 	/**
 	 * Modifie valeur du Vecteur vitesse de l'Objet
+	 *
 	 * @param vit
 	 */
 	public void setVit(Vecteur vit) {
@@ -113,9 +130,10 @@ public abstract class Objet extends Observable{
 		setChanged();
 		notifyObservers(vit);
 	}
-	
+
 	/**
 	 * Modifie valeur de l'accélération de l'Objet
+	 *
 	 * @param acc
 	 */
 	public void setAcc(double acc) {
@@ -126,28 +144,69 @@ public abstract class Objet extends Observable{
 
 	/**
 	 * Retourne le type de l'Objet
+	 *
 	 * @return String du type d'Objet
 	 */
 	public String getType() {
 		return type;
 	}
-	
+
 	/**
 	 * Retourne la force d'attraction que subit l'objet
+	 *
 	 * @return valeur double de la force d'attraction
 	 */
 	public double getAttraction() {
 		return attraction;
 	}
+
 	public double getAttractionSoleil() {
-		return attractionSoleil*(1000000000);
+		return attractionSoleil * (1000000000);
 	}
+
 	public double getAttractionPlanete() {
-		return attractionPlanete*(1000000000);
+		return attractionPlanete * (1000000000);
+	}
+
+	/**
+	 * Retourne la période de l'objet
+	 *
+	 * @return periode
+	 */
+	public double getPeriode() {
+		return periode;
+	}
+
+	/**
+	 * Retourne f1
+	 *
+	 * @return f1
+	 */
+	public Objet getF1() {
+		return f1;
+	}
+
+	/**
+	 * Retourne f2
+	 *
+	 * @return f2
+	 */
+	public Objet getF2() {
+		return f2;
+	}
+
+	/**
+	 * Retourne le centre du cercle
+	 *
+	 * @return f1
+	 */
+	public Objet getCentre() {
+		return getF1();
 	}
 
 	/**
 	 * Modifie la valeur de la force d'attraction que subit l'objet
+	 *
 	 * @param attraction
 	 */
 	public void setAttraction(double attraction) {
@@ -155,24 +214,25 @@ public abstract class Objet extends Observable{
 		setChanged();
 		notifyObservers(pos);
 	}
-	
+
 	public void setAttractionSoleil(double attraction) {
 		this.attractionSoleil = attraction;
 		setChanged();
 		notifyObservers(pos);
 	}
-	
+
 	public void setAttractionPlanete(double attraction) {
-		this.attractionPlanete= attraction;
+		this.attractionPlanete = attraction;
 		setChanged();
 		notifyObservers(pos);
 	}
 
 	/**
 	 * Retourne la taille d'affichage de l'objet
+	 *
 	 * @return taille la taille de l'objet
 	 */
-	public double getTaille(){
+	public double getTaille() {
 		return taille;
 	}
 

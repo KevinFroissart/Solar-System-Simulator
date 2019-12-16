@@ -138,150 +138,146 @@ public class Affichage implements Observer {
 		BackgroundImage back = new BackgroundImage(new Image("File:ressources/background.jpg",0, 0, true, false), BackgroundRepeat.REPEAT, BackgroundRepeat.NO_REPEAT, BackgroundPosition.DEFAULT, BackgroundSize.DEFAULT);
 		vb.setBackground(new Background(back));
 
+		zoomSlider.setOnMouseDragged( e-> {
+			for(Objet o : listeObjet){
+				if(zoomSlider.getValue() > 0) o.setTaille(o.getTaille()*(zoomSlider.getValue()+1));
+				if(zoomSlider.getValue() < 0) o.setTaille(o.getTaille()/(zoomSlider.getValue()+1));
+			}
+		});
 
+		open.setOnAction( e-> {
+			try {
+				File file = ac.getFileExplorer(stage);
+				if(file != null) {
+					sl.reader(file);
+					listeObjet = ac.resetObj();
+					sys = ac.resetSys();
+					for(Objet o : listeObjet) {
+						o.addObserver(info);
+					}
+					sys.addObserver(Affichage.this);
+					info.setListe(listeObjet);
+				}
+			}
+			catch(NullPointerException e1) {
+				e1.printStackTrace();
+			}
+			catch(Exception e2) {
+				e2.printStackTrace();
+			}
+		});
+
+		reset.setOnAction( e-> {
+			listeObjet = ac.resetObj();
+			sys = ac.resetSys();
+			gc2.clearRect(0,0,sys.getRayon(),sys.getRayon());
+			afficherTrajectoire = false;
+			blayer.setSelected(false);
+			bp.setSelected(false);
+			bs.setSelected(false);
+			bvs.setSelected(false);
+			try {
+				info.setListe(listeObjet);
+			}catch(NullPointerException e1) {
+				e1.printStackTrace();
+			}catch(Exception e2) {
+				e2.printStackTrace();
+			}
+			for(Objet o : listeObjet) {
+				o.addObserver(info);
+			}
+			sys.addObserver(Affichage.this);
+		});
+
+		bvs.setOnAction( e-> {
+			if(bvs.isSelected()){
+				bvs.setSelected(true);
+				afficherVaisseau = false;
+			}
+			else{
+				bvs.setSelected(false);
+				afficherVaisseau = true;
+			}
+		});
+
+		bp.setOnAction( e-> {
+			if(bp.isSelected()){
+				bp.setSelected(true);
+				afficherPlanete = false;
+			}
+			else{
+				bp.setSelected(false);
+				afficherPlanete = true;
+			}
+		});
+
+		bs.setOnAction( e-> {
+
+			if(bs.isSelected()){
+				bs.setSelected(true);
+				afficherSoleil = false;
+			}
+			else{
+				bs.setSelected(false);
+				afficherSoleil = true;
+			}
+		});
+
+		binfo.setOnAction( e-> {
+			try {
+				info.start();
+			} catch (Exception e1) {
+				e1.printStackTrace();
+			}
+		});
+
+		blayer.setOnAction( e -> {
+			if(blayer.isSelected()){
+				blayer.setSelected(true);
+				afficherTrajectoire = true;
+			}
+			else{
+				blayer.setSelected(false);
+				afficherTrajectoire = false;
+				gc2.clearRect(0,0,sys.getRayon(),sys.getRayon());
+			}
+		});
+
+
+		scene.setOnKeyPressed( e-> {
+			if(e.getCode().equals(KeyCode.I)) {
+				try {
+					info.start();
+				} catch (Exception e1) {
+					e1.printStackTrace();
+				}
+			}
+			for(Objet o : listeObjet) {
+				if(o.getType().equals("Vaisseau")) {
+					if(e.getCode().equals(KeyCode.DOWN)) ac.down((Vaisseau)o, true);
+					if(e.getCode().equals(KeyCode.UP)) ac.up((Vaisseau)o, true);
+					if(e.getCode().equals(KeyCode.RIGHT)) ac.right((Vaisseau)o, true);
+					if(e.getCode().equals(KeyCode.LEFT)) ac.left((Vaisseau)o, true);
+				}
+			}
+		});
+
+		scene.setOnKeyReleased( e-> {
+			for(Objet o : listeObjet) {
+				if(o.getType().equals("Vaisseau")) {
+					if(e.getCode().equals(KeyCode.DOWN)) ac.down((Vaisseau)o, false);
+					if(e.getCode().equals(KeyCode.UP)) ac.up((Vaisseau)o, false);
+					if(e.getCode().equals(KeyCode.RIGHT)) ac.right((Vaisseau)o, false);
+					if(e.getCode().equals(KeyCode.LEFT)) ac.left((Vaisseau)o, false);
+				}
+			}
+		});
 
 		timer = new Timer();
 		task = new TimerTask() {
 			@Override
 			public void run() {
-				zoomSlider.setOnMouseDragged( e-> {
-					for(Objet o : listeObjet){
-						if(zoomSlider.getValue() > 0) o.setTaille(o.getTaille()*(zoomSlider.getValue()+1));
-						if(zoomSlider.getValue() < 0) o.setTaille(o.getTaille()/(zoomSlider.getValue()+1));
-					}
-				});
-
-				open.setOnAction( e-> {
-					try {
-						File file = ac.getFileExplorer(stage);
-						if(file != null) {
-							sl.reader(file);
-							listeObjet = ac.resetObj();
-							sys = ac.resetSys();
-							for(Objet o : listeObjet) {
-								o.addObserver(info);
-							}
-							sys.addObserver(Affichage.this);
-							info.setListe(listeObjet);
-						}
-					}
-					catch(NullPointerException e1) {
-						e1.printStackTrace();
-					}
-					catch(Exception e2) {
-						e2.printStackTrace();
-					}
-				});
-
-				reset.setOnAction( e-> {
-					listeObjet = ac.resetObj();
-					sys = ac.resetSys();
-					gc2.clearRect(0,0,sys.getRayon(),sys.getRayon());
-					afficherTrajectoire = false;
-					blayer.setSelected(false);
-					bp.setSelected(false);
-					bs.setSelected(false);
-					bvs.setSelected(false);
-					try {
-						info.setListe(listeObjet);
-					}catch(NullPointerException e1) {
-						e1.printStackTrace();
-					}catch(Exception e2) {
-						e2.printStackTrace();
-					}
-					for(Objet o : listeObjet) {
-						o.addObserver(info);
-					}
-					sys.addObserver(Affichage.this);
-				});
-
-				bvs.setOnAction( e-> {
-					if(bvs.isSelected()){
-						bvs.setSelected(true);
-						afficherVaisseau = false;
-					}
-					else{
-						bvs.setSelected(false);
-						afficherVaisseau = true;
-					}
-				});
-
-				bp.setOnAction( e-> {
-					if(bp.isSelected()){
-						bp.setSelected(true);
-						afficherPlanete = false;
-					}
-					else{
-						bp.setSelected(false);
-						afficherPlanete = true;
-					}
-				});
-
-				bs.setOnAction( e-> {
-
-					if(bs.isSelected()){
-						bs.setSelected(true);
-						afficherSoleil = false;
-					}
-					else{
-						bs.setSelected(false);
-						afficherSoleil = true;
-					}
-				});
-
-				binfo.setOnAction( e-> {
-					try {
-						info.start();
-					} catch (Exception e1) {
-						e1.printStackTrace();
-					}
-				});
-
-				blayer.setOnAction( e -> {
-					if(blayer.isSelected()){
-						blayer.setSelected(true);
-						afficherTrajectoire = true;
-					}
-					else{
-						blayer.setSelected(false);
-						afficherTrajectoire = false;
-						gc2.clearRect(0,0,sys.getRayon(),sys.getRayon());
-					}
-				});
-
-
-				scene.setOnKeyPressed( e-> {
-					if(e.getCode().equals(KeyCode.I)) {
-						try {
-							info.start();
-						} catch (Exception e1) {
-							e1.printStackTrace();
-						}
-					}
-					for(Objet o : listeObjet) {
-						if(o.getType().equals("Vaisseau")) {
-							if(e.getCode().equals(KeyCode.DOWN)) ac.down((Vaisseau)o, true);
-							if(e.getCode().equals(KeyCode.UP)) ac.up((Vaisseau)o, true);
-							if(e.getCode().equals(KeyCode.RIGHT)) ac.right((Vaisseau)o, true);
-							if(e.getCode().equals(KeyCode.LEFT)) ac.left((Vaisseau)o, true);
-						}
-					}
-				});
-
-				scene.setOnKeyReleased( e-> {
-					for(Objet o : listeObjet) {
-						if(o.getType().equals("Vaisseau")) {
-							if(e.getCode().equals(KeyCode.DOWN)) ac.down((Vaisseau)o, false);
-							if(e.getCode().equals(KeyCode.UP)) ac.up((Vaisseau)o, false);
-							if(e.getCode().equals(KeyCode.RIGHT)) ac.right((Vaisseau)o, false);
-							if(e.getCode().equals(KeyCode.LEFT)) ac.left((Vaisseau)o, false);
-						}
-					}
-				});
-
 				gc1.clearRect(0, 0, sys.getRayon(), sys.getRayon());
-				//gc1.strokeLine(sys.getRayon()/2, 0, sys.getRayon()/2, sys.getRayon());
-				//gc1.strokeLine(0, sys.getRayon()/2, sys.getRayon(), sys.getRayon()/2);
 				for(Objet o : listeObjet) {
 					createObject(o, gc1);
 					for(Objet o2 : listeObjet) {
@@ -298,7 +294,7 @@ public class Affichage implements Observer {
 				}
 			}
 		};
-		timer.scheduleAtFixedRate(task, 0, (long) (sys.getDt()/sys.getFa()*1000));
+		timer.scheduleAtFixedRate(task, 0, (long) ((sys.getDt()/sys.getFa())*1000));
 
 		vb.getChildren().addAll(toolBar,bpane,hb);
 		root.getChildren().add(vb);
@@ -315,4 +311,5 @@ public class Affichage implements Observer {
 	public void update(Observable arg0, Object arg1) {
 		zoomSlider.setValue(sys.getZoom());
 	}
+	//effacer la vue, parcourir les objets, afficher pour chaque nouvelle pos
 }

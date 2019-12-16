@@ -1,7 +1,6 @@
 package controller;
 
 import java.io.File;
-import java.util.ArrayList;
 import java.util.List;
 import java.util.Observable;
 
@@ -77,20 +76,21 @@ public class AffichageControl extends Observable {
 	/**
 	 * Changer la position de l'objet en paramètre
 	 */
-	public void pos(Objet obj) {
-		if(!obj.getType().equals("Cercle")) {
+	public void pos(Objet obj) { //TO:DO ajouter le temps t à la signature et au corps de la fonction
+		if(!obj.getType().equals("Cercle") && !obj.getType().equals("Ellipse")) {
 			obj.setPos(new Vecteur(obj.getPos().getPosX() + obj.getVitesse().getPosX(), obj.getPos().getPosY() + obj.getVitesse().getPosY()));
-		} else {
+		} else if(obj.getType().equals("Cerlce")) {
 			ObjetCercle o = (ObjetCercle) obj;
-			double angle = 0; // 2pi / ( temps t % o.getPeriode());
+			double angle = 2*Math.PI / (/*t%*/ o .getPeriode());
 			double x2 = Math.pow(o.getPos().getPosX()-o.getCentre().getPos().getPosX(),2);
 			double y2 = Math.pow(o.getPos().getPosY()-o.getCentre().getPos().getPosY(),2);
-			double x = o.getCentre().getPos().getPosX() + Math.sqrt(x2+y2);//*cos(t)
-			double y = o.getCentre().getPos().getPosX() + Math.sqrt(x2+y2);//*sin(t)https://forums.futura-sciences.com/mathematiques-superieur/462651-retrouver-coordonnees-dun-point-un-cercle.html
+			double x = o.getCentre().getPos().getPosX() + Math.sqrt(x2+y2) * Math.cos(angle);
+			double y = o.getCentre().getPos().getPosX() + Math.sqrt(x2+y2) * Math.sin(angle);
 			obj.setPos(new Vecteur(x, y));
+		} else {
+			ObjetEllipse o = (ObjetEllipse) obj;
+			
 		}
-
-
 	}
 
 	/**

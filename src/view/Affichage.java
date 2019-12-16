@@ -12,12 +12,14 @@ import javafx.stage.Stage;
 import javafx.util.Duration;
 import javafx.animation.KeyFrame;
 import javafx.animation.Timeline;
+import javafx.geometry.Insets;
 import javafx.geometry.Orientation;
 import javafx.scene.input.KeyCode;
 import model.Objet;
 import model.SystemLoader;
 import model.Systeme;
 import model.Vaisseau;
+import model.Vecteur;
 
 import java.io.File;
 import java.util.ArrayList;
@@ -71,8 +73,8 @@ public class Affichage implements Observer {
 	 * @param gc GraphicsContext du canvas de la fenêtre
 	 */
 	public void createObject(Objet o, GraphicsContext gc) {
-		double x = o.getPos().getPosX()/2 + sys.getRayon()/2;
-		double y = o.getPos().getPosY()/2 + sys.getRayon()/2;
+		double x = scene.getWidth()/ 2 + o.getPos().getPosX()/2;
+		double y = scene.getHeight()/ 2 + o.getPos().getPosY()/2;
 		if(o.getType().matches("Fixe") && afficherSoleil) gc.drawImage(o.getImage(), x-(o.getTaille()/2), y-(o.getTaille()/2), o.getTaille(), o.getTaille());
 		if(o.getType().matches("Simulé") && afficherPlanete) {
 			ObjetSimule o2 = (ObjetSimule) o;
@@ -97,11 +99,11 @@ public class Affichage implements Observer {
 	public void start(Stage stage) throws Exception {
 
 		creerInfo();
-		layer1 = new Canvas(sys.getRayon(),sys.getRayon());
-		layer2 = new Canvas(sys.getRayon(),sys.getRayon());
+		layer1 = new Canvas(sys.getRayon()*2,sys.getRayon()+100);
+		layer2 = new Canvas(sys.getRayon()*2,sys.getRayon()+100);
 		gc1 = layer1.getGraphicsContext2D();
 		gc2 = layer2.getGraphicsContext2D();
-		bpane.setMinSize(sys.getRayon(),sys.getRayon());
+		bpane.setMinSize(sys.getRayon()*2,sys.getRayon());
 		
 		bpane.getChildren().addAll(layer1,layer2);
 		layer1.toFront();
@@ -133,10 +135,12 @@ public class Affichage implements Observer {
 
 		hb.getChildren().addAll(vbZoom,vaisseauVue);
 		hb.setStyle("-fx-padding: 10;" + "-fx-border-style: solid inside;"
-				+ "-fx-border-width: 2;" + "-fx-border-insets: 10;"
-				+ "-fx-border-radius: 10;" + "-fx-border-color: black;");
+				+ "-fx-border-width: 2;" + "-fx-border-insets: 20;"
+				+ "-fx-border-radius: 10;" + "-fx-border-color: black;"+"-fx-background-color:white;");
+		
+		
 		toolBar.getItems().addAll(open,reset,separator,bvs,bp,bs,blayer,separator2,binfo);
-
+		
 		//Unité de temps et de simulation du systeme
 		tl = new Timeline(new KeyFrame(Duration.seconds(sys.getDt()/sys.getFa()), e -> run()));
 		tl.setCycleCount(Timeline.INDEFINITE);
@@ -144,7 +148,7 @@ public class Affichage implements Observer {
 		Group root = new Group();
 		scene = new Scene(root);
 		//Ici j'ajoute le background image à la VBox qui est root de notre systeme
-		BackgroundImage back = new BackgroundImage(new Image("File:ressources/background.jpg",0, 0, true, false), BackgroundRepeat.REPEAT, BackgroundRepeat.NO_REPEAT, BackgroundPosition.DEFAULT, BackgroundSize.DEFAULT);
+		BackgroundImage back = new BackgroundImage(new Image("File:ressources/fond.jpeg",0, 0, true, false), BackgroundRepeat.REPEAT, BackgroundRepeat.REPEAT, BackgroundPosition.DEFAULT, BackgroundSize.DEFAULT);
 		vb.setBackground(new Background(back));
 
 		zoomSlider.setOnMouseDragged( e-> {
@@ -180,7 +184,7 @@ public class Affichage implements Observer {
 		reset.setOnAction( e-> {
 			listeObjet = ac.resetObj();
 			sys = ac.resetSys();
-			gc2.clearRect(0,0,sys.getRayon(),sys.getRayon());
+			gc2.clearRect(0,0,scene.getX(), scene.getY());
 			afficherTrajectoire = false;
 			blayer.setSelected(false);
 			bp.setSelected(false);
@@ -240,13 +244,6 @@ public class Affichage implements Observer {
 				e1.printStackTrace();
 			}
 		});
-		vaisseauVue.setOnAction( e-> {
-			for(Objet o : listeObjet){
-				 o.setTaille(o.getTaille()*5);
-				
-			}
-				
-		});
 
 		blayer.setOnAction( e -> {
 			if(blayer.isSelected()){
@@ -256,7 +253,7 @@ public class Affichage implements Observer {
 			else{
 				blayer.setSelected(false);
 				afficherTrajectoire = false;
-				gc2.clearRect(0,0,sys.getRayon(),sys.getRayon());
+				gc2.clearRect(0,0,scene.getX(), scene.getY());
 			}
 		});
 
@@ -289,10 +286,10 @@ public class Affichage implements Observer {
 				}
 			}
 		});
-
+		
 		vb.getChildren().addAll(toolBar,bpane,hb);
 		root.getChildren().add(vb);
-		stage.setResizable(true);
+		stage.setResizable(false);
 		stage.setTitle("Solar System Simulator");
 		stage.setScene(scene); 
 		stage.centerOnScreen();
@@ -304,7 +301,7 @@ public class Affichage implements Observer {
 	private void run() {
 		tl.setRate(sys.getFa());
 		scene.getRoot().requestFocus();
-		gc1.clearRect(0, 0, sys.getRayon(), sys.getRayon());
+		gc1.clearRect(0, 0, scene.getX(), scene.getY());
 		gc1.setFill(Color.WHITE);
 		//gc1.strokeLine(sys.getRayon()/2, 0, sys.getRayon()/2, sys.getRayon());
 		//gc1.strokeLine(0, sys.getRayon()/2, sys.getRayon(), sys.getRayon()/2);

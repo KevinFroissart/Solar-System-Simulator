@@ -51,29 +51,6 @@ public class AffichageControl extends Observable {
 	}
 
 	/**
-	 * Méthode qui définit la vitesse de l'objet en fonction de son accélération et de l'attraction des autres objets (planètes)
-	 */
-	public void Force(Objet objA, Objet objB) {
-
-		double xA = objA.getPos().getPosX();
-		double yA = objA.getPos().getPosY();
-		double xB = objB.getPos().getPosX();
-		double yB = objB.getPos().getPosY();
-		//Il faut qu'on trouve quelque chose pour gerer le volume des objets
-		double distance = Math.sqrt(Math.pow(xB - xA, 2) + Math.pow(yB - yA, 2));
-		//double distance = Math.sqrt(Math.pow(xA+objA.getTaille()/2 - xB+objB.getTaille()/2,2) + Math.pow(yA+objA.getTaille()/2 - yB+objB.getTaille()/2, 2));
-		objA.setAttraction((sys.getG() * objA.getMasse() * objB.getMasse()) / Math.pow(distance, 2));
-		if(objA.getType().equals("Vaisseau") && objB.getType().equals("Fixe"))
-			objA.setAttractionSoleil((sys.getG() * objA.getMasse() * objB.getMasse()) / Math.pow(distance, 2));
-		if(objA.getType().equals("Vaisseau") && objB.getType().equals("Simulé"))
-			objA.setAttractionPlanete((sys.getG() * objA.getMasse() * objB.getMasse()) / Math.pow(distance, 2));
-		objA.setAcc(objA.getAttraction() / objA.getMasse());// * sys.getFa());
-		double dirX = (xB - xA) / distance;
-		double dirY = (yB - yA) / distance;
-		objA.setVit(new Vecteur(objA.getVitesse().getPosX() + dirX * objA.getAcc(), objA.getVitesse().getPosY() + dirY * objA.getAcc()));
-	}
-
-	/**
 	 * Changer la position de l'objet en paramètre
 	 */
 	public void pos(Objet obj) { //TO:DO ajouter le temps t à la signature et au corps de la fonction
@@ -133,13 +110,5 @@ public class AffichageControl extends Observable {
 			e2.printStackTrace();
 		}
 		return sl.getFile();
-	}
-
-	public void setZoom(double value){
-		sys.setZoom(value);
-		if(value > 0) sys.setRayon(sys.getRayon()*(value+1));
-		if(value < 0) sys.setRayon(sys.getRayon()/(value+1));
-		setChanged();
-		notifyObservers(value);
 	}
 }

@@ -3,6 +3,7 @@ import javafx.application.Application;
 import javafx.stage.Stage;
 import model.SystemLoader;
 import model.Systeme;
+import model.TimerCalcul;
 import view.Affichage;
 
 import java.io.File;
@@ -16,7 +17,7 @@ import java.io.FileNotFoundException;
 public class Main extends Application{
 
 	static File config;
-	//TimerClass tc = new TimerClass();
+
 
 	@Override
 	public void start(Stage primaryStage) throws Exception {
@@ -24,7 +25,10 @@ public class Main extends Application{
 		try {
 			sl.reader(config);
 			Systeme sys = sl.paramInit(4);
-			Affichage af = new Affichage(new AffichageControl(sl, sys));
+			AffichageControl ac = new AffichageControl(sl,sys);
+			Affichage af = new Affichage(ac);
+			TimerCalcul tc = new TimerCalcul(ac);
+			tc.start();
 			af.start(primaryStage);
 		} catch (FileNotFoundException e) {
 			System.err.println("Impossible de trouver le fichier spécifié. Vérifiez votre chemin de fichier. Ex : ressources/system.txt");

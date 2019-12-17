@@ -1,6 +1,8 @@
 package model;
 
-public interface IntegrationE {
+import javafx.beans.Observable;
+
+public interface IntegrationE  {
 
     public static void eulerExplicite (Objet objA, Objet objB, Systeme sys){
         double xA = objA.getPos().getPosX();

@@ -47,9 +47,6 @@ public class Affichage implements Observer {
 	Pane bpane = new Pane();
 	Scene scene;
 
-	Timer timer;
-	TimerTask task;
-
 	public Affichage(AffichageControl ac) {
 		this.ac = ac;
 		sl = ac.getModel();
@@ -87,6 +84,7 @@ public class Affichage implements Observer {
 	}
 
 	public void start(Stage stage) throws Exception {
+		System.out.println("salut");
 
 		creerInfo();
 		layer1 = new Canvas(sys.getRayon(),sys.getRayon());
@@ -130,7 +128,6 @@ public class Affichage implements Observer {
 		/*//Unité de temps et de simulation du systeme
 		tl = new Timeline(new KeyFrame(Duration.seconds(sys.getDt()/sys.getFa()), e -> run()));
 		tl.setCycleCount(Timeline.INDEFINITE);*/
-
 
 		Group root = new Group();
 		scene = new Scene(root);
@@ -243,7 +240,6 @@ public class Affichage implements Observer {
 			}
 		});
 
-
 		scene.setOnKeyPressed( e-> {
 			if(e.getCode().equals(KeyCode.I)) {
 				try {
@@ -273,29 +269,6 @@ public class Affichage implements Observer {
 			}
 		});
 
-		timer = new Timer();
-		task = new TimerTask() {
-			@Override
-			public void run() {
-				gc1.clearRect(0, 0, sys.getRayon(), sys.getRayon());
-				for(Objet o : listeObjet) {
-					createObject(o, gc1);
-					for(Objet o2 : listeObjet) {
-						if(o.getType().matches("Simulé") && o2.getType().equals("Fixe")) {
-							IntegrationE.eulerExplicite(o, o2, sys);
-							gc2.setFill(Color.WHITE);
-							if(afficherTrajectoire) gc2.fillOval(o.getPos().getPosX()/2+sys.getRayon()/2-0.5,o.getPos().getPosY()/2+sys.getRayon()/2-0.5,1,1);
-						}
-						if(o.getType().equals("Vaisseau") && !o2.getType().equals("Vaisseau")) {
-							IntegrationE.eulerExplicite(o, o2, sys);
-						}
-					}
-					ac.pos(o);
-				}
-			}
-		};
-		timer.scheduleAtFixedRate(task, 0, (long) ((sys.getDt()/sys.getFa())*1000));
-
 		vb.getChildren().addAll(toolBar,bpane,hb);
 		root.getChildren().add(vb);
 		stage.setResizable(true);
@@ -309,7 +282,16 @@ public class Affichage implements Observer {
 
 	@Override
 	public void update(Observable arg0, Object arg1) {
-		zoomSlider.setValue(sys.getZoom());
+		gc1.clearRect(0, 0, sys.getRayon(), sys.getRayon());
+		for(Objet o : listeObjet) {
+			createObject(o, gc1);
+			for(Objet o2 : listeObjet) {
+				if(o.getType().matches("Simulé") && o2.getType().equals("Fixe")) {
+					gc2.setFill(Color.WHITE);
+					if(afficherTrajectoire) gc2.fillOval(o.getPos().getPosX()/2+sys.getRayon()/2-0.5,o.getPos().getPosY()/2+sys.getRayon()/2-0.5,1,1);
+				}
+			}
+		}
 	}
 	//effacer la vue, parcourir les objets, afficher pour chaque nouvelle pos
 }

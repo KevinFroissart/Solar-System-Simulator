@@ -1,6 +1,7 @@
 package view;
 
 import controller.AffichageControl;
+import javafx.animation.KeyFrame;
 import javafx.animation.Timeline;
 import javafx.geometry.Orientation;
 import javafx.scene.Group;
@@ -13,6 +14,7 @@ import javafx.scene.input.KeyCode;
 import javafx.scene.layout.*;
 import javafx.scene.paint.Color;
 import javafx.stage.Stage;
+import javafx.util.Duration;
 import model.*;
 
 import java.io.File;
@@ -46,9 +48,6 @@ public class Affichage implements Observer {
 	Timeline tl;
 	Pane bpane = new Pane();
 	Scene scene;
-
-	Timer timer;
-	TimerTask task;
 
 	public Affichage(AffichageControl ac) {
 		this.ac = ac;
@@ -127,9 +126,10 @@ public class Affichage implements Observer {
 				+ "-fx-border-radius: 10;" + "-fx-border-color: black;");
 		toolBar.getItems().addAll(open,reset,separator,bvs,bp,bs,blayer,separator2,binfo);
 
-		/*//Unité de temps et de simulation du systeme
-		tl = new Timeline(new KeyFrame(Duration.seconds(sys.getDt()/sys.getFa()), e -> run()));
-		tl.setCycleCount(Timeline.INDEFINITE);*/
+		//Unité de temps et de simulation du systeme
+		tl = new Timeline(new KeyFrame(Duration.seconds(sys.getDt()/sys.getFa()), e->run()));
+		//tl = new Timeline(new KeyFrame(Duration.seconds(sys.getDt()/sys.getFa()), e -> run()));
+		tl.setCycleCount(Timeline.INDEFINITE);
 
 
 		Group root = new Group();
@@ -273,28 +273,8 @@ public class Affichage implements Observer {
 			}
 		});
 
-		timer = new Timer();
-		task = new TimerTask() {
-			@Override
-			public void run() {
-				gc1.clearRect(0, 0, sys.getRayon(), sys.getRayon());
-				for(Objet o : listeObjet) {
-					createObject(o, gc1);
-					for(Objet o2 : listeObjet) {
-						if(o.getType().matches("Simulé") && o2.getType().equals("Fixe")) {
-							IntegrationE.eulerExplicite(o, o2, sys);
-							gc2.setFill(Color.WHITE);
-							if(afficherTrajectoire) gc2.fillOval(o.getPos().getPosX()/2+sys.getRayon()/2-0.5,o.getPos().getPosY()/2+sys.getRayon()/2-0.5,1,1);
-						}
-						if(o.getType().equals("Vaisseau") && !o2.getType().equals("Vaisseau")) {
-							IntegrationE.eulerExplicite(o, o2, sys);
-						}
-					}
-					ac.pos(o);
-				}
-			}
-		};
-		timer.scheduleAtFixedRate(task, 0, (long) ((sys.getDt()/sys.getFa())*1000));
+	
+			
 
 		vb.getChildren().addAll(toolBar,bpane,hb);
 		root.getChildren().add(vb);
@@ -304,7 +284,26 @@ public class Affichage implements Observer {
 		stage.centerOnScreen();
 		stage.show();
 		stage.getIcons().add(new Image("File:ressources/soleil.png", 60, 60, true, false));
-		//tl.play();
+		tl.play();
+	}
+	
+	private void run() {
+		gc1.clearRect(0, 0, sys.getRayon(), sys.getRayon());
+		for(Objet o : listeObjet) {
+			createObject(o, gc1);
+			for(Objet o2 : listeObjet) {
+				if(o.getType().matches("Simulé") && o2.getType().equals("Fixe")) {
+					//ac.Force(o, o2);
+					IntegrationE.eulerExplicite(o, o2, sys);
+					gc2.setFill(Color.WHITE);
+					if(afficherTrajectoire) gc2.fillOval(o.getPos().getPosX()/2+sys.getRayon()/2-0.5,o.getPos().getPosY()/2+sys.getRayon()/2-0.5,1,1);
+				}
+				if(o.getType().equals("Vaisseau") && !o2.getType().equals("Vaisseau")) {
+					IntegrationE.eulerExplicite(o, o2, sys);
+				}
+			}
+			ac.pos(o);
+		}
 	}
 
 	@Override

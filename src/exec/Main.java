@@ -1,3 +1,4 @@
+package exec;
 import controller.AffichageControl;
 import javafx.application.Application;
 import javafx.stage.Stage;
@@ -16,7 +17,6 @@ import java.io.FileNotFoundException;
 public class Main extends Application{
 
 	static File config;
-	//TimerClass tc = new TimerClass();
 
 	@Override
 	public void start(Stage primaryStage) throws Exception {
@@ -33,7 +33,6 @@ public class Main extends Application{
 			e1.printStackTrace();
 			System.exit(1);
 		}
-		//tc.start();
 	}
 
 	public static void main(String[] args){

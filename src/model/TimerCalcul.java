@@ -3,6 +3,7 @@ package model;
 import controller.AffichageControl;
 import view.Affichage;
 
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Timer;
 import java.util.TimerTask;
@@ -41,5 +42,9 @@ public class TimerCalcul extends TimerTask {
 
     public void start() {
         timer.scheduleAtFixedRate(this, 0, (long) ((sys.getDt()/sys.getFa())*1000));
+    }
+
+    public List<Objet> getListe() {
+        return this.listeObjet;
     }
 }

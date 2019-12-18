@@ -95,6 +95,7 @@ public class Affichage implements Observer {
 	}
 
 	public void initImageObs() {
+		System.out.println("salope");
 		for(Objet o : listeObjet) {
 			o.addObserver(this);
 			createObject(o, gc1);

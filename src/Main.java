@@ -28,8 +28,9 @@ public class Main extends Application{
 			AffichageControl ac = new AffichageControl(sl,sys);
 			Affichage af = new Affichage(ac);
 			TimerCalcul tc = new TimerCalcul(af);
-			tc.start();
 			af.start(primaryStage);
+			tc.start();
+
 		} catch (FileNotFoundException e) {
 			System.err.println("Impossible de trouver le fichier spécifié. Vérifiez votre chemin de fichier. Ex : ressources/system.txt");
 			System.exit(1);

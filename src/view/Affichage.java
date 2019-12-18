@@ -94,14 +94,20 @@ public class Affichage implements Observer {
 		sys.addObserver(this);
 	}
 
-	public void setObservers() {
+	public void initImageObs() {
 		for(Objet o : listeObjet) {
 			o.addObserver(this);
+			createObject(o, gc1);
+			for(Objet o2 : listeObjet) {
+				if(o.getType().matches("Simulé") && o2.getType().equals("Fixe")) {
+					gc2.setFill(Color.WHITE);
+					if(afficherTrajectoire) gc2.fillOval(o.getPos().getPosX()/2+sys.getRayon()/2-0.5,o.getPos().getPosY()/2+sys.getRayon()/2-0.5,1,1);
+				}
+			}
 		}
 	}
 	public void start(Stage stage) throws Exception {
 		System.out.println("salut");
-		setObservers();
 		creerInfo();
 		layer1 = new Canvas(sys.getRayon(),sys.getRayon());
 		layer2 = new Canvas(sys.getRayon(),sys.getRayon());
@@ -294,10 +300,12 @@ public class Affichage implements Observer {
 		stage.show();
 		stage.getIcons().add(new Image("File:ressources/soleil.png", 60, 60, true, false));
 		//tl.play();
+		initImageObs();
 	}
 
 	@Override
 	public void update(Observable arg0, Object arg1) {
+		System.out.println("test");
 		gc1.clearRect(0, 0, sys.getRayon(), sys.getRayon());
 		for(Objet o : listeObjet) {
 			createObject(o, gc1);

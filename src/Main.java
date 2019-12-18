@@ -27,7 +27,7 @@ public class Main extends Application{
 			Systeme sys = sl.paramInit(4);
 			AffichageControl ac = new AffichageControl(sl,sys);
 			Affichage af = new Affichage(ac);
-			TimerCalcul tc = new TimerCalcul(ac);
+			TimerCalcul tc = new TimerCalcul(af);
 			tc.start();
 			af.start(primaryStage);
 		} catch (FileNotFoundException e) {

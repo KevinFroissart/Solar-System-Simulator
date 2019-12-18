@@ -1,6 +1,7 @@
 package model;
 
 import controller.AffichageControl;
+import view.Affichage;
 
 import java.util.List;
 import java.util.Timer;
@@ -12,13 +13,14 @@ public class TimerCalcul extends TimerTask {
     List<Objet> listeObjet;
     SystemLoader sl;
     Systeme sys;
+    Affichage af;
     AffichageControl ac;
-
-    public TimerCalcul(AffichageControl ac) {
-        this.ac = ac;
-        sl = ac.getModel();
-        listeObjet = sl.objectInit();
-        sys = ac.getSysteme();
+    
+    public TimerCalcul(Affichage af) {
+        this.af = af;
+        this.ac = af.getAc();
+        this.sys = af.getSys();
+        listeObjet = af.getObjets();
     }
 
     @Override

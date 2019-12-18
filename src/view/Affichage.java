@@ -53,7 +53,18 @@ public class Affichage implements Observer {
 		listeObjet = sl.objectInit();
 		sys = ac.getSysteme();
 	}
+	
+	public List<Objet> getObjets(){
+		return listeObjet;
+	}
+	
+	public Systeme getSys() {
+		return sys;
+	}
 
+	public AffichageControl getAc() {
+		return ac;
+	}
 	/**
 	 * Constructeur de la vue du vaisseau, des planêtes, et de l'étoile.
 	 * @param o donne l'objet à afficher
@@ -83,9 +94,14 @@ public class Affichage implements Observer {
 		sys.addObserver(this);
 	}
 
+	public void setObservers() {
+		for(Objet o : listeObjet) {
+			o.addObserver(this);
+		}
+	}
 	public void start(Stage stage) throws Exception {
 		System.out.println("salut");
-
+		setObservers();
 		creerInfo();
 		layer1 = new Canvas(sys.getRayon(),sys.getRayon());
 		layer2 = new Canvas(sys.getRayon(),sys.getRayon());

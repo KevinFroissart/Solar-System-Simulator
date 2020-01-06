@@ -1,18 +1,13 @@
 package controller;
 
 import java.io.File;
-import java.util.ArrayList;
 import java.util.List;
 import java.util.Observable;
 
 import javafx.stage.FileChooser;
 import javafx.stage.Stage;
 import javafx.stage.FileChooser.ExtensionFilter;
-import model.Objet;
-import model.SystemLoader;
-import model.Systeme;
-import model.Vaisseau;
-import model.Vecteur;
+import model.*;
 
 /** Cette classe contient les méthodes permettant le contrôle de la fusée et l'interaction des objets entre eux.
  * @author Maxence, Kévin
@@ -81,8 +76,21 @@ public class AffichageControl extends Observable {
 	/**
 	 * Changer la position de l'objet en paramètre
 	 */
-	public void pos(Objet obj) {
-		obj.setPos(new Vecteur(obj.getPos().getPosX() + obj.getVitesse().getPosX(), obj.getPos().getPosY() + obj.getVitesse().getPosY()));
+	public void pos(Objet obj) { //TO:DO ajouter le temps t à la signature et au corps de la fonction
+		if(!obj.getType().equals("Cercle") && !obj.getType().equals("Ellipse")) {
+			obj.setPos(new Vecteur(obj.getPos().getPosX() + obj.getVitesse().getPosX(), obj.getPos().getPosY() + obj.getVitesse().getPosY()));
+		} else if(obj.getType().equals("Cerlce")) {
+			ObjetCercle o = (ObjetCercle) obj;
+			double angle = 2*Math.PI / (/*t%*/ o .getPeriode());
+			double x2 = Math.pow(o.getPos().getPosX()-o.getCentre().getPos().getPosX(),2);
+			double y2 = Math.pow(o.getPos().getPosY()-o.getCentre().getPos().getPosY(),2);
+			double x = o.getCentre().getPos().getPosX() + Math.sqrt(x2+y2) * Math.cos(angle);
+			double y = o.getCentre().getPos().getPosX() + Math.sqrt(x2+y2) * Math.sin(angle);
+			obj.setPos(new Vecteur(x, y));
+		} else {
+			ObjetEllipse o = (ObjetEllipse) obj;
+			
+		}
 	}
 
 	/**

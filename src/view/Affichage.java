@@ -3,7 +3,6 @@ package view;
 import controller.AffichageControl;
 import javafx.animation.KeyFrame;
 import javafx.animation.Timeline;
-import javafx.geometry.Orientation;
 import javafx.scene.Group;
 import javafx.scene.Scene;
 import javafx.scene.canvas.Canvas;
@@ -43,8 +42,6 @@ public class Affichage implements Observer {
 	HBox hb = new HBox();
 	VBox vbZoom = new VBox();
 	Label labelVitesse = new Label("Vitesse de la simulation");
-	Label labelZoom = new Label("Zoom");
-	Slider zoomSlider = new Slider();
 	Timeline tl;
 	Pane bpane = new Pane();
 	Scene scene;
@@ -108,16 +105,6 @@ public class Affichage implements Observer {
 		Button binfo = new Button("Infos");
 		ToggleButton blayer = new ToggleButton("Trajectoire");
 
-		vbZoom.getChildren().addAll(labelZoom,zoomSlider);
-
-		zoomSlider.setMin(-1);
-		zoomSlider.setMax(1);
-		zoomSlider.setOrientation(Orientation.HORIZONTAL);
-		zoomSlider.setMinWidth(sys.getRayon()/2.5);
-		zoomSlider.setShowTickLabels(true);
-		zoomSlider.setShowTickMarks(true);
-		zoomSlider.setDisable(true);
-		labelZoom.setStyle("-fx-font-weight:bold;");
 		labelVitesse.setStyle("-fx-font-weight:bold;");
 
 		hb.getChildren().add(vbZoom);
@@ -137,13 +124,6 @@ public class Affichage implements Observer {
 		//Ici j'ajoute le background image à la VBox qui est root de notre systeme
 		BackgroundImage back = new BackgroundImage(new Image("File:ressources/background.jpg",0, 0, true, false), BackgroundRepeat.REPEAT, BackgroundRepeat.NO_REPEAT, BackgroundPosition.DEFAULT, BackgroundSize.DEFAULT);
 		vb.setBackground(new Background(back));
-
-		zoomSlider.setOnMouseDragged( e-> {
-			for(Objet o : listeObjet){
-				if(zoomSlider.getValue() > 0) o.setTaille(o.getTaille()*(zoomSlider.getValue()+1));
-				if(zoomSlider.getValue() < 0) o.setTaille(o.getTaille()/(zoomSlider.getValue()+1));
-			}
-		});
 
 		open.setOnAction( e-> {
 			try {
@@ -273,9 +253,6 @@ public class Affichage implements Observer {
 			}
 		});
 
-	
-			
-
 		vb.getChildren().addAll(toolBar,bpane,hb);
 		root.getChildren().add(vb);
 		stage.setResizable(true);
@@ -308,7 +285,7 @@ public class Affichage implements Observer {
 
 	@Override
 	public void update(Observable arg0, Object arg1) {
-		zoomSlider.setValue(sys.getZoom());
+
 	}
 	//effacer la vue, parcourir les objets, afficher pour chaque nouvelle pos
 }

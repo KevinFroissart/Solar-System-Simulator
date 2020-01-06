@@ -17,10 +17,6 @@ public interface IntegrationE {
         objA.setVit(new Vecteur(vitX, vitY));
     }
 
-    public static void eulerImplicite(Objet objA, Objet objB, Systeme sys){
-        //TODO
-    }
-
     public static void leapfrog(Objet objA, Objet objB, Systeme sys){
         //TODO
     }

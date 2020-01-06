@@ -45,6 +45,10 @@ public class Affichage implements Observer {
 	Timeline tl;
 	Pane bpane = new Pane();
 	Scene scene;
+	int temps = 0;
+	int seconde = 0;
+	int minute = 0;
+	int heure = 0;
 
 	public Affichage(AffichageControl ac) {
 		this.ac = ac;
@@ -263,8 +267,12 @@ public class Affichage implements Observer {
 		stage.getIcons().add(new Image("File:ressources/soleil.png", 60, 60, true, false));
 		tl.play();
 	}
-	
+
 	private void run() {
+		temps ++;
+		seconde = temps%60;
+		minute = temps/60%60;
+		heure = temps/60/60;
 		gc1.clearRect(0, 0, sys.getRayon(), sys.getRayon());
 		for(Objet o : listeObjet) {
 			createObject(o, gc1);
@@ -279,7 +287,7 @@ public class Affichage implements Observer {
 					IntegrationE.eulerExplicite(o, o2, sys);
 				}
 			}
-			ac.pos(o);
+			ac.pos(o,temps);
 		}
 	}
 

@@ -3,7 +3,6 @@ package view;
 import controller.AffichageControl;
 import javafx.animation.KeyFrame;
 import javafx.animation.Timeline;
-import javafx.geometry.Orientation;
 import javafx.scene.Group;
 import javafx.scene.Scene;
 import javafx.scene.canvas.Canvas;
@@ -18,6 +17,7 @@ import javafx.util.Duration;
 import model.*;
 
 import java.io.File;
+import java.text.DecimalFormat;
 import java.util.*;
 
 /** Classe gérant l'affichage principal du système.
@@ -26,6 +26,13 @@ import java.util.*;
 
 public class Affichage implements Observer {
 
+	
+	Label str=new Label();
+	Label sim=new Label();
+	Label vais=new Label();
+	DecimalFormat df = new DecimalFormat("0.00");
+	DecimalFormat df2 = new DecimalFormat("0.00000");
+	DecimalFormat df3 = new DecimalFormat("0.0000000");
 	AffichageControl ac;
 	SystemLoader sl;
 	List<Objet> listeObjet;
@@ -34,7 +41,7 @@ public class Affichage implements Observer {
 	Canvas layer2;
 	GraphicsContext gc1;
 	GraphicsContext gc2;
-	Information info;
+	Label info = new Label();
 	boolean afficherVaisseau = true;
 	boolean afficherPlanete = true;
 	boolean afficherSoleil = true;
@@ -43,11 +50,13 @@ public class Affichage implements Observer {
 	HBox hb = new HBox();
 	VBox vbZoom = new VBox();
 	Label labelVitesse = new Label("Vitesse de la simulation");
-	Label labelZoom = new Label("Zoom");
-	Slider zoomSlider = new Slider();
 	Timeline tl;
 	Pane bpane = new Pane();
 	Scene scene;
+	int temps = 0;
+	int seconde = 0;
+	int minute = 0;
+	int heure = 0;
 
 	public Affichage(AffichageControl ac) {
 		this.ac = ac;
@@ -77,17 +86,33 @@ public class Affichage implements Observer {
 		}
 	}
 
-	public void creerInfo() {
-		info = new Information(listeObjet);
-		for(Objet o : listeObjet) {
-			o.addObserver(info);
+	public void updateInfo() {
+		 str.setText("			FIXE \n \n");
+		sim.setText("\n			SIMULE \n \n");
+		vais.setText("\n			VAISSEAU \n \n");
+		for(Objet o2 : listeObjet) {
+			if(o2.getType().equals("Fixe")){
+				str.setText(str.getText()+"     "+ o2.getName()+"     Masse : "+o2.getMasse()+" kg\n");
+			}
+			if(o2.getType().equals("Simulé")) {
+				sim.setText(sim.getText()+"     "+o2.getName()+"\n Masse : "+o2.getMasse()+" kg\n Position : X: "+df.format((o2.getPos().getPosX()))+
+					   " m; Y: "+df.format(o2.getPos().getPosY())+" m\n Vitesse  X:"+df2.format(o2.getVitesse().getPosX()) +" m/s Y :"+df2.format(o2.getVitesse().getPosY())+" m/s\n"
+					  +" Force Attraction : "+df3.format(o2.getAttraction()) +" N\n \n");
+			}
+			if(o2.getType().equals("Vaisseau")) {
+				vais.setText(vais.getText()+"     "+o2.getName()+"\n Masse : "+o2.getMasse()+" kg\n Position : X: "+df.format((o2.getPos().getPosX()))+
+						   " m; Y: "+df.format(o2.getPos().getPosY())+" m\n Vitesse  X:"+df2.format(o2.getVitesse().getPosX()) +" m/s Y :"+df2.format(o2.getVitesse().getPosY())+" m/s\n"
+							  +" Force Attraction Soleil: "+df2.format(o2.getAttractionSoleil())+" *10^-9 N\n"
+							  +" Force Attraction Planete: "+df2.format(o2.getAttractionPlanete()) +" *10^-9 N\n \n");
+				//System.out.println(o2.getAttraction());
+			}
 		}
-		sys.addObserver(this);
+		info.setText(str.getText()+sim.getText()+vais.getText());
 	}
-
+	
 	public void start(Stage stage) throws Exception {
 
-		creerInfo();
+		updateInfo();
 		layer1 = new Canvas(sys.getRayon(),sys.getRayon());
 		layer2 = new Canvas(sys.getRayon(),sys.getRayon());
 		gc1 = layer1.getGraphicsContext2D();
@@ -95,36 +120,30 @@ public class Affichage implements Observer {
 		bpane.setMinSize(sys.getRayon(),sys.getRayon());
 		bpane.getChildren().addAll(layer1,layer2);
 		layer1.toFront();
-
+		VBox fenetre = new VBox();
+		HBox informations = new HBox();
+		Label cryo=new Label("Entré une valeur ");
+		TextField cryog = new TextField();
+		
 		VBox vb = new VBox();
 		ToolBar toolBar = new ToolBar();
 		Button open = new Button("Ouvrir");
 		Button reset = new Button("Reset");
 		Separator separator = new Separator();
 		Separator separator2 = new Separator();
+		Button boutoncryo = new Button("Cryo-sommeil");
 		ToggleButton bvs = new ToggleButton("Vaisseau");
 		ToggleButton bp = new ToggleButton("Planètes");
 		ToggleButton bs = new ToggleButton("Soleil");
-		Button binfo = new Button("Infos");
 		ToggleButton blayer = new ToggleButton("Trajectoire");
 
-		vbZoom.getChildren().addAll(labelZoom,zoomSlider);
-
-		zoomSlider.setMin(-1);
-		zoomSlider.setMax(1);
-		zoomSlider.setOrientation(Orientation.HORIZONTAL);
-		zoomSlider.setMinWidth(sys.getRayon()/2.5);
-		zoomSlider.setShowTickLabels(true);
-		zoomSlider.setShowTickMarks(true);
-		zoomSlider.setDisable(true);
-		labelZoom.setStyle("-fx-font-weight:bold;");
 		labelVitesse.setStyle("-fx-font-weight:bold;");
 
 		hb.getChildren().add(vbZoom);
 		hb.setStyle("-fx-padding: 10;" + "-fx-border-style: solid inside;"
 				+ "-fx-border-width: 2;" + "-fx-border-insets: 10;"
 				+ "-fx-border-radius: 10;" + "-fx-border-color: black;");
-		toolBar.getItems().addAll(open,reset,separator,bvs,bp,bs,blayer,separator2,binfo);
+		toolBar.getItems().addAll(open,reset,separator,bvs,bp,bs,blayer,separator2);
 
 		//Unité de temps et de simulation du systeme
 		tl = new Timeline(new KeyFrame(Duration.seconds(sys.getDt()/sys.getFa()), e->run()));
@@ -138,13 +157,6 @@ public class Affichage implements Observer {
 		BackgroundImage back = new BackgroundImage(new Image("File:ressources/background.jpg",0, 0, true, false), BackgroundRepeat.REPEAT, BackgroundRepeat.NO_REPEAT, BackgroundPosition.DEFAULT, BackgroundSize.DEFAULT);
 		vb.setBackground(new Background(back));
 
-		zoomSlider.setOnMouseDragged( e-> {
-			for(Objet o : listeObjet){
-				if(zoomSlider.getValue() > 0) o.setTaille(o.getTaille()*(zoomSlider.getValue()+1));
-				if(zoomSlider.getValue() < 0) o.setTaille(o.getTaille()/(zoomSlider.getValue()+1));
-			}
-		});
-
 		open.setOnAction( e-> {
 			try {
 				File file = ac.getFileExplorer(stage);
@@ -152,11 +164,7 @@ public class Affichage implements Observer {
 					sl.reader(file);
 					listeObjet = ac.resetObj();
 					sys = ac.resetSys();
-					for(Objet o : listeObjet) {
-						o.addObserver(info);
-					}
 					sys.addObserver(Affichage.this);
-					info.setListe(listeObjet);
 				}
 			}
 			catch(NullPointerException e1) {
@@ -176,16 +184,6 @@ public class Affichage implements Observer {
 			bp.setSelected(false);
 			bs.setSelected(false);
 			bvs.setSelected(false);
-			try {
-				info.setListe(listeObjet);
-			}catch(NullPointerException e1) {
-				e1.printStackTrace();
-			}catch(Exception e2) {
-				e2.printStackTrace();
-			}
-			for(Objet o : listeObjet) {
-				o.addObserver(info);
-			}
 			sys.addObserver(Affichage.this);
 		});
 
@@ -223,14 +221,6 @@ public class Affichage implements Observer {
 			}
 		});
 
-		binfo.setOnAction( e-> {
-			try {
-				info.start();
-			} catch (Exception e1) {
-				e1.printStackTrace();
-			}
-		});
-
 		blayer.setOnAction( e -> {
 			if(blayer.isSelected()){
 				blayer.setSelected(true);
@@ -245,13 +235,6 @@ public class Affichage implements Observer {
 
 
 		scene.setOnKeyPressed( e-> {
-			if(e.getCode().equals(KeyCode.I)) {
-				try {
-					info.start();
-				} catch (Exception e1) {
-					e1.printStackTrace();
-				}
-			}
 			for(Objet o : listeObjet) {
 				if(o.getType().equals("Vaisseau")) {
 					if(e.getCode().equals(KeyCode.DOWN)) ac.down((Vaisseau)o, true);
@@ -273,11 +256,10 @@ public class Affichage implements Observer {
 			}
 		});
 
-	
-			
-
 		vb.getChildren().addAll(toolBar,bpane,hb);
-		root.getChildren().add(vb);
+		fenetre.getChildren().addAll(info,cryo,cryog,boutoncryo);
+		informations.getChildren().addAll(vb,fenetre);
+		root.getChildren().add(informations);
 		stage.setResizable(true);
 		stage.setTitle("Solar System Simulator");
 		stage.setScene(scene);
@@ -286,8 +268,13 @@ public class Affichage implements Observer {
 		stage.getIcons().add(new Image("File:ressources/soleil.png", 60, 60, true, false));
 		tl.play();
 	}
-	
+
 	private void run() {
+		updateInfo();
+		temps ++;
+		seconde = temps%60;
+		minute = temps/60%60;
+		heure = temps/60/60;
 		gc1.clearRect(0, 0, sys.getRayon(), sys.getRayon());
 		for(Objet o : listeObjet) {
 			createObject(o, gc1);
@@ -302,13 +289,13 @@ public class Affichage implements Observer {
 					IntegrationE.eulerExplicite(o, o2, sys);
 				}
 			}
-			ac.pos(o);
+			ac.pos(o,temps);
 		}
 	}
 
 	@Override
 	public void update(Observable arg0, Object arg1) {
-		zoomSlider.setValue(sys.getZoom());
+
 	}
 	//effacer la vue, parcourir les objets, afficher pour chaque nouvelle pos
 }

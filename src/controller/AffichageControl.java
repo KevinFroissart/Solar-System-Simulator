@@ -108,4 +108,6 @@ public class AffichageControl extends Observable {
 		}
 		return sl.getFile();
 	}
+	
+	
 }

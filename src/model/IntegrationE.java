@@ -10,6 +10,13 @@ public interface IntegrationE {
         double distance = Math.sqrt(Math.pow(xB - xA, 2) + Math.pow(yB - yA, 2));
         double force = sys.getG()* (objA.getMasse() * objB.getMasse()) / Math.pow(distance, 2);
         double acc = force / objA.getMasse();
+        
+        if(objA.getType().equals("Vaisseau")) {
+        	if(objB.getType().equals("Fixe")) objA.setAttractionSoleil((sys.getG() * objA.getMasse() * objB.getMasse()) / Math.pow(distance, 2));
+        	if(objB.getType().equals("Simulé")) objA.setAttractionPlanete((sys.getG() * objA.getMasse() * objB.getMasse()) / Math.pow(distance, 2));
+        	objA.setAttraction((objA.getAttractionPlanete() + objA.getAttractionSoleil()) / 2);
+        }
+		
         double dirX = (xB - xA) / distance;
         double dirY = (yB - yA) / distance;
         double vitX = objA.getVitesse().getPosX() + dirX * acc;
@@ -18,7 +25,6 @@ public interface IntegrationE {
     }
 
     public static void leapfrog(Objet objA, Systeme sys){
-        Vecteur pos = objA.getPos();
         Vecteur vit = objA.getVitesse();
         double acc = objA.getAcc();
 

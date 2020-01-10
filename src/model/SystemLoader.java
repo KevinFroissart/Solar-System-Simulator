@@ -222,6 +222,8 @@ public class SystemLoader {
 					objectList.add(new ObjetSimule(nom, type, masse, pos, vit, 0));
 					break;
 				case "Ellipse" :
+					System.err.println("Les ellipses ne sont pas supportées !");
+					System.exit(1);
 					pos = new Vecteur(posx,posy);
 					objectList.add(new ObjetEllipse(nom, type, masse, pos, 0, période, f1, f2));
 					; break;

@@ -55,6 +55,8 @@ public class Affichage implements Observer {
 	int seconde = 0;
 	int minute = 0;
 	int heure = 0;
+	double oldDt;
+	double rate;
 
 	public Affichage(AffichageControl ac) {
 		this.ac = ac;
@@ -90,7 +92,8 @@ public class Affichage implements Observer {
 					" m\n Vitesse  X:"+df2.format(o2.getVitesse().getPosX()) +" m/s Y :"+df2.format(o2.getVitesse().getPosY())+" m/s\n");
 			if(o2.getType().equals("Vaisseau")) vais.setText(vais.getText()+"     "+o2.getName()+"\n Masse : "+o2.getMasse()+
 					" kg\n Position : X: "+df.format((o2.getPos().getPosX()))+" m; Y: "+df.format(o2.getPos().getPosY())+
-					" m\n Vitesse  X:"+df2.format(o2.getVitesse().getPosX()) +" m/s Y :"+df2.format(o2.getVitesse().getPosY())+" m/s\n\n");
+					" m\n Vitesse  X:"+df2.format(o2.getVitesse().getPosX()) +" m/s Y :"+df2.format(o2.getVitesse().getPosY())+" m/s\n"+
+					" Force Attraction: "+df2.format(o2.getAttraction())+" *10^-9 N\n\n");
 		}
 		tmp.setText("Temps écoulé: " + heure + ":" + minute + ":" + seconde+"\n\n");
 		info.setText(str.getText()+sim.getText()+vais.getText()+tmp.getText());
@@ -99,6 +102,7 @@ public class Affichage implements Observer {
 	public void start(Stage stage) throws Exception {
 
 		updateInfo();
+		oldDt = sys.getDt();
 		layer1 = new Canvas(sys.getRayon(),sys.getRayon());
 		layer2 = new Canvas(sys.getRayon(),sys.getRayon());
 		gc1 = layer1.getGraphicsContext2D();
@@ -248,6 +252,7 @@ public class Affichage implements Observer {
 		stage.show();
 		stage.getIcons().add(new Image("File:ressources/soleil.png", 60, 60, true, false));
 		tl.play();
+		rate = tl.getRate();
 	}
 
 	private void run() {
@@ -266,6 +271,14 @@ public class Affichage implements Observer {
 				}
 				if(afficherTrajectoire) gc2.fillOval(o.getPos().getPosX()/2+sys.getRayon()/2-0.5,o.getPos().getPosY()/2+sys.getRayon()/2-0.5,1,1);
 				if(o.getType().equals("Vaisseau") && !o2.getType().equals("Vaisseau")) {
+					if(o.getAttraction() > 100) {
+						double nb = o.getAttraction()/100.0;
+						sys.setDt(sys.getDt()/nb);
+						tl.setRate(tl.getRate()+nb);
+					} else {
+						tl.setRate(rate);
+						sys.setDt(oldDt);
+					}
 					IntegrationE.eulerExplicite(o, o2, sys);
 				}
 			}

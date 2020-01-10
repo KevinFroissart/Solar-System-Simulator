@@ -123,6 +123,7 @@ public class Affichage implements Observer {
 		VBox fenetre = new VBox();
 		HBox informations = new HBox();
 		Label cryo=new Label("Entré une valeur ");
+		
 		TextField cryog = new TextField();
 		
 		VBox vb = new VBox();
@@ -140,7 +141,7 @@ public class Affichage implements Observer {
 		labelVitesse.setStyle("-fx-font-weight:bold;");
 
 		hb.getChildren().add(vbZoom);
-		hb.setStyle("-fx-padding: 10;" + "-fx-border-style: solid inside;"
+		fenetre.setStyle("-fx-padding: 10;" + "-fx-border-style: solid inside;"
 				+ "-fx-border-width: 2;" + "-fx-border-insets: 10;"
 				+ "-fx-border-radius: 10;" + "-fx-border-color: black;");
 		toolBar.getItems().addAll(open,reset,separator,bvs,bp,bs,blayer,separator2);

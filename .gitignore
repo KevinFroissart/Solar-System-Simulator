@@ -1,4 +1,8 @@
-/bin/
-mode2020-h1.iml
+# Intellij
+.idea
+*.iml
+
+# Eclipse
+.project
+.settings
 .classpath
-/.idea/misc.xml

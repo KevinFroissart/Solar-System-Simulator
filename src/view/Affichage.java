@@ -26,7 +26,7 @@ import java.util.*;
 
 public class Affichage implements Observer {
 
-	
+	Label tmp=new Label();
 	Label str=new Label();
 	Label sim=new Label();
 	Label vais=new Label();
@@ -96,18 +96,15 @@ public class Affichage implements Observer {
 			}
 			if(o2.getType().equals("Simulé")) {
 				sim.setText(sim.getText()+"     "+o2.getName()+"\n Masse : "+o2.getMasse()+" kg\n Position : X: "+df.format((o2.getPos().getPosX()))+
-					   " m; Y: "+df.format(o2.getPos().getPosY())+" m\n Vitesse  X:"+df2.format(o2.getVitesse().getPosX()) +" m/s Y :"+df2.format(o2.getVitesse().getPosY())+" m/s\n"
-					  +" Force Attraction : "+df3.format(o2.getAttraction()) +" N\n \n");
+					   " m; Y: "+df.format(o2.getPos().getPosY())+" m\n Vitesse  X:"+df2.format(o2.getVitesse().getPosX()) +" m/s Y :"+df2.format(o2.getVitesse().getPosY())+" m/s\n");
 			}
 			if(o2.getType().equals("Vaisseau")) {
 				vais.setText(vais.getText()+"     "+o2.getName()+"\n Masse : "+o2.getMasse()+" kg\n Position : X: "+df.format((o2.getPos().getPosX()))+
-						   " m; Y: "+df.format(o2.getPos().getPosY())+" m\n Vitesse  X:"+df2.format(o2.getVitesse().getPosX()) +" m/s Y :"+df2.format(o2.getVitesse().getPosY())+" m/s\n"
-							  +" Force Attraction Soleil: "+df2.format(o2.getAttractionSoleil())+" *10^-9 N\n"
-							  +" Force Attraction Planete: "+df2.format(o2.getAttractionPlanete()) +" *10^-9 N\n \n");
-				//System.out.println(o2.getAttraction());
+						   " m; Y: "+df.format(o2.getPos().getPosY())+" m\n Vitesse  X:"+df2.format(o2.getVitesse().getPosX()) +" m/s Y :"+df2.format(o2.getVitesse().getPosY())+" m/s\n\n");
 			}
 		}
-		info.setText(str.getText()+sim.getText()+vais.getText());
+		tmp.setText("Temps écoulé: " + heure + ":" + minute + ":" + seconde+"\n\n");
+		info.setText(str.getText()+sim.getText()+vais.getText()+tmp.getText());
 	}
 	
 	public void start(Stage stage) throws Exception {
@@ -122,7 +119,7 @@ public class Affichage implements Observer {
 		layer1.toFront();
 		VBox fenetre = new VBox();
 		HBox informations = new HBox();
-		Label cryo=new Label("Entré une valeur ");
+		Label cryo=new Label("Entrez une valeur ");
 		
 		TextField cryog = new TextField();
 		

@@ -48,8 +48,6 @@ public class Affichage implements Observer {
 	boolean afficherTrajectoire;
 	double vitesseSimu;
 	HBox hb = new HBox();
-	VBox vbZoom = new VBox();
-	Label labelVitesse = new Label("Vitesse de la simulation");
 	Timeline tl;
 	Pane bpane = new Pane();
 	Scene scene;
@@ -70,7 +68,7 @@ public class Affichage implements Observer {
 	 * @param o donne l'objet à afficher
 	 * @param gc GraphicsContext du canvas de la fenêtre
 	 */
-	public void createObject(Objet o, GraphicsContext gc) {
+	public void drawObject(Objet o, GraphicsContext gc) {
 		double x = o.getPos().getPosX()/2 + sys.getRayon()/2;
 		double y = o.getPos().getPosY()/2 + sys.getRayon()/2;
 		if(o.getType().matches("Fixe") && afficherSoleil) gc.drawImage(o.getImage(), x-(o.getTaille()/2), y-(o.getTaille()/2), o.getTaille(), o.getTaille());
@@ -78,12 +76,7 @@ public class Affichage implements Observer {
 			ObjetSimule o2 = (ObjetSimule) o;
 			gc.drawImage(o2.getImage(), x-(o.getTaille()/2), y-(o.getTaille()/2), o.getTaille(), o.getTaille());
 		}
-		if(o.getType().matches("Vaisseau") && afficherVaisseau){
-			gc.save();
-			//gc.rotate(25);
-			gc.drawImage(o.getImage(),x-(o.getTaille()/4+6), y-(o.getTaille()/4+6), o.getTaille()/2+3, o.getTaille()/2+3);
-			gc.restore();
-		}
+		if(o.getType().matches("Vaisseau") && afficherVaisseau) gc.drawImage(o.getImage(),x-(o.getTaille()/4+6), y-(o.getTaille()/4+6), o.getTaille()/2+3, o.getTaille()/2+3);
 	}
 
 	public void updateInfo() {
@@ -91,17 +84,13 @@ public class Affichage implements Observer {
 		sim.setText("\n			SIMULE \n \n");
 		vais.setText("\n			VAISSEAU \n \n");
 		for(Objet o2 : listeObjet) {
-			if(o2.getType().equals("Fixe")){
-				str.setText(str.getText()+"     "+ o2.getName()+"     Masse : "+o2.getMasse()+" kg\n");
-			}
-			if(o2.getType().equals("Simulé")) {
-				sim.setText(sim.getText()+"     "+o2.getName()+"\n Masse : "+o2.getMasse()+" kg\n Position : X: "+df.format((o2.getPos().getPosX()))+
-					   " m; Y: "+df.format(o2.getPos().getPosY())+" m\n Vitesse  X:"+df2.format(o2.getVitesse().getPosX()) +" m/s Y :"+df2.format(o2.getVitesse().getPosY())+" m/s\n");
-			}
-			if(o2.getType().equals("Vaisseau")) {
-				vais.setText(vais.getText()+"     "+o2.getName()+"\n Masse : "+o2.getMasse()+" kg\n Position : X: "+df.format((o2.getPos().getPosX()))+
-						   " m; Y: "+df.format(o2.getPos().getPosY())+" m\n Vitesse  X:"+df2.format(o2.getVitesse().getPosX()) +" m/s Y :"+df2.format(o2.getVitesse().getPosY())+" m/s\n\n");
-			}
+			if(o2.getType().equals("Fixe")) str.setText(str.getText()+"     "+ o2.getName()+"     Masse : "+o2.getMasse()+" kg\n");
+			if(o2.getType().equals("Simulé")) sim.setText(sim.getText()+"     "+o2.getName()+"\n Masse : "+o2.getMasse()+
+					" kg\n Position : X: "+df.format((o2.getPos().getPosX()))+ " m; Y: "+df.format(o2.getPos().getPosY())+
+					" m\n Vitesse  X:"+df2.format(o2.getVitesse().getPosX()) +" m/s Y :"+df2.format(o2.getVitesse().getPosY())+" m/s\n");
+			if(o2.getType().equals("Vaisseau")) vais.setText(vais.getText()+"     "+o2.getName()+"\n Masse : "+o2.getMasse()+
+					" kg\n Position : X: "+df.format((o2.getPos().getPosX()))+" m; Y: "+df.format(o2.getPos().getPosY())+
+					" m\n Vitesse  X:"+df2.format(o2.getVitesse().getPosX()) +" m/s Y :"+df2.format(o2.getVitesse().getPosY())+" m/s\n\n");
 		}
 		tmp.setText("Temps écoulé: " + heure + ":" + minute + ":" + seconde+"\n\n");
 		info.setText(str.getText()+sim.getText()+vais.getText()+tmp.getText());
@@ -128,31 +117,26 @@ public class Affichage implements Observer {
 		Button open = new Button("Ouvrir");
 		Button reset = new Button("Reset");
 		Separator separator = new Separator();
-		Separator separator2 = new Separator();
 		Button boutoncryo = new Button("Cryo-sommeil");
 		ToggleButton bvs = new ToggleButton("Vaisseau");
 		ToggleButton bp = new ToggleButton("Planètes");
 		ToggleButton bs = new ToggleButton("Soleil");
 		ToggleButton blayer = new ToggleButton("Trajectoire");
 
-		labelVitesse.setStyle("-fx-font-weight:bold;");
-
-		hb.getChildren().add(vbZoom);
 		fenetre.setStyle("-fx-padding: 10;" + "-fx-border-style: solid inside;"
 				+ "-fx-border-width: 2;" + "-fx-border-insets: 10;"
 				+ "-fx-border-radius: 10;" + "-fx-border-color: black;");
-		toolBar.getItems().addAll(open,reset,separator,bvs,bp,bs,blayer,separator2);
+		toolBar.getItems().addAll(open,reset,separator,bvs,bp,bs,blayer);
 
 		//Unité de temps et de simulation du systeme
 		tl = new Timeline(new KeyFrame(Duration.seconds(sys.getDt()/sys.getFa()), e->run()));
-		//tl = new Timeline(new KeyFrame(Duration.seconds(sys.getDt()/sys.getFa()), e -> run()));
 		tl.setCycleCount(Timeline.INDEFINITE);
-
 
 		Group root = new Group();
 		scene = new Scene(root);
 		//Ici j'ajoute le background image à la VBox qui est root de notre systeme
-		BackgroundImage back = new BackgroundImage(new Image("File:ressources/background.jpg",0, 0, true, false), BackgroundRepeat.REPEAT, BackgroundRepeat.NO_REPEAT, BackgroundPosition.DEFAULT, BackgroundSize.DEFAULT);
+		BackgroundImage back = new BackgroundImage(new Image("File:ressources/background.jpg",0, 0, true, false),
+		BackgroundRepeat.REPEAT, BackgroundRepeat.NO_REPEAT, BackgroundPosition.DEFAULT, BackgroundSize.DEFAULT);
 		vb.setBackground(new Background(back));
 
 		open.setOnAction( e-> {
@@ -231,7 +215,6 @@ public class Affichage implements Observer {
 			}
 		});
 
-
 		scene.setOnKeyPressed( e-> {
 			for(Objet o : listeObjet) {
 				if(o.getType().equals("Vaisseau")) {
@@ -269,20 +252,19 @@ public class Affichage implements Observer {
 
 	private void run() {
 		updateInfo();
-		temps ++;
-		seconde = temps%60;
-		minute = temps/60%60;
-		heure = temps/60/60;
+		temps++;
+		seconde = temps % 60;
+		minute = temps / 60 % 60;
+		heure = temps / 60 / 60;
 		gc1.clearRect(0, 0, sys.getRayon(), sys.getRayon());
 		for(Objet o : listeObjet) {
-			createObject(o, gc1);
+			drawObject(o, gc1);
 			for(Objet o2 : listeObjet) {
 				if(o.getType().matches("Simulé") && o2.getType().equals("Fixe")) {
-					//ac.Force(o, o2);
 					IntegrationE.eulerExplicite(o, o2, sys);
 					gc2.setFill(Color.WHITE);
-					if(afficherTrajectoire) gc2.fillOval(o.getPos().getPosX()/2+sys.getRayon()/2-0.5,o.getPos().getPosY()/2+sys.getRayon()/2-0.5,1,1);
 				}
+				if(afficherTrajectoire) gc2.fillOval(o.getPos().getPosX()/2+sys.getRayon()/2-0.5,o.getPos().getPosY()/2+sys.getRayon()/2-0.5,1,1);
 				if(o.getType().equals("Vaisseau") && !o2.getType().equals("Vaisseau")) {
 					IntegrationE.eulerExplicite(o, o2, sys);
 				}
@@ -295,5 +277,4 @@ public class Affichage implements Observer {
 	public void update(Observable arg0, Object arg1) {
 
 	}
-	//effacer la vue, parcourir les objets, afficher pour chaque nouvelle pos
 }

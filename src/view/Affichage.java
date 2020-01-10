@@ -71,8 +71,8 @@ public class Affichage implements Observer {
 	 * @param gc GraphicsContext du canvas de la fenêtre
 	 */
 	public void createObject(Objet o, GraphicsContext gc) {
-		double x = o.getPos().getPosX()/2 + sys.getRayon()/2;
-		double y = o.getPos().getPosY()/2 + sys.getRayon()/2;
+		double x = o.getPos().getPosX()+ sys.getRayon();
+		double y = o.getPos().getPosY()/2+ sys.getRayon()/2;
 		if(o.getType().matches("Fixe") && afficherSoleil) gc.drawImage(o.getImage(), x-(o.getTaille()/2), y-(o.getTaille()/2), o.getTaille(), o.getTaille());
 		if(o.getType().matches("Simulé") && afficherPlanete) {
 			ObjetSimule o2 = (ObjetSimule) o;
@@ -113,8 +113,8 @@ public class Affichage implements Observer {
 	public void start(Stage stage) throws Exception {
 
 		updateInfo();
-		layer1 = new Canvas(sys.getRayon(),sys.getRayon());
-		layer2 = new Canvas(sys.getRayon(),sys.getRayon());
+		layer1 = new Canvas(sys.getRayon()*2,sys.getRayon());
+		layer2 = new Canvas(sys.getRayon()*2,sys.getRayon());
 		gc1 = layer1.getGraphicsContext2D();
 		gc2 = layer2.getGraphicsContext2D();
 		bpane.setMinSize(sys.getRayon(),sys.getRayon());
@@ -122,7 +122,7 @@ public class Affichage implements Observer {
 		layer1.toFront();
 		VBox fenetre = new VBox();
 		HBox informations = new HBox();
-		Label cryo=new Label("Entré une valeur ");
+		Label cryo=new Label("Entrez une valeur ");
 		TextField cryog = new TextField();
 		
 		VBox vb = new VBox();
@@ -140,9 +140,7 @@ public class Affichage implements Observer {
 		labelVitesse.setStyle("-fx-font-weight:bold;");
 
 		hb.getChildren().add(vbZoom);
-		hb.setStyle("-fx-padding: 10;" + "-fx-border-style: solid inside;"
-				+ "-fx-border-width: 2;" + "-fx-border-insets: 10;"
-				+ "-fx-border-radius: 10;" + "-fx-border-color: black;");
+		
 		toolBar.getItems().addAll(open,reset,separator,bvs,bp,bs,blayer,separator2);
 
 		//Unité de temps et de simulation du systeme
@@ -255,7 +253,7 @@ public class Affichage implements Observer {
 				}
 			}
 		});
-
+		fenetre.setStyle("-fx-padding: 10; -fx-border-style: solid inside; -fx-border-width: 2; -fx-border-insets: 10; -fx-border-radius: 10; -fx-border-color: black;");
 		vb.getChildren().addAll(toolBar,bpane,hb);
 		fenetre.getChildren().addAll(info,cryo,cryog,boutoncryo);
 		informations.getChildren().addAll(vb,fenetre);

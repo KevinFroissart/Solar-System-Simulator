@@ -14,5 +14,4 @@ public class ObjetFixe extends Objet {
     public Image getImage(){
         return new Image("File:ressources/soleil.png", 60, 60, true, false);
     }
-
 }

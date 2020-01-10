@@ -17,8 +17,18 @@ public interface IntegrationE {
         objA.setVit(new Vecteur(vitX, vitY));
     }
 
-    public static void leapfrog(Objet objA, Objet objB, Systeme sys){
-        //TODO
+    public static void leapfrog(Objet objA, Systeme sys){
+        Vecteur pos = objA.getPos();
+        Vecteur vit = objA.getVitesse();
+        double acc = objA.getAcc();
+
+        Vecteur demiVit = new Vecteur(
+                vit.getPosX() + (sys.getDt() * acc / 2),
+                vit.getPosY() + (sys.getDt() * acc / 2)
+        );
+
+        objA.setPos(new Vecteur(objA.getPos().getPosX() + sys.getDt() * demiVit.getPosX(), objA.getPos().getPosY() + sys.getDt() * demiVit.getPosY()));
+        objA.setVit(new Vecteur(objA.getPos().getPosX() + sys.getDt() * acc, objA.getPos().getPosY() + sys.getDt() * acc));
     }
 
     public static void RK4(Objet objA, Objet objB, Systeme sys){

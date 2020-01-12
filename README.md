@@ -10,38 +10,31 @@
 ## Responsabilités ##
 
 ##### DEROUCK Lucas 
-* Création des différentes vues
-* Affichage des informations dans la vue infos
-* CSS & placement des sliders
-* Création des classes Objet
+* IHM
+* Implémentation des informations détaillées sur la fenêtre
+* Ajout des boutons, du CSS, des Labels
 
 ##### BISSON Clément
-* JavaDoc
-* Tests Unitaire
-* Séléction aléatoire des sprites lors de la création des planètes
-* Création classe Vecteurs
+* Faire la vue vaisseau (pas implémenté)
 	
 ##### BOURDIN Maxence
-* Ajout de tous les sprites sur chacun des objets, icone et background, ressources
-* Chargement du fichier en ligne de commandes
-* Chargement de fichiers depuis l'application
-* Gestion des erreurs
-* Gestion de la progression, ajout de TO:DO & JavaDoc
+* Timer (non fonctionnel)
+* Édition du .gitIgnore
+* Interface méthodes d'intégration
+* Édition des librairies
+* Préparation du rendu
 
 ##### FROISSART Kévin
-* Lecture du fichier
-* Gestion des erreurs textuelles des fichiers
-* Stockage & création des objets dans le canvas
-* Implémentation d'Euler
-* Ajout de la trajectoire des objets
-* Guidage du vaisseau
-* Création du controller
-* Création de l'affichage, des sliders, boutons et leurs actions
-* Communication des informations via des observers
-* Préparation du rendu, captures, dossiers, jar ....
+* Implémentation du cercle
+* Implémentation de LeapFrog
+* Implémentation du Cryo-sommeil
+* DT adaptatif
+* Ajout du chronomètre
+* Préparation du rendu
 
 ## Fonctionnalités ##
-
+	
+	<Jalon 1>
 	- Exécution d'un système depuis une console avec une ligne de commande.
 	- Exécution d'un système depuis l'application via le bouton Ouvrir.
 	- Possibilité de recommencer la simulation exécutée vie le bouton Reset.
@@ -52,9 +45,21 @@
 	- Modification de la vitesse de simulation via le slider Vitesse de la simulation.
 	- Contrôle du vaisseau via les flèches du clavier.
 
+	<Jalon 2>
+	- Les Ellipses ne sont pas du tout suportées et serons considérées comme erreurs
+	- Possibilité d'utiliser LeapFrog et Euler Explicite
+	- Possibilité de simuler un cercle
+	- Cryo-Sommeil via un bouton disponible dans la fenêtre principale
+	- Possibilité de changer de méthode d'intégration sans quitter le programme
+	- Possibilité de cacher le cercle en plus des anciennes fonctionnalités via le bouton Cercle
+	- Tableau d'informations détaillées sur la fenêtre principale
+	- Possiblité de consulter le temps écoulé dans la simulation via la fenêtre détaillée
+	- DT adaptatif
+	- Trajectoire du vaisseau ajoutée à celle des planètes via le bouton Trajectoire
+
 ## Exécution du code ##
 
 * Version de java : [Java SE Development Kit 13.0.1](https://www.oracle.com/technetwork/java/javase/downloads/jdk13-downloads-5672538.html)
 * Version de javaFx : [JavaFX 13](https://openjfx.io/)
 * Ligne de commande pour exécuter le .jar : 
-mode2020-h1> java -jar mode2020-h1.jar exemples/fichier-a-executer.astro(txt)
+mode2020-h1> java -jar livrable2.jar exemples/fichier-a-executer.astro(txt)

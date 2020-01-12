@@ -31,20 +31,25 @@ public class Affichage implements Observer {
 	Label sim=new Label();
 	Label vais=new Label();
 	Label cercl=new Label();
+	Label info = new Label();
+	TextField cryog;
+
+	ToggleButton bvs = new ToggleButton("Vaisseau");
+	ToggleButton bp = new ToggleButton("Planètes");
+	ToggleButton bs = new ToggleButton("Soleil");
+	ToggleButton blayer = new ToggleButton("Trajectoire");
+	ToggleButton bc = new ToggleButton("Cercle");
+	Button boutoncryo;
+
 	DecimalFormat df = new DecimalFormat("0.00");
 	DecimalFormat df2 = new DecimalFormat("0.00000");
 	DecimalFormat df3 = new DecimalFormat("0.0000000");
+
 	AffichageControl ac;
 	SystemLoader sl;
 	List<Objet> listeObjet;
 	Systeme sys;
-	Canvas layer1;
-	Canvas layer2;
-	GraphicsContext gc1;
-	GraphicsContext gc2;
-	Label info = new Label();
-	TextField cryog;
-	Button boutoncryo;
+
 	boolean afficherVaisseau = true;
 	boolean afficherPlanete = true;
 	boolean afficherSoleil = true;
@@ -52,23 +57,23 @@ public class Affichage implements Observer {
 	boolean afficherTrajectoire;
 	boolean methodeEuler = true;
 	boolean methodeLeap = false;
-	double vitesseSimu;
+
+	Canvas layer1;
+	Canvas layer2;
+	GraphicsContext gc1;
+	GraphicsContext gc2;
 	HBox hb = new HBox();
-	Timeline tl;
 	Pane bpane = new Pane();
 	Scene scene;
+	Timeline tl;
+
 	int temps = 0;
 	int seconde = 0;
 	int minute = 0;
 	int heure = 0;
+	int disabled;
 	double oldDt;
 	double rate;
-	int disabled;
-	ToggleButton bvs = new ToggleButton("Vaisseau");
-	ToggleButton bp = new ToggleButton("Planètes");
-	ToggleButton bs = new ToggleButton("Soleil");
-	ToggleButton blayer = new ToggleButton("Trajectoire");
-	ToggleButton bc = new ToggleButton("Cercle");
 
 	public Affichage(AffichageControl ac) {
 		this.ac = ac;
@@ -101,6 +106,12 @@ public class Affichage implements Observer {
 		bp.setSelected(false);
 		bs.setSelected(false);
 		bvs.setSelected(false);
+		bc.setSelected(false);
+		afficherCercle = true;
+		afficherPlanete = true;
+		afficherSoleil = true;
+		afficherCercle = true;
+		afficherVaisseau = true;
 		sys.addObserver(Affichage.this);
 	}
 

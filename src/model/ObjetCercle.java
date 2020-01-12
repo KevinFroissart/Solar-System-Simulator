@@ -21,6 +21,7 @@ public class ObjetCercle extends Objet {
 
 	public void loadAlbums(){
 		try {
+
 			Album.add(new Image("File:ressources/planetes/ceres.png", 30,30,true,false));
 			Album.add(new Image("File:ressources/planetes/eris.png", 30,30,true,false));
 			Album.add(new Image("File:ressources/planetes/jupiter.png", 30,30,true,false));

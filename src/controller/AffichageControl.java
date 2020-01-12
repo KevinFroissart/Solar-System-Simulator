@@ -55,13 +55,13 @@ public class AffichageControl extends Observable {
 	 * Changer la position de l'objet en paramètre
 	 */
 	public void pos(Objet obj, int t) {
-		if (obj.getType().equals("Cerlce")) {
+		if (obj.getType().equals("Cercle")) {
 			ObjetCercle o = (ObjetCercle) obj;
-			double angle = 2*Math.PI / (t%o.getPeriode());
+			double angle = ((2*Math.PI / o.getPeriode())*(t%o.getPeriode()));
 			double x2 = Math.pow(o.getPos().getPosX()-o.getCentre().getPos().getPosX(),2);
 			double y2 = Math.pow(o.getPos().getPosY()-o.getCentre().getPos().getPosY(),2);
 			double x = o.getCentre().getPos().getPosX() + Math.sqrt(x2+y2) * Math.cos(angle);
-			double y = o.getCentre().getPos().getPosX() + Math.sqrt(x2+y2) * Math.sin(angle);
+			double y = o.getCentre().getPos().getPosY() + Math.sqrt(x2+y2) * Math.sin(angle);
 			obj.setPos(new Vecteur(x, y));
 		} else {
 			obj.setPos(new Vecteur(obj.getPos().getPosX() + obj.getVitesse().getPosX(), obj.getPos().getPosY() + obj.getVitesse().getPosY()));

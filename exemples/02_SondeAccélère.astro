@@ -1,4 +1,7 @@
-# Un corps léger utilise la masse du soleil pour accélérer
-PARAMS G=0.01 dt=0.025 fa=1 rayon=500
+# Un corps léger utilise la masse du soleil pour accélérer et s'échapper du système
+# En fonction de la méthode d'intégration utilisée vous pourriez avoir un résultat visuel différent
+# Si les collisions sont implémentées, il peut y avoir collision entre l'objet et le soleil
+PARAMS G=0.01 dt=5 fa=500 rayon=500
 Soleil: Fixe masse=40 posx=0 posy=0
 Sonde: Simulé masse=0.001 posx=0 posy=100 vitx=0.011 vity=0
+

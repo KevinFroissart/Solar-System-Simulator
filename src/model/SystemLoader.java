@@ -173,7 +173,7 @@ public class SystemLoader {
 							valid++;
 						}
 						if(cpt+7 < lim && lignes.get(i).substring(cpt,cpt+7).equals("période")) {
-							pretro = Double.parseDouble(wordReader(cpt, lim, lignes.get(i),'=',' ',false));
+							période = Double.parseDouble(wordReader(cpt, lim, lignes.get(i),'=',' ',false));
 							valid++;
 						}
 						if(cpt+2 < lim && lignes.get(i).substring(cpt,cpt+2).equals("f1")) {
@@ -230,6 +230,7 @@ public class SystemLoader {
 				case "Cercle" :
 					pos = new Vecteur(posx,posy);
 					objectList.add(new ObjetCercle(nom, type, masse, pos, 0, période, f1));
+					System.out.println(période);
 					; break;
 				case "Vaisseau" : 
 					pos = new Vecteur(posx,posy);

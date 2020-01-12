@@ -30,6 +30,7 @@ public class Affichage implements Observer {
 	Label str=new Label();
 	Label sim=new Label();
 	Label vais=new Label();
+	Label cercl=new Label();
 	DecimalFormat df = new DecimalFormat("0.00");
 	DecimalFormat df2 = new DecimalFormat("0.00000");
 	DecimalFormat df3 = new DecimalFormat("0.0000000");
@@ -47,6 +48,7 @@ public class Affichage implements Observer {
 	boolean afficherVaisseau = true;
 	boolean afficherPlanete = true;
 	boolean afficherSoleil = true;
+	boolean afficherCercle = true;
 	boolean afficherTrajectoire;
 	double vitesseSimu;
 	HBox hb = new HBox();
@@ -77,17 +79,16 @@ public class Affichage implements Observer {
 		double x = o.getPos().getPosX()/2 + sys.getRayon()/2;
 		double y = o.getPos().getPosY()/2 + sys.getRayon()/2;
 		if(o.getType().matches("Fixe") && afficherSoleil) gc.drawImage(o.getImage(), x-(o.getTaille()/2), y-(o.getTaille()/2), o.getTaille(), o.getTaille());
-		if(o.getType().matches("Simulé") && afficherPlanete) {
-			ObjetSimule o2 = (ObjetSimule) o;
-			gc.drawImage(o2.getImage(), x-(o.getTaille()/2), y-(o.getTaille()/2), o.getTaille(), o.getTaille());
-		}
+		if(o.getType().matches("Simulé") && afficherPlanete) gc.drawImage(o.getImage(), x-(o.getTaille()/2), y-(o.getTaille()/2), o.getTaille(), o.getTaille());
 		if(o.getType().matches("Vaisseau") && afficherVaisseau) gc.drawImage(o.getImage(),x-(o.getTaille()/4+3), y-(o.getTaille()/4+3), o.getTaille()/2+3, o.getTaille()/2+3);
+		if(o.getType().matches("Cercle") && afficherCercle) gc.drawImage(o.getImage(), x-(o.getTaille()/2), y-(o.getTaille()/2), o.getTaille(), o.getTaille());
 	}
 
 	public void updateInfo() {
 		 str.setText("			FIXE \n \n");
 		sim.setText("\n			SIMULE \n \n");
 		vais.setText("\n			VAISSEAU \n \n");
+		cercl.setText("\n			CERCLE \n \n");
 		for(Objet o2 : listeObjet) {
 			if(o2.getType().equals("Fixe")) str.setText(str.getText()+"     "+ o2.getName()+"     Masse : "+o2.getMasse()+" kg\n");
 			if(o2.getType().equals("Simulé")) sim.setText(sim.getText()+"     "+o2.getName()+"\n Masse : "+o2.getMasse()+
@@ -97,9 +98,11 @@ public class Affichage implements Observer {
 					" kg\n Position : X: "+df.format((o2.getPos().getPosX()))+" m; Y: "+df.format(o2.getPos().getPosY())+
 					" m\n Vitesse  X:"+df2.format(o2.getVitesse().getPosX()) +" m/s Y :"+df2.format(o2.getVitesse().getPosY())+" m/s\n"+
 					" Force Attraction: "+df2.format(o2.getAttraction())+" *10^-9 N\n\n");
+			if(o2.getType().equals("Cercle"))  cercl.setText(cercl.getText()+"     "+o2.getName()+"\n Masse : "+o2.getMasse()+
+					" kg\n Position : X: "+df.format((o2.getPos().getPosX()))+" m; Y: "+df.format(o2.getPos().getPosY())+"\n");
 		}
 		tmp.setText("Temps écoulé: " + heure + ":" + minute + ":" + seconde+"\n\n");
-		info.setText(str.getText()+sim.getText()+vais.getText()+tmp.getText());
+		info.setText(str.getText()+cercl.getText()+sim.getText()+vais.getText()+tmp.getText());
 	}
 	
 	public void start(Stage stage) throws Exception {
@@ -128,11 +131,12 @@ public class Affichage implements Observer {
 		ToggleButton bp = new ToggleButton("Planètes");
 		ToggleButton bs = new ToggleButton("Soleil");
 		ToggleButton blayer = new ToggleButton("Trajectoire");
+		ToggleButton bc = new ToggleButton("Cercle");
 
 		fenetre.setStyle("-fx-padding: 10;" + "-fx-border-style: solid inside;"
 				+ "-fx-border-width: 2;" + "-fx-border-insets: 10;"
 				+ "-fx-border-radius: 10;" + "-fx-border-color: black;");
-		toolBar.getItems().addAll(open,reset,separator,bvs,bp,bs,blayer);
+		toolBar.getItems().addAll(open,reset,separator,bvs,bp,bs,bc,blayer);
 
 		//Unité de temps et de simulation du systeme
 		tl = new Timeline(new KeyFrame(Duration.seconds(sys.getDt()/sys.getFa()), e->run()));
@@ -207,6 +211,17 @@ public class Affichage implements Observer {
 			else{
 				bs.setSelected(false);
 				afficherSoleil = true;
+			}
+		});
+
+		bc.setOnAction( e-> {
+			if(bc.isSelected()){
+				bc.setSelected(true);
+				afficherCercle = false;
+			}
+			else{
+				bc.setSelected(false);
+				afficherCercle = true;
 			}
 		});
 
@@ -290,7 +305,8 @@ public class Affichage implements Observer {
 		for(Objet o : listeObjet) {
 			drawObject(o, gc1);
 			for(Objet o2 : listeObjet) {
-				if(o.getType().matches("Simulé") && o2.getType().equals("Fixe")) {
+				if(o.getType().equals("Cercle") && o2.getName().equals(o.getCentre().getName())) ac.pos(o, temps);
+				if(!o.getType().equals("Fixe") && !o.getType().equals("Vaisseau") && !o.getType().equals("Cercle") && o2.getType() != o.getType()){
 					IntegrationE.eulerExplicite(o, o2, sys);
 					gc2.setFill(Color.WHITE);
 				}

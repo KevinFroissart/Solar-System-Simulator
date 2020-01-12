@@ -50,6 +50,8 @@ public class Affichage implements Observer {
 	boolean afficherSoleil = true;
 	boolean afficherCercle = true;
 	boolean afficherTrajectoire;
+	boolean methodeEuler = true;
+	boolean methodeLeap = false;
 	double vitesseSimu;
 	HBox hb = new HBox();
 	Timeline tl;
@@ -62,6 +64,11 @@ public class Affichage implements Observer {
 	double oldDt;
 	double rate;
 	int disabled;
+	ToggleButton bvs = new ToggleButton("Vaisseau");
+	ToggleButton bp = new ToggleButton("Planètes");
+	ToggleButton bs = new ToggleButton("Soleil");
+	ToggleButton blayer = new ToggleButton("Trajectoire");
+	ToggleButton bc = new ToggleButton("Cercle");
 
 	public Affichage(AffichageControl ac) {
 		this.ac = ac;
@@ -84,7 +91,23 @@ public class Affichage implements Observer {
 		if(o.getType().matches("Cercle") && afficherCercle) gc.drawImage(o.getImage(), x-(o.getTaille()/2), y-(o.getTaille()/2), o.getTaille(), o.getTaille());
 	}
 
+	public void reset(){
+		temps = 0;
+		listeObjet = ac.resetObj();
+		sys = ac.resetSys();
+		gc2.clearRect(0,0,sys.getRayon(),sys.getRayon());
+		afficherTrajectoire = false;
+		blayer.setSelected(false);
+		bp.setSelected(false);
+		bs.setSelected(false);
+		bvs.setSelected(false);
+		sys.addObserver(Affichage.this);
+	}
+
 	public void updateInfo() {
+		Label lblmethode = new Label();
+		if(methodeEuler) lblmethode.setText("Méthode : Eurler Explicite\n");
+		if(methodeLeap) lblmethode.setText("Méthode : LeapFrog\n");
 		 str.setText("			FIXE \n \n");
 		sim.setText("\n			SIMULE \n \n");
 		vais.setText("\n			VAISSEAU \n \n");
@@ -102,7 +125,7 @@ public class Affichage implements Observer {
 					" kg\n Position : X: "+df.format((o2.getPos().getPosX()))+" m; Y: "+df.format(o2.getPos().getPosY())+"\n");
 		}
 		tmp.setText("Temps écoulé: " + heure + ":" + minute + ":" + seconde+"\n\n");
-		info.setText(str.getText()+cercl.getText()+sim.getText()+vais.getText()+tmp.getText());
+		info.setText(lblmethode.getText()+str.getText()+cercl.getText()+sim.getText()+vais.getText()+tmp.getText());
 	}
 	
 	public void start(Stage stage) throws Exception {
@@ -126,17 +149,18 @@ public class Affichage implements Observer {
 		Button open = new Button("Ouvrir");
 		Button reset = new Button("Reset");
 		Separator separator = new Separator();
+		Separator separator2 = new Separator();
 		boutoncryo = new Button("Cryo-sommeil");
-		ToggleButton bvs = new ToggleButton("Vaisseau");
-		ToggleButton bp = new ToggleButton("Planètes");
-		ToggleButton bs = new ToggleButton("Soleil");
-		ToggleButton blayer = new ToggleButton("Trajectoire");
-		ToggleButton bc = new ToggleButton("Cercle");
+		Menu methode = new Menu("Méthodes");
+		MenuItem leapfrog = new MenuItem("Leapfrog");
+		MenuItem euler = new MenuItem("Euler Explicite");
+		methode.getItems().addAll(euler,leapfrog);
+		MenuBar menuBar = new MenuBar(methode);
 
 		fenetre.setStyle("-fx-padding: 10;" + "-fx-border-style: solid inside;"
 				+ "-fx-border-width: 2;" + "-fx-border-insets: 10;"
 				+ "-fx-border-radius: 10;" + "-fx-border-color: black;");
-		toolBar.getItems().addAll(open,reset,separator,bvs,bp,bs,bc,blayer);
+		toolBar.getItems().addAll(open,reset,separator,bvs,bp,bs,bc,blayer,separator2,menuBar);
 
 		//Unité de temps et de simulation du systeme
 		tl = new Timeline(new KeyFrame(Duration.seconds(sys.getDt()/sys.getFa()), e->run()));
@@ -168,16 +192,7 @@ public class Affichage implements Observer {
 		});
 
 		reset.setOnAction( e-> {
-			temps = 0;
-			listeObjet = ac.resetObj();
-			sys = ac.resetSys();
-			gc2.clearRect(0,0,sys.getRayon(),sys.getRayon());
-			afficherTrajectoire = false;
-			blayer.setSelected(false);
-			bp.setSelected(false);
-			bs.setSelected(false);
-			bvs.setSelected(false);
-			sys.addObserver(Affichage.this);
+			reset();
 		});
 
 		bvs.setOnAction( e-> {
@@ -280,6 +295,18 @@ public class Affichage implements Observer {
 			cryog.setText("");
 		});
 
+		euler.setOnAction( e-> {
+			reset();
+			methodeLeap = false;
+			methodeEuler = true;
+		});
+
+		leapfrog.setOnAction( e-> {
+			reset();
+			methodeLeap = true;
+			methodeEuler = false;
+		});
+
 		vb.getChildren().addAll(toolBar,bpane,hb);
 		fenetre.getChildren().addAll(info,cryo,cryog,boutoncryo);
 		informations.getChildren().addAll(vb,fenetre);
@@ -307,7 +334,8 @@ public class Affichage implements Observer {
 			for(Objet o2 : listeObjet) {
 				if(o.getType().equals("Cercle") && o2.getName().equals(o.getCentre().getName())) ac.pos(o, temps);
 				if(!o.getType().equals("Fixe") && !o.getType().equals("Vaisseau") && !o.getType().equals("Cercle") && o2.getType() != o.getType()){
-					IntegrationE.eulerExplicite(o, o2, sys);
+					if(methodeEuler) IntegrationE.eulerExplicite(o, o2, sys);
+					if(methodeLeap) IntegrationE.leapfrog(o, o2, sys);
 					gc2.setFill(Color.WHITE);
 				}
 				if(afficherTrajectoire) gc2.fillOval(o.getPos().getPosX()/2+sys.getRayon()/2-0.5,o.getPos().getPosY()/2+sys.getRayon()/2-0.5,1,1);
@@ -326,7 +354,8 @@ public class Affichage implements Observer {
 						tl.setRate(rate);
 						sys.setDt(oldDt);
 					}
-					IntegrationE.eulerExplicite(o, o2, sys);
+					if(methodeEuler) IntegrationE.eulerExplicite(o, o2, sys);
+					if(methodeLeap) IntegrationE.leapfrog(o, o2, sys);
 				}
 			}
 			ac.pos(o,temps);

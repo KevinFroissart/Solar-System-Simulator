@@ -230,7 +230,6 @@ public class SystemLoader {
 				case "Cercle" :
 					pos = new Vecteur(posx,posy);
 					objectList.add(new ObjetCercle(nom, type, masse, pos, 0, période, f1));
-					System.out.println(période);
 					; break;
 				case "Vaisseau" : 
 					pos = new Vecteur(posx,posy);

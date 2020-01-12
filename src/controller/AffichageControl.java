@@ -4,6 +4,7 @@ import java.io.File;
 import java.util.List;
 import java.util.Observable;
 
+import javafx.scene.paint.Color;
 import javafx.stage.FileChooser;
 import javafx.stage.Stage;
 import javafx.stage.FileChooser.ExtensionFilter;
@@ -108,6 +109,20 @@ public class AffichageControl extends Observable {
 		}
 		return sl.getFile();
 	}
-	
-	
+
+	public void cryoSommeil(int t, List<Objet> listeObjet, int temps) {
+		for(int i = 0; i < t; i++) {
+			for(Objet o : listeObjet) {
+				for (Objet o2 : listeObjet) {
+					if (o.getType().matches("Simulé") && o2.getType().equals("Fixe")) {
+						IntegrationE.eulerExplicite(o, o2, sys);
+					}
+					if (o.getType().equals("Vaisseau") && !o2.getType().equals("Vaisseau")) {
+						IntegrationE.eulerExplicite(o, o2, sys);
+					}
+				}
+				pos(o, temps);
+			}
+		}
+	}
 }

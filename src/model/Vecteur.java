@@ -22,6 +22,16 @@ public class Vecteur {
 		this.posX = posX;
 		this.posY = posY;
 	}
+
+	/**
+	 * Contructeur qui instancie un Vecteur à l'aide des valeurs de deux autre vecteurs
+	 * @param objA
+	 * @param objB
+	 */
+	public Vecteur(Vecteur objA, Vecteur objB){
+		this.posX = objB.getPosX() - objA.getPosX();
+		this.posY = objB.getPosY() - objA.getPosY();
+	}
 	
 	/**
 	 * Retourne la valeur de X du vecteur
@@ -54,7 +64,9 @@ public class Vecteur {
 	public void setPosY(double posY) {
 		this.posY = posY;
 	}
-	
+
+	public double getNorme() { return Math.sqrt((posX*posX)+(posY*posY)); }
+
 	/**
 	 * Retourne un chaine de caractère donnant les informations posX et posY du vecteur
 	 * @return String

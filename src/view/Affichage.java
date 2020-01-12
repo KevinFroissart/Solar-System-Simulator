@@ -42,6 +42,8 @@ public class Affichage implements Observer {
 	GraphicsContext gc1;
 	GraphicsContext gc2;
 	Label info = new Label();
+	TextField cryog;
+	Button boutoncryo;
 	boolean afficherVaisseau = true;
 	boolean afficherPlanete = true;
 	boolean afficherSoleil = true;
@@ -57,6 +59,7 @@ public class Affichage implements Observer {
 	int heure = 0;
 	double oldDt;
 	double rate;
+	int disabled;
 
 	public Affichage(AffichageControl ac) {
 		this.ac = ac;
@@ -78,7 +81,7 @@ public class Affichage implements Observer {
 			ObjetSimule o2 = (ObjetSimule) o;
 			gc.drawImage(o2.getImage(), x-(o.getTaille()/2), y-(o.getTaille()/2), o.getTaille(), o.getTaille());
 		}
-		if(o.getType().matches("Vaisseau") && afficherVaisseau) gc.drawImage(o.getImage(),x-(o.getTaille()/4+6), y-(o.getTaille()/4+6), o.getTaille()/2+3, o.getTaille()/2+3);
+		if(o.getType().matches("Vaisseau") && afficherVaisseau) gc.drawImage(o.getImage(),x-(o.getTaille()/4+3), y-(o.getTaille()/4+3), o.getTaille()/2+3, o.getTaille()/2+3);
 	}
 
 	public void updateInfo() {
@@ -112,16 +115,15 @@ public class Affichage implements Observer {
 		layer1.toFront();
 		VBox fenetre = new VBox();
 		HBox informations = new HBox();
-		Label cryo=new Label("Entrez une valeur ");
-		
-		TextField cryog = new TextField();
+		Label cryo = new Label("Entrez un entier ");
+		cryog = new TextField();
 		
 		VBox vb = new VBox();
 		ToolBar toolBar = new ToolBar();
 		Button open = new Button("Ouvrir");
 		Button reset = new Button("Reset");
 		Separator separator = new Separator();
-		Button boutoncryo = new Button("Cryo-sommeil");
+		boutoncryo = new Button("Cryo-sommeil");
 		ToggleButton bvs = new ToggleButton("Vaisseau");
 		ToggleButton bp = new ToggleButton("Planètes");
 		ToggleButton bs = new ToggleButton("Soleil");
@@ -162,6 +164,7 @@ public class Affichage implements Observer {
 		});
 
 		reset.setOnAction( e-> {
+			temps = 0;
 			listeObjet = ac.resetObj();
 			sys = ac.resetSys();
 			gc2.clearRect(0,0,sys.getRayon(),sys.getRayon());
@@ -241,6 +244,27 @@ public class Affichage implements Observer {
 			}
 		});
 
+		boutoncryo.setOnAction( e-> {
+			if(cryog.getText().matches("[0-9]*") && !cryog.getText().equals("")){
+				if(Double.parseDouble(cryog.getText()) <= 1000) {
+					gc2.clearRect(0, 0, sys.getRayon(), sys.getRayon());
+					int tempsCalcule = (int) (Double.parseDouble(cryog.getText()) * sys.getFa() / sys.getDt());
+					temps += tempsCalcule;
+					ac.cryoSommeil(tempsCalcule, listeObjet, temps);
+				} else {
+					cryog.setText("Doit être compris entre 1 et 1000");
+				}
+			} else {
+				cryog.setText("Veuillez entrer un entier");
+			}
+			boutoncryo.setDisable(true);
+			disabled = temps;
+		});
+
+		cryog.setOnMouseClicked( e-> {
+			cryog.setText("");
+		});
+
 		vb.getChildren().addAll(toolBar,bpane,hb);
 		fenetre.getChildren().addAll(info,cryo,cryog,boutoncryo);
 		informations.getChildren().addAll(vb,fenetre);
@@ -257,6 +281,7 @@ public class Affichage implements Observer {
 
 	private void run() {
 		updateInfo();
+		if(boutoncryo.isDisabled())if(disabled+40 == temps) boutoncryo.setDisable(false);
 		temps++;
 		seconde = temps % 60;
 		minute = temps / 60 % 60;
@@ -272,10 +297,16 @@ public class Affichage implements Observer {
 				if(afficherTrajectoire) gc2.fillOval(o.getPos().getPosX()/2+sys.getRayon()/2-0.5,o.getPos().getPosY()/2+sys.getRayon()/2-0.5,1,1);
 				if(o.getType().equals("Vaisseau") && !o2.getType().equals("Vaisseau")) {
 					if(o.getAttraction() > 100) {
+						boutoncryo.setDisable(true);
+						cryog.setText("Attraction trop importante");
 						double nb = o.getAttraction()/100.0;
 						sys.setDt(sys.getDt()/nb);
 						tl.setRate(tl.getRate()+nb);
 					} else {
+						if(disabled+40 < temps){
+							if(cryog.getText().equals("Attraction trop importante")) cryog.setText("");
+							boutoncryo.setDisable(false);
+						}
 						tl.setRate(rate);
 						sys.setDt(oldDt);
 					}

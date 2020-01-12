@@ -1,0 +1,7 @@
+# Une planète qui tourne autour du soleil
+PARAMS G=0.01 dt=5 fa=500 rayon=500
+Soleil: Fixe masse=40 posx=0 posy=0
+F2: Fixe masse=0 posx=50 posy=0
+Planète1: Ellipse masse=1 f1=Soleil f2=F2 posx=150 posy=0 période=10000
+Planète2: Ellipse masse=1 f1=Soleil f2=F2 posx=0 posy=250 période=20000
+Lune1: Cercle masse=0.1 centre=Planète2 posx=0 posy=280 période=5000

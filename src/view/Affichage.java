@@ -117,7 +117,7 @@ public class Affichage implements Observer {
 
 	public void updateInfo() {
 		Label lblmethode = new Label();
-		if(methodeEuler) lblmethode.setText("Méthode : Eurler Explicite\n");
+		if(methodeEuler) lblmethode.setText("Méthode : Euler Explicite\n");
 		if(methodeLeap) lblmethode.setText("Méthode : LeapFrog\n");
 		 str.setText("			FIXE \n \n");
 		sim.setText("\n			SIMULE \n \n");
